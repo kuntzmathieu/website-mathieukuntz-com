@@ -1,0 +1,113 @@
+---
+---
+
+<section class="social-proof section">
+  <div class="container">
+    <h2 class="fade-in">Ils ont vécu l'expérience</h2>
+    <div class="stats fade-in">
+      <div class="stat">
+        <span class="stat-number">110</span>
+        <span class="stat-label">Spectateurs en décembre</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">71</span>
+        <span class="stat-label">Spectateurs en mars</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">1h15</span>
+        <span class="stat-label">De spectacle immersif</span>
+      </div>
+    </div>
+    <div class="testimonials fade-in">
+      <blockquote class="testimonial">
+        <p>"Je ne pensais pas que l'hypnose pouvait être aussi... touchante. On sort différent."</p>
+        <cite>— Spectateur, mars 2026</cite>
+      </blockquote>
+      <blockquote class="testimonial">
+        <p>"Mathieu nous fait rire, nous surprend, et à la fin on comprend quelque chose sur soi."</p>
+        <cite>— Spectatrice, décembre 2025</cite>
+      </blockquote>
+    </div>
+  </div>
+</section>
+
+<style>
+  .social-proof {
+    background: var(--bg-secondary);
+  }
+
+  .social-proof h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  .stats {
+    display: flex;
+    justify-content: center;
+    gap: 4rem;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-number {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: 3rem;
+    color: var(--accent-gold);
+    font-weight: 700;
+  }
+
+  .stat-label {
+    display: block;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-top: 0.25rem;
+  }
+
+  .testimonials {
+    display: flex;
+    gap: 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+  }
+
+  .testimonial {
+    flex: 1;
+    min-width: 280px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 2rem;
+    margin: 0;
+  }
+
+  .testimonial p {
+    color: var(--text-primary);
+    font-style: italic;
+    line-height: 1.7;
+    margin-bottom: 1rem;
+    font-size: 1.05rem;
+  }
+
+  .testimonial cite {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    font-style: normal;
+  }
+
+  @media (max-width: 768px) {
+    .stats {
+      gap: 2rem;
+    }
+
+    .stat-number {
+      font-size: 2.5rem;
+    }
+  }
+</style>

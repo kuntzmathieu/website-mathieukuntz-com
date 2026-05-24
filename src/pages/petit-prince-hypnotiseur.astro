@@ -1,0 +1,65 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import Problem from '../components/Problem.astro';
+import Promise from '../components/Promise.astro';
+import SocialProof from '../components/SocialProof.astro';
+import Faq from '../components/Faq.astro';
+import Newsletter from '../components/Newsletter.astro';
+
+const faqs = [
+  {
+    question: "C'est quoi l'hypnose de scène ?",
+    answer: "L'hypnose de scène est un spectacle où des volontaires du public sont hypnotisés et vivent des expériences amusantes, étonnantes ou émouvantes. C'est sûr, c'est fun, et c'est spectaculaire. Vous ne dormez pas — vous êtes dans un état de concentration intense où votre imagination devient réalité."
+  },
+  {
+    question: "Est-ce que c'est dangereux ?",
+    answer: "Pas du tout. L'hypnose est un état naturel que nous vivons tous les jours (quand on est absorbé dans un film, par exemple). On ne peut pas être forcé à faire quelque chose qu'on ne veut pas. Chaque volontaire reste maître de ses choix."
+  },
+  {
+    question: "Est-ce que je peux participer ?",
+    answer: "Absolument ! Le spectacle repose sur la participation de volontaires. Si vous avez envie de monter sur scène, c'est votre moment. Si vous préférez regarder, c'est tout aussi bien — les spectateurs vivent aussi l'expérience."
+  },
+  {
+    question: "Je peux venir avec des enfants ?",
+    answer: "Le spectacle est accessible dès 12 ans. C'est un excellent moment à partager en famille — les enfants adorent l'univers du Petit Prince, et les adultes retrouvent l'émotion du conte."
+  },
+];
+
+const promiseContent = `
+<p>Le Petit Prince est bien seul sur sa planète. Heureusement, il sait comment se faire de nouveaux amis et leur permettre de le rejoindre dans son monde : en les hypnotisant !</p>
+
+<p>Dans ce spectacle d'hypnose de scène inédit, des volontaires du public se font hypnotiser par le Petit Prince et le rejoignent dans son voyage de planète en planète. Entre le Roi, le Vaniteux, le Businessman et le Renard — vous découvrirez les personnages emblématiques du conte comme vous ne les avez jamais vus : <em>en direct, sous hypnose, avec vous.</em></p>
+
+<p>Entre rires et émerveillement, entre sagesse et surprise, laissez-vous transporter par le conte le plus célèbre du monde... réinventé par l'hypnose.</p>
+
+<blockquote>Familiarité du Petit Prince + puissance de l'hypnose = une soirée dont vous vous souviendrez.</blockquote>
+`;
+---
+
+<Layout
+  title="Le Petit Prince Hypnotiseur — Spectacle d'hypnose à Avignon"
+  description="Le Petit Prince est seul sur sa planète. Heureusement, il sait hypnotiser ! Spectacle d'hypnose de scène inédit à Avignon. Venez rejoindre le voyage."
+>
+  <Hero
+    title="Le Petit Prince Hypnotiseur"
+    tagline="Le conte le plus célèbre du monde, réinventé par l'hypnose. Des volontaires montent sur scène et voyagent de planète en planète avec le Petit Prince."
+    ctaText="Soyez informé des prochaines dates"
+    ctaLink="#newsletter"
+  />
+
+  <Problem
+    title="Vous connaissez le Petit Prince. Mais vous ne l'avez JAMAIS vu comme ça."
+  />
+
+  <Promise
+    title="Le spectacle"
+    content={promiseContent}
+  />
+
+  <SocialProof />
+
+  <Faq faqs={faqs} />
+
+  <Newsletter theme="petit-prince-hypnotiseur" />
+</Layout>

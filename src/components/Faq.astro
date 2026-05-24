@@ -1,0 +1,74 @@
+---
+export interface Props {
+  faqs: Array<{ question: string; answer: string }>;
+}
+
+const { faqs } = Astro.props;
+---
+
+<section class="faq section">
+  <div class="container">
+    <h2 class="fade-in">Questions fréquentes</h2>
+    <div class="faq-list">
+      {faqs.map((faq, index) => (
+        <details class="faq-item fade-in">
+          <summary class="faq-question">{faq.question}</summary>
+          <p class="faq-answer">{faq.answer}</p>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  .faq-list {
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .faq-item {
+    border-bottom: 1px solid var(--border-color);
+    cursor: pointer;
+  }
+
+  .faq-question {
+    padding: 1.25rem 0;
+    color: var(--accent-gold);
+    font-weight: 600;
+    font-size: 1.05rem;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .faq-question::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-question::after {
+    content: '+';
+    font-size: 1.25rem;
+    color: var(--accent-gold);
+    flex-shrink: 0;
+    margin-left: 1rem;
+    transition: transform 0.3s ease;
+  }
+
+  .faq-item[open] .faq-question::after {
+    content: '−';
+  }
+
+  .faq-answer {
+    color: var(--text-secondary);
+    line-height: 1.7;
+    padding-bottom: 1.25rem;
+    font-size: 0.95rem;
+  }
+</style>

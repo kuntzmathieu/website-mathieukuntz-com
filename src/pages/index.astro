@@ -1,0 +1,57 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import SpectacleCards from '../components/SpectacleCards.astro';
+import SocialProof from '../components/SocialProof.astro';
+import Newsletter from '../components/Newsletter.astro';
+
+const spectacles = [
+  {
+    slug: 'petit-prince-hypnotiseur',
+    title: 'Le Petit Prince Hypnotiseur',
+    tagline: 'Fun, émerveillement, participation',
+    shortDesc: 'Le Petit Prince est seul sur sa planète. Heureusement, il sait hypnotiser. Venez rejoindre son voyage interstellaire — et peut-être monter sur scène.',
+    emoji: '👑',
+  },
+  {
+    slug: 'petit-prince-immersif',
+    title: "Le Petit Prince — L'expérience immersive",
+    tagline: "Émotion, immersion, revivre l'enfance",
+    shortDesc: "Fermez les yeux. Vous êtes sur la planète B612. Un conte immersif sous hypnose et en musique, à vivre de l'intérieur.",
+    emoji: '✨',
+  },
+  {
+    slug: 'vie-de-reve',
+    title: 'Une Vie de Rêve',
+    tagline: 'Inspiration, transformation, multi-disciplinaire',
+    shortDesc: "Hypnose, musique, danse, magie, histoires vraies. Mathieu partage sa recette pour rapprocher rêve et réalité. Le temps d'un spectacle.",
+    emoji: '🌙',
+  },
+  {
+    slug: 'comment-devenir-genial',
+    title: 'Comment devenir génial',
+    tagline: 'Révélation, sincérité, une vraie question',
+    shortDesc: "La réponse n'est pas ce que vous croyez. Conte, conférence, méditation guidée, hypnose — un spectacle qui vous prouve que vous l'êtes déjà.",
+    emoji: '💫',
+  },
+];
+---
+
+<Layout
+  title="Spectacles Mathieu Kuntz — Hypnose, magie et sincérité à Avignon"
+  description="4 spectacles uniques à Avignon. Hypnose, musique, magie et histoires vraies. Découvrez l'expérience qui vous appelle."
+>
+  <Hero
+    title="Des spectacles qui changent la façon dont vous vous voyez"
+    tagline="Hypnose, musique, magie et histoires vraies — 4 expériences uniques à Avignon. Lequel vous appelle ?"
+    ctaText="Découvrir les spectacles"
+    ctaLink="#spectacles"
+  />
+
+  <div id="spectacles"></div>
+  <SpectacleCards spectacles={spectacles} />
+
+  <SocialProof />
+
+  <Newsletter />
+</Layout>

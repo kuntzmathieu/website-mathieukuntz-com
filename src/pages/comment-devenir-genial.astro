@@ -1,0 +1,77 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import Problem from '../components/Problem.astro';
+import Promise from '../components/Promise.astro';
+import SocialProof from '../components/SocialProof.astro';
+import Faq from '../components/Faq.astro';
+import Newsletter from '../components/Newsletter.astro';
+
+const faqs = [
+  {
+    question: "C'est quoi ce spectacle exactement ?",
+    answer: "Un mélange de conte, de conférence et de méditation guidée. Mathieu raconte des histoires vraies (un gamin qui l'insultait, un râteau magnifique, une rencontre norvégienne qui n'aurait pas dû arriver), ponctuées de moments d'hypnose et de magie. À la fin, quelque chose clique."
+  },
+  {
+    question: "Est-ce que c'est du développement personnel ?",
+    answer: "C'est un spectacle, pas une formation. Le message est là (« vous êtes déjà génial, il suffit de le voir »), mais il est montré, pas enseigné. À travers des histoires, de l'hypnose et des moments de magie — pas de discours motivant."
+  },
+  {
+    question: "Est-ce que je dois participer ?",
+    answer: "Le spectacle est conçu pour que tout le monde vive l'expérience depuis sa place. L'hypnose finale est immersive — vous pouvez participer ou simplement vous laisser porter. Et quelques volontaires seront invités sur scène pour un moment d'hypnose."
+  },
+  {
+    question: "Pourquoi 'Comment devenir génial' ?",
+    answer: "Parce que c'est la question que tout le monde se pose, non ? Et la réponse n'est pas ce que vous croyez. Ce n'est pas être parfait, ni être meilleur que les autres. C'est voir le potentiel infini en soi et dans les autres — et se traiter avec exigence bienveillante."
+  },
+];
+
+const promiseContent = `
+<p>Comment devenir génial ? C'est la question que tout le monde se pose, non ? Et si la réponse était plus simple qu'on ne le croit ?</p>
+
+<p>Dans ce spectacle hybride — entre conte, conférence et méditation guidée — Mathieu raconte comment il a découvert que le génie n'est pas un don, mais une posture. <em>En traitant les autres comme des personnes formidables, ils le deviennent. En se traiter soi-même avec exigence bienveillante, on le devient aussi.</em></p>
+
+<p>À travers des histoires vraies (Gaël en CM2 qui passait son temps à l'insulter, un râteau qui l'a libéré, une rencontre norvégienne qui n'aurait pas dû arriver), de l'hypnose et des moments de magie, vous découvrirez que la réponse était là depuis le début.</p>
+
+<p>4 actes :</p>
+<p><strong>Acte 0 — Le Poison :</strong> Le monde va mal, j'avais perdu confiance.</p>
+<p><strong>Acte 1 — La Peur :</strong> J'avais peur de ne pas être assez. J'ai osé être vulnérable.</p>
+<p><strong>Acte 2 — L'Amour :</strong> J'avais peur du rejet. J'ai osé aimer.</p>
+<p><strong>Acte 3 — L'Inconnu :</strong> J'avais peur de l'inconnu. J'ai osé lâcher prise.</p>
+<p><strong>Acte 4 — L'Antidote :</strong> Vous êtes déjà génial. Il suffit de le voir.</p>
+
+<blockquote>Vous êtes déjà génial. Il suffit de le voir.</blockquote>
+`;
+---
+
+<Layout
+  title="Comment devenir génial — Spectacle d'hypnose, magie et sincérité à Avignon"
+  description="La réponse n'est pas ce que vous croyez. Un spectacle entre conte, conférence et méditation guidée. Avignon."
+>
+  <Hero
+    title="Comment devenir génial ?"
+    tagline="La réponse n'est pas ce que vous croyez. Un spectacle entre conte, conférence et méditation guidée — où Mathieu vous prouve que vous l'êtes déjà."
+    ctaText="Soyez informé des prochaines dates"
+    ctaLink="#newsletter"
+    showSecondaryCta={true}
+    secondaryCtaText="En savoir plus"
+    secondaryCtaLink="#promise"
+  />
+
+  <Problem
+    title="Le monde vous dit que vous n'êtes pas assez. Moi je dis le contraire."
+    subtitle="Et je vous le prouve."
+  />
+
+  <div id="promise"></div>
+  <Promise
+    title="Le spectacle"
+    content={promiseContent}
+  />
+
+  <SocialProof />
+
+  <Faq faqs={faqs} />
+
+  <Newsletter theme="comment-devenir-genial" />
+</Layout>

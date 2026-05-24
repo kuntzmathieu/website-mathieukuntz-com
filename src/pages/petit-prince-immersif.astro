@@ -1,0 +1,66 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import Problem from '../components/Problem.astro';
+import Promise from '../components/Promise.astro';
+import SocialProof from '../components/SocialProof.astro';
+import Faq from '../components/Faq.astro';
+import Newsletter from '../components/Newsletter.astro';
+
+const faqs = [
+  {
+    question: "C'est quoi un spectacle immersif sous hypnose ?",
+    answer: "C'est une expérience où tout le public participe — vous fermez les yeux, et vous êtes guidé dans une histoire. Pas besoin de monter sur scène. L'hypnose immersive vous permet de vivre le conte de l'intérieur, comme si vous y étiez."
+  },
+  {
+    question: "Est-ce que tout le monde peut vivre l'expérience ?",
+    answer: "Oui. Contrairement à l'hypnose de scène classique, l'hypnose immersive est conçue pour que tout le public puisse participer depuis sa place. Vous n'avez rien à faire — juste à fermer les yeux et à vous laisser guider."
+  },
+  {
+    question: "Est-ce que c'est dangereux ?",
+    answer: "Pas du tout. L'hypnose guidée est un état de relaxation profonde que nous expérimentons naturellement tous les jours. C'est doux, sécurisant, et vous gardez le contrôle à tout moment."
+  },
+  {
+    question: "Je connais déjà le Petit Prince, est-ce que c'est différent ?",
+    answer: "Complètement. Vous ne l'écoutez pas — vous le vivez. La musique, l'hypnose guidée et le récit vous plongent dans une expérience sensorielle. Même si vous connaissez le conte par cœur, le vivre de l'intérieur est une toute autre chose."
+  },
+];
+
+const promiseContent = `
+<p>Imaginez : vous fermez les yeux. Et vous y êtes.</p>
+
+<p>Sur la planète B612, entre la rose qui se protège avec ses épines et le renard qui demande à être apprivoisé. Vous n'êtes plus spectateur — vous <em>vivez</em> le conte de l'intérieur.</p>
+
+<p>Porté par la musique et guidé par l'hypnose, ce spectacle immersif vous plonge dans l'univers du Petit Prince comme vous ne l'avez jamais vécu. Pas assis dans une salle — voyageant entre les étoiles, rencontrant les personnages, redécouvrant les sagesses les plus belles du monde.</p>
+
+<blockquote>Un conte. Une musique. Une hypnose. Et vous.</blockquote>
+`;
+---
+
+<Layout
+  title="Le Petit Prince — L'expérience immersive — Spectacle à Avignon"
+  description="Fermez les yeux. Vous êtes sur la planète B612. Un conte immersif sous hypnose et en musique, à vivre de l'intérieur. Avignon."
+>
+  <Hero
+    title="Le Petit Prince — L'expérience immersive"
+    tagline="Fermez les yeux. Vous êtes sur la planète B612, entre la rose et le renard, entre le désert et les étoiles. Un conte immersif sous hypnose et en musique, à vivre de l'intérieur."
+    ctaText="Soyez informé des prochaines dates"
+    ctaLink="#newsletter"
+  />
+
+  <Problem
+    title="La dernière fois que quelqu'un vous a lu le Petit Prince, vous aviez combien d'années ?"
+    subtitle="Et si vous pouviez le revivre ? Pas le lire. Pas le regarder. Le vivre."
+  />
+
+  <Promise
+    title="L'expérience"
+    content={promiseContent}
+  />
+
+  <SocialProof />
+
+  <Faq faqs={faqs} />
+
+  <Newsletter theme="petit-prince-immersif" />
+</Layout>

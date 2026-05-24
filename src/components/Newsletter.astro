@@ -1,0 +1,91 @@
+---
+export interface Props {
+  theme?: string; // for Brevo list tag
+}
+
+const { theme } = Astro.props;
+---
+
+<section class="newsletter section" id="newsletter">
+  <div class="container">
+    <div class="newsletter-inner fade-in">
+      <h2>Soyez informé des prochaines dates</h2>
+      <p class="newsletter-desc">Laissez votre email et recevez les dates de représentation en avant-première. Pas de spam, juste les infos qui comptent.</p>
+      <form class="newsletter-form" action="https://formspree.io/f/placeholder" method="POST">
+        {theme && <input type="hidden" name="theme" value={theme} />}
+        <div class="form-row">
+          <input type="email" name="email" placeholder="Votre adresse email" required class="email-input" />
+          <button type="submit" class="btn-cta">M'inscrire</button>
+        </div>
+        <p class="form-note">En vous inscrivant, vous acceptez de recevoir des communications de Mathieu Kuntz. Désinscription possible à tout moment.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<style>
+  .newsletter {
+    background: radial-gradient(ellipse at 50% 50%, rgba(201, 168, 76, 0.08) 0%, transparent 70%);
+  }
+
+  .newsletter-inner {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .newsletter h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .newsletter-desc {
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+    line-height: 1.6;
+  }
+
+  .newsletter-form {
+    margin-bottom: 1rem;
+  }
+
+  .form-row {
+    display: flex;
+    gap: 1rem;
+    align-items: stretch;
+  }
+
+  .email-input {
+    flex: 1;
+    padding: 1rem 1.5rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s ease;
+  }
+
+  .email-input::placeholder {
+    color: var(--text-secondary);
+  }
+
+  .email-input:focus {
+    border-color: var(--accent-gold);
+  }
+
+  .form-note {
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    margin-top: 1rem;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 768px) {
+    .form-row {
+      flex-direction: column;
+    }
+  }
+</style>

@@ -1,0 +1,66 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import Problem from '../components/Problem.astro';
+import Promise from '../components/Promise.astro';
+import SocialProof from '../components/SocialProof.astro';
+import Faq from '../components/Faq.astro';
+import Newsletter from '../components/Newsletter.astro';
+
+const faqs = [
+  {
+    question: "C'est quoi ce spectacle exactement ?",
+    answer: "Un mélange unique d'hypnose, de musique, de danse et d'histoires vraies. Pas un spectacle classique, pas une conférence, pas une soirée hypnotique — quelque chose entre tout ça. Un spectacle quelque part entre rêve et réalité."
+  },
+  {
+    question: "Est-ce que je dois participer ?",
+    answer: "Non. Vous pouvez simplement regarder et vous laisser porter par l'expérience. L'hypnose immersive ne nécessite pas de monter sur scène — tout le monde participe depuis sa place, à son rythme."
+  },
+  {
+    question: "Est-ce que c'est du développement personnel ?",
+    answer: "C'est un spectacle, pas un stage. Mathieu partage sa philosophie de vie à travers des histoires, de l'hypnose et des moments de magie. C'est divertissant avant tout — si vous repartez avec une idée nouvelle, c'est un bonus."
+  },
+  {
+    question: "Pourquoi 'Une Vie de Rêve' ?",
+    answer: "Parce que c'est la question centrale du spectacle : comment faire se rapprocher rêve et réalité ? Mathieu, 25 ans, a beaucoup cherché. Et un peu trouvé. Ce spectacle est le résultat de cette recherche — entre l'hypnose qui fait rêver et les histoires qui font réfléchir."
+  },
+];
+
+const promiseContent = `
+<p>Comment faire se rapprocher rêve et réalité ? À 25 ans, Mathieu a beaucoup cherché. Et un peu trouvé.</p>
+
+<p>Alors comme il est aussi comédien, danseur, hypnotiseur et moniteur de ski, il s'est dit qu'il allait mettre tout ça ensemble et en faire un spectacle. Ah et il est un peu magicien aussi, et puis il a des potes musiciens. M'enfin vous verrez...</p>
+
+<p>Venez vivre une expérience théâtrale hors du commun, où l'hypnose guidée vous plonge dans un récit poético-pratique ponctué de surprises, à la découverte de votre vie rêvée.</p>
+
+<blockquote>Rêve ou réalité ? Venez voir par vous-même.</blockquote>
+`;
+---
+
+<Layout
+  title="Une Vie de Rêve — Spectacle immersif hypnose musique danse à Avignon"
+  description="Comment faire se rapprocher rêve et réalité ? Un spectacle hors du commun mêlant hypnose, musique, danse, magie et histoires vraies. Avignon."
+>
+  <Hero
+    title="Une Vie de Rêve"
+    tagline="Comment faire se rapprocher rêve et réalité ? Hypnose, musique, danse, magie et histoires vraies — un spectacle quelque part entre les deux."
+    ctaText="Soyez informé des prochaines dates"
+    ctaLink="#newsletter"
+  />
+
+  <Problem
+    title="Si vous pouviez vivre votre vie de rêve ce soir, vous le feriez ?"
+    subtitle="Un spectacle quelque part entre rêve et réalité."
+  />
+
+  <Promise
+    title="Le spectacle"
+    content={promiseContent}
+  />
+
+  <SocialProof />
+
+  <Faq faqs={faqs} />
+
+  <Newsletter theme="vie-de-reve" />
+</Layout>

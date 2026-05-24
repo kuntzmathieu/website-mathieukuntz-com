@@ -1,0 +1,96 @@
+---
+export interface Props {
+  title: string;
+  tagline: string;
+  ctaText?: string;
+  ctaLink?: string;
+  showSecondaryCta?: boolean;
+  secondaryCtaText?: string;
+  secondaryCtaLink?: string;
+}
+
+const {
+  title,
+  tagline,
+  ctaText = "Soyez informé des prochaines dates",
+  ctaLink = "#newsletter",
+  showSecondaryCta = false,
+  secondaryCtaText = "",
+  secondaryCtaLink = "",
+} = Astro.props;
+---
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="container hero-content">
+    <h1 class="fade-in">{title}</h1>
+    <p class="hero-tagline fade-in">{tagline}</p>
+    <div class="hero-ctas fade-in">
+      <a href={ctaLink} class="btn-cta">{ctaText}</a>
+      {showSecondaryCta && (
+        <a href={secondaryCtaLink} class="btn-cta-outline">{secondaryCtaText}</a>
+      )}
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 6rem 1.5rem 4rem;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 40%, rgba(201, 168, 76, 0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 20%, rgba(201, 168, 76, 0.08) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+  }
+
+  h1 {
+    font-size: 3.5rem;
+    color: var(--text-primary);
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-tagline {
+    font-size: 1.35rem;
+    color: var(--text-secondary);
+    margin-bottom: 2.5rem;
+    line-height: 1.6;
+  }
+
+  .hero-ctas {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  @media (max-width: 768px) {
+    .hero {
+      min-height: 80vh;
+      padding: 5rem 1rem 3rem;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+    }
+
+    .hero-tagline {
+      font-size: 1.125rem;
+    }
+  }
+</style>
