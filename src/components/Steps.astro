@@ -2,9 +2,10 @@
 export interface Props {
   title?: string;
   steps: Array<{ number: string; title: string; description: string }>;
+  photos?: Array<{ src: string; alt: string }>;
 }
 
-const { title = "Ce que vous allez vivre", steps } = Astro.props;
+const { title = "Ce que vous allez vivre", steps, photos = [] } = Astro.props;
 ---
 
 <section class="steps section">
@@ -21,6 +22,21 @@ const { title = "Ce que vous allez vivre", steps } = Astro.props;
         </div>
       ))}
     </div>
+    {photos.length > 0 && (
+      <div class="steps-photos fade-in">
+        {photos.map((photo) => (
+          <div class="photo-card">
+            {photo.src ? (
+              <img src={photo.src} alt={photo.alt} loading="lazy" />
+            ) : (
+              <div class="photo-placeholder">
+                <span>{photo.alt}</span>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    )}
   </div>
 </section>
 
@@ -33,7 +49,7 @@ const { title = "Ce que vous allez vivre", steps } = Astro.props;
 
   .steps-list {
     max-width: 700px;
-    margin: 0 auto;
+    margin: 0 auto 3rem;
     display: flex;
     flex-direction: column;
     gap: 2rem;
@@ -70,5 +86,50 @@ const { title = "Ce que vous allez vivre", steps } = Astro.props;
   .step-content p {
     color: var(--text-secondary);
     line-height: 1.7;
+  }
+
+  .steps-photos {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .photo-card {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    transition: border-color 0.3s ease;
+  }
+
+  .photo-card:hover {
+    border-color: var(--accent-gold);
+  }
+
+  .photo-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .photo-placeholder {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    background: var(--bg-card);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    text-align: center;
+    padding: 1rem;
+  }
+
+  @media (max-width: 768px) {
+    .steps-photos {
+      grid-template-columns: 1fr;
+    }
   }
 </style>

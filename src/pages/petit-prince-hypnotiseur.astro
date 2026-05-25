@@ -3,7 +3,6 @@ import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
 import Description from '../components/Description.astro';
 import VideoTeaser from '../components/VideoTeaser.astro';
-import SpectaclePhotos from '../components/SpectaclePhotos.astro';
 import ForYou from '../components/ForYou.astro';
 import About from '../components/About.astro';
 import Steps from '../components/Steps.astro';
@@ -68,11 +67,6 @@ const faqs = [
     answer: "Le spectacle est accessible dès 12 ans. Les enfants adorent l'univers du Petit Prince, les adultes y retrouvent l'émotion du conte. Un moment à partager en famille."
   },
 ];
-
-const photos = [
-  { src: "", alt: "Mathieu en spectacle — volontaire sous hypnose" },
-  { src: "", alt: "Le Petit Prince hypnotise ses compagnons" },
-];
 ---
 
 <Layout
@@ -92,11 +86,9 @@ const photos = [
 
   <ForYou items={forYouItems} title="Ce spectacle est pour vous si..." />
 
-  <SpectaclePhotos photos={photos} />
-
   <About />
 
-  <Steps steps={steps} />
+  <Steps steps={steps} photos={[{ src: "", alt: "Mathieu en spectacle — volontaire sous hypnose" }, { src: "", alt: "Le Petit Prince hypnotise ses compagnons" }]} />
 
   <SocialProof />
 
