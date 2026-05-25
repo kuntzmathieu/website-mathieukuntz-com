@@ -1,0 +1,93 @@
+---
+export interface Props {
+  theme?: string;
+}
+
+const { theme } = Astro.props;
+---
+
+<section class="cta section" id="newsletter">
+  <div class="container">
+    <div class="cta-inner fade-in">
+      <h2>Prêt à vivre l'expérience ?</h2>
+      <p class="cta-desc">Laissez votre email et recevez les dates de représentation en avant-première. Pas de spam. Juste les infos qui comptent.</p>
+      <form class="cta-form" action="https://formspree.io/f/placeholder" method="POST">
+        {theme && <input type="hidden" name="theme" value={theme} />}
+        <div class="form-row">
+          <input type="email" name="email" placeholder="Votre adresse email" required class="email-input" />
+          <button type="submit" class="btn-cta">M'inscrire</button>
+        </div>
+      </form>
+      <p class="cta-guarantee">Garantie satisfait ou remboursé — Pas convaincu après le spectacle ? Écrivez-nous dans les 48h, on vous rembourse intégralement.</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta {
+    background: radial-gradient(ellipse at 50% 50%, rgba(201, 168, 76, 0.1) 0%, transparent 70%);
+  }
+
+  .cta-inner {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .cta h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .cta-desc {
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+    line-height: 1.6;
+  }
+
+  .cta-form {
+    margin-bottom: 1.5rem;
+  }
+
+  .form-row {
+    display: flex;
+    gap: 1rem;
+    align-items: stretch;
+  }
+
+  .email-input {
+    flex: 1;
+    padding: 1rem 1.5rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s ease;
+  }
+
+  .email-input::placeholder {
+    color: var(--text-secondary);
+  }
+
+  .email-input:focus {
+    border-color: var(--accent-gold);
+  }
+
+  .cta-guarantee {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    line-height: 1.5;
+    max-width: 500px;
+    margin: 0 auto;
+    opacity: 0.8;
+  }
+
+  @media (max-width: 768px) {
+    .form-row {
+      flex-direction: column;
+    }
+  }
+</style>

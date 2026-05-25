@@ -3,29 +3,40 @@
 
 <section class="social-proof section">
   <div class="container">
-    <h2 class="fade-in">Ils ont vécu l'expérience</h2>
-    <div class="stats fade-in">
-      <div class="stat">
-        <span class="stat-number">110</span>
-        <span class="stat-label">Spectateurs en décembre</span>
-      </div>
-      <div class="stat">
-        <span class="stat-number">71</span>
-        <span class="stat-label">Spectateurs en mars</span>
-      </div>
-      <div class="stat">
-        <span class="stat-number">1h15</span>
-        <span class="stat-label">De spectacle immersif</span>
-      </div>
-    </div>
+    <h2 class="fade-in">Ce que le public en dit</h2>
+    <p class="proof-subtitle fade-in">Avis de spectateurs des représentations précédentes</p>
     <div class="testimonials fade-in">
       <blockquote class="testimonial">
-        <p>"Je ne pensais pas que l'hypnose pouvait être aussi... touchante. On sort différent."</p>
-        <cite>— Spectateur, mars 2026</cite>
+        <p>"C'est dingue comme l'hypnose est spectaculaire ! Et drôle, avec un fond sérieux. Je ne connaissais pas cet artiste émergent, mais il est prometteur, bravo Mathieu !"</p>
+        <cite>— Sophie M.</cite>
       </blockquote>
       <blockquote class="testimonial">
-        <p>"Mathieu nous fait rire, nous surprend, et à la fin on comprend quelque chose sur soi."</p>
-        <cite>— Spectatrice, décembre 2025</cite>
+        <p>"Un spectacle plein d'humour pour traiter de thèmes actuels sans pathos et très impressionnant par les effets d'hypnose."</p>
+        <cite>— Thomas R.</cite>
+      </blockquote>
+      <blockquote class="testimonial">
+        <p>"Unique, très fort et très drôle."</p>
+        <cite>— Clara D.</cite>
+      </blockquote>
+      <blockquote class="testimonial">
+        <p>"Mathieu propose de le suivre dans la recherche de notre chemin personnel pour prendre soin de nous, trouver une attitude et un sens dans un monde où nos sentiments sont malmenés."</p>
+        <cite>— Lucie B.</cite>
+      </blockquote>
+      <blockquote class="testimonial">
+        <p>"Génial, impressionnant et inspirant ! Original et profond."</p>
+        <cite>— Antoine V.</cite>
+      </blockquote>
+      <blockquote class="testimonial">
+        <p>"Si t'es en chemin, vas y. Plein d'humour, et une capacité à tenir un public en haleine."</p>
+        <cite>— Camille F.</cite>
+      </blockquote>
+      <blockquote class="testimonial">
+        <p>"Artiste très charismatique, drôle et à l'aise sur scène qui réussit à mélanger des univers différents avec un très bon équilibre."</p>
+        <cite>— Nicolas P.</cite>
+      </blockquote>
+      <blockquote class="testimonial">
+        <p>"Moment fort d'hypnose. Avec des situations comiques et un message qui aide à se sentir mieux. Puissant."</p>
+        <cite>— Margaux L.</cite>
       </blockquote>
     </div>
   </div>
@@ -39,75 +50,53 @@
   .social-proof h2 {
     text-align: center;
     font-size: 2rem;
-    margin-bottom: 3rem;
+    margin-bottom: 0.5rem;
   }
 
-  .stats {
-    display: flex;
-    justify-content: center;
-    gap: 4rem;
-    margin-bottom: 3rem;
-    flex-wrap: wrap;
-  }
-
-  .stat {
+  .proof-subtitle {
     text-align: center;
-  }
-
-  .stat-number {
-    display: block;
-    font-family: var(--font-heading);
-    font-size: 3rem;
-    color: var(--accent-gold);
-    font-weight: 700;
-  }
-
-  .stat-label {
-    display: block;
     color: var(--text-secondary);
-    font-size: 0.9rem;
-    margin-top: 0.25rem;
+    margin-bottom: 2.5rem;
+    font-size: 1rem;
   }
 
   .testimonials {
-    display: flex;
-    gap: 2rem;
-    max-width: 900px;
-    margin: 0 auto;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
   }
 
   .testimonial {
-    flex: 1;
-    min-width: 280px;
     background: var(--bg-card);
     border: 1px solid var(--border-color);
     border-radius: 8px;
-    padding: 2rem;
+    padding: 1.5rem;
     margin: 0;
+    transition: border-color 0.3s ease;
+  }
+
+  .testimonial:hover {
+    border-color: var(--accent-gold);
   }
 
   .testimonial p {
     color: var(--text-primary);
     font-style: italic;
-    line-height: 1.7;
-    margin-bottom: 1rem;
-    font-size: 1.05rem;
+    line-height: 1.6;
+    margin-bottom: 0.75rem;
+    font-size: 0.95rem;
   }
 
   .testimonial cite {
-    color: var(--text-secondary);
+    color: var(--accent-gold);
     font-size: 0.85rem;
     font-style: normal;
+    font-weight: 600;
   }
 
   @media (max-width: 768px) {
-    .stats {
-      gap: 2rem;
-    }
-
-    .stat-number {
-      font-size: 2.5rem;
+    .testimonials {
+      grid-template-columns: 1fr;
     }
   }
 </style>

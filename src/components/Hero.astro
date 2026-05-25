@@ -3,34 +3,33 @@ export interface Props {
   title: string;
   tagline: string;
   ctaText?: string;
-  ctaLink?: string;
-  showSecondaryCta?: boolean;
-  secondaryCtaText?: string;
-  secondaryCtaLink?: string;
+  theme?: string;
+  showDate?: boolean;
 }
 
 const {
   title,
   tagline,
   ctaText = "Soyez informé des prochaines dates",
-  ctaLink = "#newsletter",
-  showSecondaryCta = false,
-  secondaryCtaText = "",
-  secondaryCtaLink = "",
+  theme = "",
+  showDate = false,
 } = Astro.props;
 ---
 
 <section class="hero">
   <div class="hero-bg"></div>
   <div class="container hero-content">
+    <p class="hero-badge fade-in">Nouveau spectacle — Grenoble</p>
     <h1 class="fade-in">{title}</h1>
     <p class="hero-tagline fade-in">{tagline}</p>
-    <div class="hero-ctas fade-in">
-      <a href={ctaLink} class="btn-cta">{ctaText}</a>
-      {showSecondaryCta && (
-        <a href={secondaryCtaLink} class="btn-cta-outline">{secondaryCtaText}</a>
-      )}
-    </div>
+    <form class="hero-cta fade-in" action="https://formspree.io/f/placeholder" method="POST">
+      {theme && <input type="hidden" name="theme" value={theme} />}
+      <div class="hero-form-row">
+        <input type="email" name="email" placeholder="Votre email" required class="hero-email-input" />
+        <button type="submit" class="btn-cta">{ctaText}</button>
+      </div>
+      <p class="hero-form-note">Pas de spam. Juste les dates et infos.</p>
+    </form>
   </div>
 </section>
 
@@ -42,7 +41,7 @@ const {
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 6rem 1.5rem 4rem;
+    padding: 8rem 1.5rem 4rem;
   }
 
   .hero-bg {
@@ -56,33 +55,80 @@ const {
   .hero-content {
     position: relative;
     z-index: 1;
-    max-width: 800px;
+    max-width: 700px;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    background: rgba(201, 168, 76, 0.15);
+    border: 1px solid rgba(201, 168, 76, 0.4);
+    color: var(--accent-gold);
+    padding: 0.4rem 1.2rem;
+    border-radius: 100px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
   }
 
   h1 {
     font-size: 3.5rem;
     color: var(--text-primary);
     margin-bottom: 1.5rem;
+    line-height: 1.1;
   }
 
   .hero-tagline {
-    font-size: 1.35rem;
+    font-size: 1.25rem;
     color: var(--text-secondary);
     margin-bottom: 2.5rem;
     line-height: 1.6;
   }
 
-  .hero-ctas {
+  .hero-cta {
+    margin-bottom: 0;
+  }
+
+  .hero-form-row {
     display: flex;
-    gap: 1rem;
-    justify-content: center;
-    flex-wrap: wrap;
+    gap: 0.75rem;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  .hero-email-input {
+    flex: 1;
+    padding: 1rem 1.25rem;
+    background: rgba(26, 26, 46, 0.8);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s ease;
+  }
+
+  .hero-email-input::placeholder {
+    color: var(--text-secondary);
+  }
+
+  .hero-email-input:focus {
+    border-color: var(--accent-gold);
+  }
+
+  .hero-form-note {
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    margin-top: 0.75rem;
+    opacity: 0.7;
   }
 
   @media (max-width: 768px) {
     .hero {
-      min-height: 80vh;
-      padding: 5rem 1rem 3rem;
+      min-height: auto;
+      padding: 7rem 1rem 3rem;
     }
 
     h1 {
@@ -90,7 +136,11 @@ const {
     }
 
     .hero-tagline {
-      font-size: 1.125rem;
+      font-size: 1.05rem;
+    }
+
+    .hero-form-row {
+      flex-direction: column;
     }
   }
 </style>

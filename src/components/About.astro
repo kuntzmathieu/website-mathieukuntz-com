@@ -1,0 +1,110 @@
+---
+---
+
+<section class="about section">
+  <div class="container">
+    <div class="about-inner fade-in">
+      <div class="about-text">
+        <h2>Qui est Mathieu ?</h2>
+        <p>Hypnotiseur depuis 10 ans, psychologue, formateur et étudiant humoriste... À 25 ans, Mathieu Kuntz a passé des années à explorer la psychologie, le développement personnel et l'hypnose — pour finalement en faire un spectacle.</p>
+        <p>Drôle, impactant et un peu trop honnête. Et surtout : il vous hypnotise vraiment.</p>
+        <div class="about-stats">
+          <div class="stat">
+            <span class="stat-number">200+</span>
+            <span class="stat-label">personnes hypnotisées</span>
+          </div>
+          <div class="stat">
+            <span class="stat-number">1h15</span>
+            <span class="stat-label">de show vivant</span>
+          </div>
+          <div class="stat">
+            <span class="stat-number">40</span>
+            <span class="stat-label">places max par soir</span>
+          </div>
+        </div>
+      </div>
+      <div class="about-photo">
+        <!-- TODO: Replace with real photo of Mathieu -->
+        <div class="photo-placeholder">
+          <span>Photo Mathieu</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about-inner {
+    display: flex;
+    gap: 3rem;
+    align-items: center;
+  }
+
+  .about-text {
+    flex: 1.5;
+  }
+
+  .about-text h2 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .about-text p {
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 1.25rem;
+  }
+
+  .about-text p:last-of-type {
+    margin-bottom: 2rem;
+  }
+
+  .about-stats {
+    display: flex;
+    gap: 2.5rem;
+  }
+
+  .stat-number {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    color: var(--accent-gold);
+    font-weight: 700;
+  }
+
+  .stat-label {
+    display: block;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    margin-top: 0.15rem;
+  }
+
+  .about-photo {
+    flex: 1;
+    min-width: 280px;
+  }
+
+  .photo-placeholder {
+    width: 100%;
+    aspect-ratio: 3/4;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    font-size: 1rem;
+  }
+
+  @media (max-width: 768px) {
+    .about-inner {
+      flex-direction: column-reverse;
+    }
+
+    .about-stats {
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+  }
+</style>

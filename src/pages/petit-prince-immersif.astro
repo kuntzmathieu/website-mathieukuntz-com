@@ -1,66 +1,101 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
-import Problem from '../components/Problem.astro';
-import Promise from '../components/Promise.astro';
+import Description from '../components/Description.astro';
+import ForYou from '../components/ForYou.astro';
+import About from '../components/About.astro';
+import Steps from '../components/Steps.astro';
 import SocialProof from '../components/SocialProof.astro';
 import Faq from '../components/Faq.astro';
-import Newsletter from '../components/Newsletter.astro';
+import CTA from '../components/CTA.astro';
+
+const description = `
+<p>Mathieu est né en 2000, pas en 1900. Et il n'est pas aviateur, mais moniteur de ski. Mais lui aussi a rencontré le Petit Prince, et lui aussi alors qu'il était perdu dans un désert.</p>
+
+<p>Mais dans un désert... de neige, et de sens. Au milieu de ses montagnes natales et de ses questions existentielles, 100 ans plus tard.</p>
+
+<p>Alors Mathieu nous raconte à son tour ce conte mythique, enrichi de ses réflexions actuelles et dans une version inédite mêlant théâtre, musique et hypnose immersive. Là où l'hypnose de scène met des volontaires au premier plan, ici c'est <em>tout le public</em> qui rejoint le Petit Prince dans son monde — yeux fermés, guidé par l'hypnose et la musique — pour faire à son tour le voyage et les découvertes.</p>
+
+<p>Venez vivre en direct les (nouvelles) aventures du Petit Prince, pour (re)trouver la sagesse à travers les yeux d'un (grand) enfant, sur notre planète d'aujourd'hui.</p>
+`;
+
+const forYouItems = [
+  "Vous voulez vivre une expérience, pas juste en regarder une",
+  "Le Petit Prince vous touche et vous voulez le retrouver autrement",
+  "L'idée d'être guidé par l'hypnose et la musique vous intrigue",
+  "Vous cherchez un moment de poésie, d'émerveillement et de douceur",
+  "Vous voulez repartir avec quelque chose qui reste longtemps",
+];
+
+const steps = [
+  {
+    number: "1",
+    title: "Fermez les yeux",
+    description: "Vous n'êtes plus dans une salle. Vous êtes sur la planète B612. L'hypnose guidée et la musique vous plongent dans l'univers du conte."
+  },
+  {
+    number: "2",
+    title: "Le désert de neige et de sens",
+    description: "Mathieu raconte sa rencontre avec le Petit Prince — pas dans le désert de sable, mais dans un désert de neige et de sens. 100 ans plus tard, les questions sont les mêmes, les réponses résonnent autrement."
+  },
+  {
+    number: "3",
+    title: "De planète en planète",
+    description: "Le Roi et son besoin de pouvoir, le Vaniteux et son ego, le Businessman et ses chiffres, l'Allumeur de réverbères et sa routine — vous les rencontrez comme le Petit Prince les a rencontrés. Les yeux fermés, vous êtes dans l'histoire."
+  },
+  {
+    number: "4",
+    title: "La rose, le renard, l'essentiel",
+    description: "Les sagesses du conte revisitées : l'apprivoisement, l'essentiel invisible pour les yeux, le voyage vers chez soi. Vécues de l'intérieur, pas racontées de l'extérieur."
+  },
+  {
+    number: "5",
+    title: "Le retour",
+    description: "On ouvre les yeux. On est de retour. Mais quelque chose a changé. Une sagesse enfouie qu'on avait oubliée, et qu'on retrouve."
+  },
+];
 
 const faqs = [
   {
     question: "C'est quoi un spectacle immersif sous hypnose ?",
-    answer: "C'est une expérience où tout le public participe — vous fermez les yeux, et vous êtes guidé dans une histoire. Pas besoin de monter sur scène. L'hypnose immersive vous permet de vivre le conte de l'intérieur, comme si vous y étiez."
+    answer: "Tout le public participe — vous fermez les yeux, et vous êtes guidé dans une histoire. Pas besoin de monter sur scène. L'hypnose immersive vous permet de vivre le conte de l'intérieur, comme si vous y étiez."
   },
   {
-    question: "Est-ce que tout le monde peut vivre l'expérience ?",
-    answer: "Oui. Contrairement à l'hypnose de scène classique, l'hypnose immersive est conçue pour que tout le public puisse participer depuis sa place. Vous n'avez rien à faire — juste à fermer les yeux et à vous laisser guider."
-  },
-  {
-    question: "Est-ce que c'est dangereux ?",
-    answer: "Pas du tout. L'hypnose guidée est un état de relaxation profonde que nous expérimentons naturellement tous les jours. C'est doux, sécurisant, et vous gardez le contrôle à tout moment."
+    question: "En quoi c'est différent de l'hypnose de scène classique ?",
+    answer: "Dans l'hypnose de scène, des volontaires montent sur scène et font des choses spectaculaires devant le public. Ici, c'est tout le public qui participe depuis sa place — yeux fermés, vous êtes guidé dans le conte. Vous vivez l'aventure, vous ne la regardez pas."
   },
   {
     question: "Je connais déjà le Petit Prince, est-ce que c'est différent ?",
-    answer: "Complètement. Vous ne l'écoutez pas — vous le vivez. La musique, l'hypnose guidée et le récit vous plongent dans une expérience sensorielle. Même si vous connaissez le conte par cœur, le vivre de l'intérieur est une toute autre chose."
+    answer: "Complètement. C'est une version inédite, revisitée par Mathieu. Pas l'histoire classique — une version enrichie de réflexions actuelles, mêlant théâtre, musique et hypnose immersive. Même si vous connaissez le conte par cœur, le vivre de l'intérieur est une toute autre chose."
+  },
+  {
+    question: "Est-ce que c'est dangereux ?",
+    answer: "Pas du tout. L'hypnose guidée est un état de relaxation profonde qu'on expérimente naturellement tous les jours. C'est doux, sécurisant, et vous gardez le contrôle à tout moment."
   },
 ];
-
-const promiseContent = `
-<p>Imaginez : vous fermez les yeux. Et vous y êtes.</p>
-
-<p>Sur la planète B612, entre la rose qui se protège avec ses épines et le renard qui demande à être apprivoisé. Vous n'êtes plus spectateur — vous <em>vivez</em> le conte de l'intérieur.</p>
-
-<p>Porté par la musique et guidé par l'hypnose, ce spectacle immersif vous plonge dans l'univers du Petit Prince comme vous ne l'avez jamais vécu. Pas assis dans une salle — voyageant entre les étoiles, rencontrant les personnages, redécouvrant les sagesses les plus belles du monde.</p>
-
-<blockquote>Un conte. Une musique. Une hypnose. Et vous.</blockquote>
-`;
 ---
 
 <Layout
-  title="Le Petit Prince — L'expérience immersive — Spectacle à Avignon"
-  description="Fermez les yeux. Vous êtes sur la planète B612. Un conte immersif sous hypnose et en musique, à vivre de l'intérieur. Avignon."
+  title="Le Petit Prince — L'expérience immersive — Spectacle à Grenoble"
+  description="Fermez les yeux. Vous êtes sur la planète B612. Un conte immersif sous hypnose et en musique, revisitée par Mathieu. Grenoble."
 >
   <Hero
     title="Le Petit Prince — L'expérience immersive"
-    tagline="Fermez les yeux. Vous êtes sur la planète B612, entre la rose et le renard, entre le désert et les étoiles. Un conte immersif sous hypnose et en musique, à vivre de l'intérieur."
-    ctaText="Soyez informé des prochaines dates"
-    ctaLink="#newsletter"
+    tagline="Fermez les yeux. Vous êtes sur la planète B612. Un conte immersif sous hypnose et en musique, où tout le public rejoint le Petit Prince dans son voyage."
+    theme="petit-prince-immersif"
   />
 
-  <Problem
-    title="La dernière fois que quelqu'un vous a lu le Petit Prince, vous aviez combien d'années ?"
-    subtitle="Et si vous pouviez le revivre ? Pas le lire. Pas le regarder. Le vivre."
-  />
+  <Description content={description} />
 
-  <Promise
-    title="L'expérience"
-    content={promiseContent}
-  />
+  <ForYou items={forYouItems} title="Ce spectacle est pour vous si..." />
+
+  <About />
+
+  <Steps steps={steps} />
 
   <SocialProof />
 
   <Faq faqs={faqs} />
 
-  <Newsletter theme="petit-prince-immersif" />
+  <CTA theme="petit-prince-immersif" />
 </Layout>

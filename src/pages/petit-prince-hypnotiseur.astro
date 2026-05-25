@@ -1,65 +1,94 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
-import Problem from '../components/Problem.astro';
-import Promise from '../components/Promise.astro';
+import Description from '../components/Description.astro';
+import ForYou from '../components/ForYou.astro';
+import About from '../components/About.astro';
+import Steps from '../components/Steps.astro';
 import SocialProof from '../components/SocialProof.astro';
 import Faq from '../components/Faq.astro';
-import Newsletter from '../components/Newsletter.astro';
+import CTA from '../components/CTA.astro';
+
+const description = `
+<p>Le Petit Prince est bien seul sur sa planète. Heureusement, il sait comment se faire de nouveaux amis et leur permettre de le rejoindre dans son monde : en les hypnotisant !</p>
+
+<p>Venez (re)découvrir le conte le plus célèbre au monde dans un spectacle inoubliable, où des volontaires du public se font hypnotiser par le Petit Prince et le rejoignent dans son épopée de planète en planète... à la recherche de la sagesse et de l'amour !</p>
+
+<p>C'est de l'hypnose de scène : des volontaires montent sur scène, se font hypnotiser par le Petit Prince, et deviennent ses compagnons de voyage. Ils l'accompagnent de planète en planète, vivent ses découvertes, et aident à raconter l'histoire. Le reste du public regarde, rit, et s'émerveille.</p>
+`;
+
+const forYouItems = [
+  "Vous cherchez un spectacle d'hypnose fun et impressionnant",
+  "Vous aimez le Petit Prince et vous voulez le voir réinventé",
+  "Vous avez toujours eu envie de monter sur scène (ou de regarder d'autres le faire)",
+  "Vous voulez rire et vous émerveiller en même temps",
+  "Vous cherchez une soirée qui sort de l'ordinaire, avec des gens qu'on n'oubliera pas",
+];
+
+const steps = [
+  {
+    number: "1",
+    title: "Le Petit Prince recrute ses compagnons",
+    description: "Au début du spectacle, le Petit Prince cherche des volontaires pour l'accompagner. Les plus réceptifs montent sur scène. Ils ne savent pas encore ce qui les attend..."
+  },
+  {
+    number: "2",
+    title: "De planète en planète",
+    description: "Les volontaires hypnotisés deviennent les personnages du conte : le Roi, le Vaniteux, le Businessman, l'Allumeur de réverbères... Ils vivent l'histoire de l'intérieur."
+  },
+  {
+    number: "3",
+    title: "La rose, le renard, le serpent",
+    description: "Les moments les plus poétiques du conte revisités par l'hypnose. L'apprivoisement, l'essentiel invisible, le voyage vers chez soi — tout prend vie sous vos yeux."
+  },
+  {
+    number: "4",
+    title: "Le retour sur Terre",
+    description: "On quitte les étoiles. Les volontaires reviennent. Le public applaudit. Et quelque chose reste — une sagesse enfouie qu'on avait oubliée."
+  },
+];
 
 const faqs = [
   {
     question: "C'est quoi l'hypnose de scène ?",
-    answer: "L'hypnose de scène est un spectacle où des volontaires du public sont hypnotisés et vivent des expériences amusantes, étonnantes ou émouvantes. C'est sûr, c'est fun, et c'est spectaculaire. Vous ne dormez pas — vous êtes dans un état de concentration intense où votre imagination devient réalité."
+    answer: "Des volontaires du public sont hypnotisés et vivent des expériences en direct : ils ne peuvent plus bouger, leurs émotions changent, ils voient des choses qui n'existent pas, ils deviennent les personnages du conte. C'est spectaculaire à voir ET ça raconte quelque chose."
   },
   {
     question: "Est-ce que c'est dangereux ?",
-    answer: "Pas du tout. L'hypnose est un état naturel que nous vivons tous les jours (quand on est absorbé dans un film, par exemple). On ne peut pas être forcé à faire quelque chose qu'on ne veut pas. Chaque volontaire reste maître de ses choix."
+    answer: "Pas du tout. L'hypnose est un état naturel qu'on vit tous les jours (quand on est absorbé dans un film, par exemple). On ne peut pas être forcé à faire quelque chose qu'on ne veut pas. Chaque effet est prévu pour être impressionnant mais respectueux."
   },
   {
     question: "Est-ce que je peux participer ?",
-    answer: "Absolument ! Le spectacle repose sur la participation de volontaires. Si vous avez envie de monter sur scène, c'est votre moment. Si vous préférez regarder, c'est tout aussi bien — les spectateurs vivent aussi l'expérience."
+    answer: "Absolument ! Au début du spectacle, les personnes les plus réceptives sont invitées à monter sur scène. C'est une expérience incroyable à vivre. Et si vous préférez regarder, c'est tout aussi bien — les spectateurs vivent aussi l'expérience."
   },
   {
     question: "Je peux venir avec des enfants ?",
-    answer: "Le spectacle est accessible dès 12 ans. C'est un excellent moment à partager en famille — les enfants adorent l'univers du Petit Prince, et les adultes retrouvent l'émotion du conte."
+    answer: "Le spectacle est accessible dès 12 ans. Les enfants adorent l'univers du Petit Prince, les adultes y retrouvent l'émotion du conte. Un moment à partager en famille."
   },
 ];
-
-const promiseContent = `
-<p>Le Petit Prince est bien seul sur sa planète. Heureusement, il sait comment se faire de nouveaux amis et leur permettre de le rejoindre dans son monde : en les hypnotisant !</p>
-
-<p>Dans ce spectacle d'hypnose de scène inédit, des volontaires du public se font hypnotiser par le Petit Prince et le rejoignent dans son voyage de planète en planète. Entre le Roi, le Vaniteux, le Businessman et le Renard — vous découvrirez les personnages emblématiques du conte comme vous ne les avez jamais vus : <em>en direct, sous hypnose, avec vous.</em></p>
-
-<p>Entre rires et émerveillement, entre sagesse et surprise, laissez-vous transporter par le conte le plus célèbre du monde... réinventé par l'hypnose.</p>
-
-<blockquote>Familiarité du Petit Prince + puissance de l'hypnose = une soirée dont vous vous souviendrez.</blockquote>
-`;
 ---
 
 <Layout
-  title="Le Petit Prince Hypnotiseur — Spectacle d'hypnose à Avignon"
-  description="Le Petit Prince est seul sur sa planète. Heureusement, il sait hypnotiser ! Spectacle d'hypnose de scène inédit à Avignon. Venez rejoindre le voyage."
+  title="Le Petit Prince Hypnotiseur — Spectacle d'hypnose à Grenoble"
+  description="Le Petit Prince est seul sur sa planète. Heureusement, il sait hypnotiser ! Spectacle d'hypnose de scène inédit à Grenoble. Venez rejoindre le voyage."
 >
   <Hero
     title="Le Petit Prince Hypnotiseur"
     tagline="Le conte le plus célèbre du monde, réinventé par l'hypnose. Des volontaires montent sur scène et voyagent de planète en planète avec le Petit Prince."
-    ctaText="Soyez informé des prochaines dates"
-    ctaLink="#newsletter"
+    theme="petit-prince-hypnotiseur"
   />
 
-  <Problem
-    title="Vous connaissez le Petit Prince. Mais vous ne l'avez JAMAIS vu comme ça."
-  />
+  <Description content={description} />
 
-  <Promise
-    title="Le spectacle"
-    content={promiseContent}
-  />
+  <ForYou items={forYouItems} title="Ce spectacle est pour vous si..." />
+
+  <About />
+
+  <Steps steps={steps} />
 
   <SocialProof />
 
   <Faq faqs={faqs} />
 
-  <Newsletter theme="petit-prince-hypnotiseur" />
+  <CTA theme="petit-prince-hypnotiseur" />
 </Layout>

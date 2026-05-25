@@ -1,0 +1,74 @@
+---
+export interface Props {
+  title?: string;
+  steps: Array<{ number: string; title: string; description: string }>;
+}
+
+const { title = "Ce que vous allez vivre", steps } = Astro.props;
+---
+
+<section class="steps section">
+  <div class="container">
+    <h2 class="fade-in">{title}</h2>
+    <div class="steps-list">
+      {steps.map((step) => (
+        <div class="step fade-in">
+          <div class="step-number">{step.number}</div>
+          <div class="step-content">
+            <h3>{step.title}</h3>
+            <p>{step.description}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .steps h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  .steps-list {
+    max-width: 700px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .step {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+  }
+
+  .step-number {
+    flex-shrink: 0;
+    width: 3rem;
+    height: 3rem;
+    background: var(--accent-gold);
+    color: var(--bg-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-top: 0.15rem;
+  }
+
+  .step-content h3 {
+    font-size: 1.25rem;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+  }
+
+  .step-content p {
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+</style>

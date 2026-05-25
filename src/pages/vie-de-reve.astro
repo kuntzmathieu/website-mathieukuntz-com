@@ -1,66 +1,99 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
-import Problem from '../components/Problem.astro';
-import Promise from '../components/Promise.astro';
+import Description from '../components/Description.astro';
+import ForYou from '../components/ForYou.astro';
+import About from '../components/About.astro';
+import Steps from '../components/Steps.astro';
 import SocialProof from '../components/SocialProof.astro';
 import Faq from '../components/Faq.astro';
-import Newsletter from '../components/Newsletter.astro';
+import CTA from '../components/CTA.astro';
+
+const description = `
+<p>Comment vivre la vie de ses rêves ? À 25 ans, Mathieu a beaucoup cherché. Et un peu trouvé.</p>
+
+<p>Alors comme il est aussi comédien, danseur, hypnotiseur et moniteur de ski, il s'est dit qu'il allait mettre tout ça ensemble et en faire un spectacle. Ah et il est un peu magicien aussi, et puis il a des potes musiciens. M'enfin vous verrez...</p>
+
+<p>Un spectacle quelque part entre rêve et réalité. L'hypnose guidée vous plonge dans un récit poético-pratique ponctué de surprises, à la découverte de votre vie rêvée. Des moments où vous fermez les yeux et vous voyez, des moments où vous riez, des moments où quelque chose clique.</p>
+`;
+
+const forYouItems = [
+  "Vous cherchez un spectacle qui sort de l'ordinaire — vraiment",
+  "L'idée de vivre quelque chose entre rêve et réalité vous intrigue",
+  "Vous voulez être surpris, pas juste divertir",
+  "Des expériences, vous en voulez. Pas des spectacles.",
+  "Vous cherchez un moment où l'hypnose rencontre la musique et l'émotion",
+];
+
+const steps = [
+  {
+    number: "1",
+    title: "La question",
+    description: "Comment vivre la vie de ses rêves ? C'est la question qui ouvre le spectacle. Pas de réponse toute faite — juste une expérience à vivre."
+  },
+  {
+    number: "2",
+    title: "Le plongeon",
+    description: "L'hypnose guidée vous emmène. Vous fermez les yeux, et vous êtes dans votre vie rêvée. Pas celle qu'on vous vend — la vôtre, celle que vous portez en vous."
+  },
+  {
+    number: "3",
+    title: "Les histoires",
+    description: "Des anecdotes vraies, drôles et touchantes. Mathieu partage ce qu'il a cherché, trouvé, et raté. Pas une formule magique — des pistes concrètes pour rapprocher rêve et réalité."
+  },
+  {
+    number: "4",
+    title: "Les surprises",
+    description: "Des moments de musique, de danse, de magie. Pas pour impressionner — pour faire sentir. M'enfin vous verrez..."
+  },
+  {
+    number: "5",
+    title: "Le retour",
+    description: "On ouvre les yeux. On est de retour. Mais quelque chose a bougé. Le rêve et la réalité se sont rapprochés, le temps d'un spectacle."
+  },
+];
 
 const faqs = [
   {
     question: "C'est quoi ce spectacle exactement ?",
-    answer: "Un mélange unique d'hypnose, de musique, de danse et d'histoires vraies. Pas un spectacle classique, pas une conférence, pas une soirée hypnotique — quelque chose entre tout ça. Un spectacle quelque part entre rêve et réalité."
+    answer: "Un spectacle quelque part entre rêve et réalité. L'hypnose guidée vous plonge, la musique vous émeut, les histoires vous font réfléchir, et les surprises vous surprennent. Pas un spectacle classique, pas une conférence, pas une soirée hypnotique — quelque chose entre tout ça."
   },
   {
     question: "Est-ce que je dois participer ?",
-    answer: "Non. Vous pouvez simplement regarder et vous laisser porter par l'expérience. L'hypnose immersive ne nécessite pas de monter sur scène — tout le monde participe depuis sa place, à son rythme."
+    answer: "Non. Vous pouvez simplement regarder et vous laisser porter par l'expérience. L'hypnose immersive est conçue pour que tout le monde participe depuis sa place, à son rythme."
   },
   {
     question: "Est-ce que c'est du développement personnel ?",
-    answer: "C'est un spectacle, pas un stage. Mathieu partage sa philosophie de vie à travers des histoires, de l'hypnose et des moments de magie. C'est divertissant avant tout — si vous repartez avec une idée nouvelle, c'est un bonus."
+    answer: "C'est un spectacle, pas un stage. Mathieu partage sa philosophie de vie à travers des histoires, de l'hypnose et des moments de magie. C'est divertissant avant tout — si vous repartir avec une idée nouvelle, c'est un bonus."
   },
   {
     question: "Pourquoi 'Une Vie de Rêve' ?",
-    answer: "Parce que c'est la question centrale du spectacle : comment faire se rapprocher rêve et réalité ? Mathieu, 25 ans, a beaucoup cherché. Et un peu trouvé. Ce spectacle est le résultat de cette recherche — entre l'hypnose qui fait rêver et les histoires qui font réfléchir."
+    answer: "Parce que c'est la question centrale du spectacle : comment faire se rapprocher rêve et réalité ? À 25 ans, Mathieu a beaucoup cherché. Et un peu trouvé. Ce spectacle est le résultat."
   },
 ];
-
-const promiseContent = `
-<p>Comment faire se rapprocher rêve et réalité ? À 25 ans, Mathieu a beaucoup cherché. Et un peu trouvé.</p>
-
-<p>Alors comme il est aussi comédien, danseur, hypnotiseur et moniteur de ski, il s'est dit qu'il allait mettre tout ça ensemble et en faire un spectacle. Ah et il est un peu magicien aussi, et puis il a des potes musiciens. M'enfin vous verrez...</p>
-
-<p>Venez vivre une expérience théâtrale hors du commun, où l'hypnose guidée vous plonge dans un récit poético-pratique ponctué de surprises, à la découverte de votre vie rêvée.</p>
-
-<blockquote>Rêve ou réalité ? Venez voir par vous-même.</blockquote>
-`;
 ---
 
 <Layout
-  title="Une Vie de Rêve — Spectacle immersif hypnose musique danse à Avignon"
-  description="Comment faire se rapprocher rêve et réalité ? Un spectacle hors du commun mêlant hypnose, musique, danse, magie et histoires vraies. Avignon."
+  title="Une Vie de Rêve — Spectacle immersif à Grenoble"
+  description="Comment faire se rapprocher rêve et réalité ? Un spectacle quelque part entre les deux. Hypnose, musique et histoires vraies. Grenoble."
 >
   <Hero
     title="Une Vie de Rêve"
-    tagline="Comment faire se rapprocher rêve et réalité ? Hypnose, musique, danse, magie et histoires vraies — un spectacle quelque part entre les deux."
-    ctaText="Soyez informé des prochaines dates"
-    ctaLink="#newsletter"
+    tagline="Comment faire se rapprocher rêve et réalité ? Un spectacle quelque part entre les deux — où l'hypnose rencontre la musique, les histoires et l'émotion."
+    theme="vie-de-reve"
   />
 
-  <Problem
-    title="Si vous pouviez vivre votre vie de rêve ce soir, vous le feriez ?"
-    subtitle="Un spectacle quelque part entre rêve et réalité."
-  />
+  <Description content={description} />
 
-  <Promise
-    title="Le spectacle"
-    content={promiseContent}
-  />
+  <ForYou items={forYouItems} title="Ce spectacle est pour vous si..." />
+
+  <About />
+
+  <Steps steps={steps} />
 
   <SocialProof />
 
   <Faq faqs={faqs} />
 
-  <Newsletter theme="vie-de-reve" />
+  <CTA theme="vie-de-reve" />
 </Layout>
