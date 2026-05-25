@@ -2,6 +2,8 @@
 import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
 import Description from '../components/Description.astro';
+import VideoTeaser from '../components/VideoTeaser.astro';
+import SpectaclePhotos from '../components/SpectaclePhotos.astro';
 import ForYou from '../components/ForYou.astro';
 import About from '../components/About.astro';
 import Steps from '../components/Steps.astro';
@@ -66,6 +68,11 @@ const faqs = [
     answer: "Le spectacle est accessible dès 12 ans. Les enfants adorent l'univers du Petit Prince, les adultes y retrouvent l'émotion du conte. Un moment à partager en famille."
   },
 ];
+
+const photos = [
+  { src: "", alt: "Mathieu en spectacle — volontaire sous hypnose" },
+  { src: "", alt: "Le Petit Prince hypnotise ses compagnons" },
+];
 ---
 
 <Layout
@@ -76,11 +83,16 @@ const faqs = [
     title="Le Petit Prince Hypnotiseur"
     tagline="Le conte le plus célèbre du monde, réinventé par l'hypnose. Des volontaires montent sur scène et voyagent de planète en planète avec le Petit Prince."
     theme="petit-prince-hypnotiseur"
+    heroImage="/hero-petit-prince.png"
   />
 
   <Description content={description} />
 
+  <VideoTeaser />
+
   <ForYou items={forYouItems} title="Ce spectacle est pour vous si..." />
+
+  <SpectaclePhotos photos={photos} />
 
   <About />
 

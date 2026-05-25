@@ -2,6 +2,8 @@
 import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
 import Description from '../components/Description.astro';
+import VideoTeaser from '../components/VideoTeaser.astro';
+import SpectaclePhotos from '../components/SpectaclePhotos.astro';
 import ForYou from '../components/ForYou.astro';
 import About from '../components/About.astro';
 import Steps from '../components/Steps.astro';
@@ -12,7 +14,7 @@ import CTA from '../components/CTA.astro';
 const description = `
 <p>Comment devenir génial ? C'est la question que tout le monde se pose, non ? Et si la réponse était plus simple qu'on ne le croit ?</p>
 
-<p>Dans ce spectacle hybride — entre conte, conférence et méditation guidée — Mathieu raconte comment il a découvert que le génie n'est pas un don, mais une posture. <em>En traitant les autres comme des personnes formidables, ils le deviennent. En se traitant soi-même avec exigence bienveillante, on le devient aussi.</em></p>
+<p>Dans ce spectacle hybride — entre conte, conférence et méditation guidée — Mathieu raconte comment il a découvert que le génie n'est pas un don, mais une posture. <em>En traitant les autres comme des personnes formidables, ils le deviennent. En se traiter soi-même avec exigence bienveillante, on le devient aussi.</em></p>
 
 <p>À travers des histoires vraies, de l'hypnose et des moments où quelque chose clique, vous découvrirez que la réponse était là depuis le début. Vous êtes déjà génial. Il suffit de le voir.</p>
 `;
@@ -75,6 +77,11 @@ const faqs = [
     answer: "Ouvert dès 14 ans. Le spectacle parle aux jeunes qui cherchent leur place, aux adultes en quête de sens, à tous ceux qui veulent passer un bon moment et repartir avec quelque chose."
   },
 ];
+
+const photos = [
+  { src: "", alt: "Mathieu en spectacle — moment d'hypnose" },
+  { src: "", alt: "Public sous hypnose — moment de connexion" },
+];
 ---
 
 <Layout
@@ -89,7 +96,11 @@ const faqs = [
 
   <Description content={description} />
 
+  <VideoTeaser />
+
   <ForYou items={forYouItems} title="Ce spectacle est pour vous si..." />
+
+  <SpectaclePhotos photos={photos} />
 
   <About />
 

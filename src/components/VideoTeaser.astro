@@ -1,0 +1,94 @@
+---
+export interface Props {
+  videoUrl?: string;
+  videoTitle?: string;
+}
+
+const { videoUrl, videoTitle = "Voir le teaser" } = Astro.props;
+---
+
+<section class="teaser section">
+  <div class="container">
+    <h2 class="fade-in">Le teaser</h2>
+    {videoUrl ? (
+      <div class="video-wrapper fade-in">
+        <iframe
+          src={videoUrl}
+          title={videoTitle}
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+      </div>
+    ) : (
+      <div class="video-placeholder fade-in">
+        <div class="placeholder-content">
+          <span class="play-icon">&#9654;</span>
+          <p>Teaser vidéo bientôt disponible</p>
+        </div>
+      </div>
+    )}
+  </div>
+</section>
+
+<style>
+  .teaser h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .video-wrapper {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    max-width: 900px;
+    margin: 0 auto;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+  }
+
+  .video-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .video-placeholder {
+    max-width: 900px;
+    margin: 0 auto;
+    aspect-ratio: 16 / 9;
+    background: var(--bg-card);
+    border: 2px dashed var(--border-color);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+  }
+
+  .video-placeholder:hover {
+    border-color: var(--accent-gold);
+  }
+
+  .placeholder-content {
+    text-align: center;
+  }
+
+  .play-icon {
+    display: block;
+    font-size: 3rem;
+    color: var(--accent-gold);
+    margin-bottom: 1rem;
+    opacity: 0.8;
+  }
+
+  .placeholder-content p {
+    color: var(--text-secondary);
+    font-size: 1rem;
+  }
+</style>

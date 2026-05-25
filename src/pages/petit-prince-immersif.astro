@@ -2,6 +2,8 @@
 import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
 import Description from '../components/Description.astro';
+import VideoTeaser from '../components/VideoTeaser.astro';
+import SpectaclePhotos from '../components/SpectaclePhotos.astro';
 import ForYou from '../components/ForYou.astro';
 import About from '../components/About.astro';
 import Steps from '../components/Steps.astro';
@@ -46,7 +48,7 @@ const steps = [
   {
     number: "4",
     title: "La rose, le renard, l'essentiel",
-    description: "Les sagesses du conte revisitées : l'apprivoisement, l'essentiel invisible pour les yeux, le voyage vers chez soi. Vécues de l'intérieur, pas racontées de l'extérieur."
+    description: "Les sagesses du conte revisitée : l'apprivoisement, l'essentiel invisible pour les yeux, le voyage vers chez soi. Vécues de l'intérieur, pas racontées de l'extérieur."
   },
   {
     number: "5",
@@ -73,6 +75,11 @@ const faqs = [
     answer: "Pas du tout. L'hypnose guidée est un état de relaxation profonde qu'on expérimente naturellement tous les jours. C'est doux, sécurisant, et vous gardez le contrôle à tout moment."
   },
 ];
+
+const photos = [
+  { src: "", alt: "Mathieu en spectacle — hypnose immersive" },
+  { src: "", alt: "Public les yeux fermés, guidé par la musique" },
+];
 ---
 
 <Layout
@@ -83,11 +90,16 @@ const faqs = [
     title="Le Petit Prince — L'expérience immersive"
     tagline="Fermez les yeux. Vous êtes sur la planète B612. Un conte immersif sous hypnose et en musique, où tout le public rejoint le Petit Prince dans son voyage."
     theme="petit-prince-immersif"
+    heroImage="/hero-petit-prince.png"
   />
 
   <Description content={description} />
 
+  <VideoTeaser />
+
   <ForYou items={forYouItems} title="Ce spectacle est pour vous si..." />
+
+  <SpectaclePhotos photos={photos} />
 
   <About />
 
