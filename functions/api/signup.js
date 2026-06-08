@@ -37,6 +37,7 @@ export async function onRequestPost({ request, env }) {
 
   const record = {
     email,
+    Email: email,
     Spectacle: spectacle,
     Date: date,
     Heure: heure,
