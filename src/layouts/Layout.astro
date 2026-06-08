@@ -183,13 +183,22 @@ const { title, description, canonicalUrl } = Astro.props;
     }, { threshold: 0.1 });
 
     document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    document.querySelectorAll('form[action*="formspree.io"]').forEach(form => {
+      form.addEventListener('submit', () => {
+        const fbq = (window as any).fbq;
+        if (typeof fbq === 'function') {
+          fbq('track', 'CompleteRegistration');
+        }
+      });
+    });
   </script>
 </body>
 </html>
 
 <style>
   .site-header {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     right: 0;
