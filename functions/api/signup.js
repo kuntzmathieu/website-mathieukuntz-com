@@ -52,12 +52,7 @@ export async function onRequestPost({ request, env }) {
   });
 
   if (!response.ok) {
-    const details = await response.text();
-    return jsonOrText({
-      error: 'Erreur NocoDB',
-      status: response.status,
-      details: details.slice(0, 500),
-    }, 502, isFetch);
+    return jsonOrText({ error: 'Erreur NocoDB' }, 502, isFetch);
   }
 
   if (!isFetch) {
