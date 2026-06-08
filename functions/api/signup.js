@@ -48,7 +48,7 @@ export async function onRequestPost({ request, env }) {
       'Content-Type': 'application/json',
       'xc-token': nocodbToken,
     },
-    body: JSON.stringify(record),
+    body: JSON.stringify([{ fields: record }]),
   });
 
   if (!response.ok) {
