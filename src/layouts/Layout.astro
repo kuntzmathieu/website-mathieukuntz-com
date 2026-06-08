@@ -184,11 +184,42 @@ const { title, description, canonicalUrl } = Astro.props;
 
     document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
-    document.querySelectorAll('form[action*="formspree.io"]').forEach(form => {
-      form.addEventListener('submit', () => {
-        const fbq = (window as any).fbq;
-        if (typeof fbq === 'function') {
-          fbq('track', 'CompleteRegistration');
+    document.querySelectorAll('form[data-signup-form]').forEach(form => {
+      form.addEventListener('submit', async event => {
+        event.preventDefault();
+
+        const submitButton = form.querySelector('button[type="submit"]');
+        if (submitButton) {
+          submitButton.disabled = true;
+          submitButton.textContent = 'Envoi...';
+        }
+
+        try {
+          const response = await fetch(form.action, {
+            method: 'POST',
+            body: new FormData(form),
+            headers: { 'X-Requested-With': 'fetch' },
+          });
+
+          if (!response.ok) {
+            throw new Error('signup_failed');
+          }
+
+          if (typeof window.fbq === 'function') {
+            window.fbq('track', 'CompleteRegistration', {
+              content_name: new FormData(form).get('spectacle') || new FormData(form).get('theme'),
+            });
+          }
+
+          window.setTimeout(() => {
+            window.location.href = '/merci';
+          }, 250);
+        } catch (error) {
+          window.alert("L'inscription n'a pas pu être enregistrée. Réessayez dans un instant.");
+          if (submitButton) {
+            submitButton.disabled = false;
+            submitButton.textContent = 'Me tenir informé';
+          }
         }
       });
     });

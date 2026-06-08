@@ -18,8 +18,8 @@ import Layout from '../layouts/Layout.astro';
       <p class="hero-tagline fade-in">Partez à la rencontre de vos rêves, guidé par le théâtre, la musique et l'hypnose, et apprenez à les faire réalité pour réenchanter votre vie.</p>
       <div class="hero-form fade-in">
         <p class="hero-form-label">Être informé des prochaines dates</p>
-        <form action="https://formspree.io/f/placeholder" method="POST">
-          <input type="hidden" name="theme" value="reve" />
+        <form action="/api/signup" method="POST" data-signup-form>
+          <input type="hidden" name="spectacle" value="reve" />
           <div class="hero-form-row">
             <input type="email" name="email" placeholder="Email" required class="hero-email" />
             <button type="submit" class="btn-cta">Me tenir informé</button>
@@ -38,10 +38,10 @@ import Layout from '../layouts/Layout.astro';
         <h2>Prochaines représentations</h2>
         <p class="dates-line">Grenoble — dates à venir</p>
         <p class="dates-desc">Pour être informé des prochaines dates, laissez votre email (pas de spam, promis) !</p>
-        <form class="email-form" action="https://formspree.io/f/placeholder" method="POST">
-          <input type="hidden" name="theme" value="reve" />
+        <form class="email-form" action="/api/signup" method="POST" data-signup-form>
+          <input type="hidden" name="spectacle" value="reve" />
           <div class="form-row">
-            <input type="email" name="email" placeholder="Votre email" required class="email-input" />
+            <input type="email" name="email" placeholder="Email" required class="email-input" />
             <button type="submit" class="btn-cta">Me tenir informé</button>
           </div>
         </form>
