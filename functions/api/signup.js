@@ -14,22 +14,35 @@ export async function onRequestPost({ request, env }) {
 
   const nocodbUrl = (env.NOCODB_URL || 'https://db.mathieukuntz.com').replace(/\/$/, '');
   const nocodbToken = env.NOCODB_TOKEN;
-  const tableId = env.NOCODB_SIGNUPS_TABLE_ID || env.NOCODB_TABLE_ID;
+  const baseId = env.NOCODB_BASE_ID || 'plk0vc8yraeix92';
+  const tableId = env.NOCODB_SIGNUPS_TABLE_ID || env.NOCODB_TABLE_ID || 'm6x3ijchkjq41v5';
 
-  if (!nocodbToken || !tableId) {
+  if (!nocodbToken || !baseId || !tableId) {
     return jsonOrText({ error: 'Configuration NocoDB manquante' }, 500, isFetch);
   }
 
-  const submittedAt = new Date().toISOString();
+  const now = new Date();
+  const date = new Intl.DateTimeFormat('fr-CA', {
+    timeZone: 'Europe/Paris',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).format(now);
+  const heure = new Intl.DateTimeFormat('fr-FR', {
+    timeZone: 'Europe/Paris',
+    hour: '2-digit',
+    minute: '2-digit',
+    hourCycle: 'h23',
+  }).format(now);
+
   const record = {
-    [env.NOCODB_EMAIL_FIELD || 'Email']: email,
-    [env.NOCODB_SPECTACLE_FIELD || 'Spectacle']: spectacle,
-    [env.NOCODB_TAG_FIELD || 'Tag']: spectacle,
-    [env.NOCODB_SUBMITTED_AT_FIELD || 'DateHeure']: submittedAt,
-    [env.NOCODB_SOURCE_FIELD || 'Source']: 'show.mathieukuntz.org',
+    email,
+    Spectacle: spectacle,
+    Date: date,
+    Heure: heure,
   };
 
-  const response = await fetch(`${nocodbUrl}/api/v2/tables/${tableId}/records`, {
+  const response = await fetch(`${nocodbUrl}/api/v3/data/${baseId}/${tableId}/records`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
