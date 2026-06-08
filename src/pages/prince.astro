@@ -20,7 +20,7 @@ import Layout from '../layouts/Layout.astro';
         <input type="hidden" name="theme" value="prince" />
         <div class="hero-form-row">
           <input type="email" name="email" placeholder="Être informé des prochaines dates" required class="hero-email" />
-          <button type="submit" class="btn-cta">M'inscrire</button>
+          <button type="submit" class="btn-cta">Me tenir informé</button>
         </div>
         <p class="form-note">Pas de spam. Promis.</p>
       </form>
@@ -30,36 +30,52 @@ import Layout from '../layouts/Layout.astro';
   <section class="content section">
     <div class="container content-grid">
       <div class="content-left fade-in">
+        <p class="desc-text">Rejoignez le Petit Prince dans son monde pour y vivre votre propre voyage intérieur, guidé par le théâtre, la musique et l'hypnose.</p>
+
         <h2>Prochaines représentations</h2>
-        <p class="dates-place">Grenoble — dates à venir</p>
-
+        <p class="dates-line">Grenoble — dates à venir</p>
+        <p class="dates-desc">Pour être informé des prochaines dates, laissez votre email (pas de spam, promis) !</p>
         <form class="email-form" action="https://formspree.io/f/placeholder" method="POST">
           <input type="hidden" name="theme" value="prince" />
           <div class="form-row">
-            <input type="email" name="email" placeholder="Je veux être informé des prochaines dates" required class="email-input" />
-            <button type="submit" class="btn-cta">M'inscrire</button>
+            <input type="email" name="email" placeholder="Votre email" required class="email-input" />
+            <button type="submit" class="btn-cta">Me tenir informé</button>
           </div>
-          <p class="form-note">Pas de spam. Promis.</p>
-        </form>
-
-        <h2>Réservation</h2>
-        <p class="booking-desc">Prochaines représentations prévues à Grenoble. Pour être informé des prochaines dates, laissez votre email (pas de spam, promis) !</p>
-        <form class="email-form" action="https://formspree.io/f/placeholder" method="POST">
-          <input type="hidden" name="theme" value="prince" />
-          <div class="form-row">
-            <input type="email" name="email" placeholder="Je veux être informé des prochaines dates" required class="email-input" />
-            <button type="submit" class="btn-cta">M'inscrire</button>
-          </div>
-          <p class="form-note">Pas de spam. Promis.</p>
         </form>
       </div>
       <div class="content-right fade-in">
-        <video class="teaser-video" controls playsinline preload="metadata">
-          <source src="/teaser-prince.mp4" type="video/mp4" />
-        </video>
+        <div class="teaser-wrapper" id="teaser-wrapper">
+          <img src="/nana-banana-cover.png" alt="" class="teaser-cover" id="teaser-cover" />
+          <button class="play-btn" id="play-btn" aria-label="Lire la vidéo">
+            <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+              <circle cx="40" cy="40" r="38" fill="rgba(0,0,0,0.6)" stroke="rgba(255,255,255,0.8)" stroke-width="2"/>
+              <path d="M54 40L32 54V26L54 40Z" fill="white"/>
+            </svg>
+          </button>
+          <video class="teaser-video" id="teaser-video" controls playsinline preload="none">
+            <source src="/teaser-prince.mp4" type="video/mp4" />
+          </video>
+        </div>
       </div>
     </div>
   </section>
+
+  <script>
+    const wrapper = document.getElementById('teaser-wrapper');
+    const cover = document.getElementById('teaser-cover');
+    const playBtn = document.getElementById('play-btn');
+    const video = document.getElementById('teaser-video');
+
+    if (playBtn && cover && video) {
+      function playVideo() {
+        cover.style.display = 'none';
+        playBtn.style.display = 'none';
+        video.style.display = 'block';
+        video.play().catch(() => {});
+      }
+      playBtn.addEventListener('click', playVideo);
+    }
+  </script>
 </Layout>
 
 <style>
@@ -185,23 +201,26 @@ import Layout from '../layouts/Layout.astro';
   .content-left h2 {
     font-size: 1.75rem;
     margin-bottom: 0.75rem;
+    margin-top: 2rem;
   }
 
-  .content-left h2 + h2 {
-    margin-top: 2.5rem;
-  }
-
-  .dates-place {
+  .desc-text {
     color: var(--text-secondary);
     font-size: 1.05rem;
-    margin-bottom: 1.5rem;
+    line-height: 1.7;
   }
 
-  .booking-desc {
+  .dates-line {
     color: var(--text-secondary);
-    margin-bottom: 1.5rem;
-    line-height: 1.6;
-    font-size: 1rem;
+    font-size: 1.05rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .dates-desc {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    margin-bottom: 1.25rem;
+    line-height: 1.5;
   }
 
   .email-form {
@@ -235,13 +254,53 @@ import Layout from '../layouts/Layout.astro';
     border-color: var(--accent-gold);
   }
 
-  .teaser-video {
+  .teaser-wrapper {
+    position: relative;
     width: 100%;
     max-width: 400px;
-    display: block;
-    border-radius: 12px;
-    border: 1px solid var(--border-color);
     margin: 0 auto;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    aspect-ratio: 9 / 16;
+  }
+
+  .teaser-cover {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+  }
+
+  .play-btn {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+
+  .play-btn:hover svg {
+    transform: scale(1.1);
+  }
+
+  .play-btn svg {
+    transition: transform 0.2s ease;
+  }
+
+  .teaser-video {
+    display: none;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
   }
 
   @media (max-width: 900px) {
@@ -250,7 +309,7 @@ import Layout from '../layouts/Layout.astro';
       gap: 2rem;
     }
 
-    .teaser-video {
+    .teaser-wrapper {
       max-width: 100%;
     }
   }

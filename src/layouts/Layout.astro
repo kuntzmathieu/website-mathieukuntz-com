@@ -6,7 +6,7 @@ export interface Props {
   currentPage?: 'prince' | 'reve';
 }
 
-const { title, description, canonicalUrl, currentPage } = Astro.props;
+const { title, description, canonicalUrl } = Astro.props;
 ---
 
 <!doctype html>
@@ -26,6 +26,23 @@ const { title, description, canonicalUrl, currentPage } = Astro.props;
   <meta property="og:type" content="website" />
   <meta property="og:url" content={canonicalUrl} />
   <meta name="twitter:card" content="summary_large_image" />
+  <!-- Meta Pixel Code -->
+  <script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '1816653259296120');
+  fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=1816653259296120&ev=PageView&noscript=1"
+  /></noscript>
+  <!-- End Meta Pixel Code -->
   <style is:global>
     *, *::before, *::after {
       box-sizing: border-box;
@@ -128,12 +145,8 @@ const { title, description, canonicalUrl, currentPage } = Astro.props;
 </head>
 <body>
   <header class="site-header">
-    <div class="container header-inner">
-      <a href="/" class="logo">Mathieu Kuntz</a>
-      <nav>
-        <a href="/prince" class={currentPage === 'prince' ? 'active' : ''}>Prince</a>
-        <a href="/reve" class={currentPage === 'reve' ? 'active' : ''}>Rêve!</a>
-      </nav>
+    <div class="header-inner container">
+      <span class="logo">Mathieu Kuntz</span>
     </div>
   </header>
 
@@ -181,45 +194,22 @@ const { title, description, canonicalUrl, currentPage } = Astro.props;
     left: 0;
     right: 0;
     z-index: 100;
-    background: rgba(10, 10, 15, 0.95);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border-color);
+    pointer-events: none;
   }
 
   .header-inner {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 1rem 1.5rem;
+    padding: 1.5rem;
   }
 
   .logo {
     font-family: var(--font-heading);
     font-size: 1.25rem;
     font-weight: 700;
-    color: var(--accent-gold) !important;
-  }
-
-  nav {
-    display: flex;
-    gap: 1.5rem;
-  }
-
-  nav a {
-    font-size: 0.8rem;
-    color: var(--text-secondary);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    transition: color 0.3s ease;
-  }
-
-  nav a:hover {
-    color: var(--accent-gold);
-  }
-
-  nav a.active {
-    color: var(--accent-gold);
-    border-bottom: 1px solid var(--accent-gold);
+    color: var(--text-primary) !important;
+    pointer-events: auto;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
   }
 
   .site-footer {
