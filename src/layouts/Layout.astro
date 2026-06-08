@@ -3,9 +3,10 @@ export interface Props {
   title: string;
   description: string;
   canonicalUrl?: string;
+  currentPage?: 'prince' | 'reve';
 }
 
-const { title, description, canonicalUrl } = Astro.props;
+const { title, description, canonicalUrl, currentPage } = Astro.props;
 ---
 
 <!doctype html>
@@ -129,12 +130,9 @@ const { title, description, canonicalUrl } = Astro.props;
   <header class="site-header">
     <div class="container header-inner">
       <a href="/" class="logo">Mathieu Kuntz</a>
-      <button class="menu-toggle" aria-label="Menu" id="menu-toggle">&#9776;</button>
-      <nav id="main-nav">
-        <a href="/petit-prince-hypnotiseur">Petit Prince Hypnotiseur</a>
-        <a href="/petit-prince-immersif">Petit Prince Immersif</a>
-        <a href="/vie-de-reve">Vie de Reve</a>
-        <a href="/comment-devenir-genial">Comment devenir genial</a>
+      <nav>
+        <a href="/prince" class={currentPage === 'prince' ? 'active' : ''}>Prince</a>
+        <a href="/reve" class={currentPage === 'reve' ? 'active' : ''}>Rêve!</a>
       </nav>
     </div>
   </header>
@@ -173,14 +171,6 @@ const { title, description, canonicalUrl } = Astro.props;
     }, { threshold: 0.1 });
 
     document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-
-    const toggle = document.getElementById('menu-toggle');
-    const nav = document.getElementById('main-nav');
-    if (toggle && nav) {
-      toggle.addEventListener('click', () => {
-        nav.classList.toggle('open');
-      });
-    }
   </script>
 </body>
 </html>
@@ -211,15 +201,6 @@ const { title, description, canonicalUrl } = Astro.props;
     color: var(--accent-gold) !important;
   }
 
-  .menu-toggle {
-    display: none;
-    background: none;
-    border: none;
-    color: var(--text-primary);
-    font-size: 1.5rem;
-    cursor: pointer;
-  }
-
   nav {
     display: flex;
     gap: 1.5rem;
@@ -237,27 +218,9 @@ const { title, description, canonicalUrl } = Astro.props;
     color: var(--accent-gold);
   }
 
-  @media (max-width: 900px) {
-    .menu-toggle {
-      display: block;
-    }
-
-    nav {
-      display: none;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      background: rgba(10, 10, 15, 0.98);
-      flex-direction: column;
-      padding: 1rem 1.5rem;
-      border-bottom: 1px solid var(--border-color);
-      gap: 0.75rem;
-    }
-
-    nav.open {
-      display: flex;
-    }
+  nav a.active {
+    color: var(--accent-gold);
+    border-bottom: 1px solid var(--accent-gold);
   }
 
   .site-footer {

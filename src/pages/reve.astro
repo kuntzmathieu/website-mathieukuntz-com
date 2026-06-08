@@ -1,0 +1,238 @@
+---
+import Layout from '../layouts/Layout.astro';
+import VideoTeaser from '../components/VideoTeaser.astro';
+
+const description = `
+<p>Un spectacle entre rêve éveillé, histoires vraies et hypnose, pour rapprocher ce qu'on imagine de ce qu'on ose vivre.</p>
+
+<p>Mathieu y mêle ce qui l'habite vraiment : hypnose, mouvement, magie, théâtre, récits personnels et une question qui ne le lâche pas. Comment faire pour que le rêve ne reste pas seulement une image jolie dans la tête ? Comment le faire descendre dans le corps, dans les choix, dans la vraie vie ?</p>
+
+<p>Une traversée entre rire, trouble, images mentales, moments suspendus et surprises. Une soirée où la réalité se révèle plus souple qu'on ne l'imagine.</p>
+`;
+---
+
+<Layout
+  title="Rêve ! — Spectacle sous hypnose | Mathieu Kuntz"
+  description="Un spectacle entre rêve éveillé, histoires vraies et hypnose, pour rapprocher ce qu'on imagine de ce qu'on ose vivre. Grenoble."
+  currentPage="reve"
+>
+  <section class="hero">
+    <div class="hero-overlay"></div>
+    <div class="container hero-content">
+      <p class="hero-badge fade-in">Nouveau spectacle — Grenoble</p>
+      <h1 class="fade-in">Rêve ! — Spectacle sous hypnose</h1>
+      <p class="hero-tagline fade-in">Un spectacle entre rêve éveillé, histoires vraies et hypnose, pour rapprocher ce qu'on imagine de ce qu'on ose vivre.</p>
+      <div class="hero-scroll fade-in">
+        <a href="#dates" class="btn-cta">Voir les prochaines dates</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="description section" id="dates">
+    <div class="container">
+      <div class="section-inner fade-in">
+        <div class="description-content" set:html={description} />
+      </div>
+    </div>
+  </section>
+
+  <section class="dates section">
+    <div class="container">
+      <div class="section-inner fade-in">
+        <h2>Prochaines représentations</h2>
+        <p class="dates-place">Grenoble — dates à venir</p>
+        <form class="email-form" action="https://formspree.io/f/placeholder" method="POST">
+          <input type="hidden" name="theme" value="reve" />
+          <div class="form-row">
+            <input type="email" name="email" placeholder="Je veux être informé des prochaines dates" required class="email-input" />
+            <button type="submit" class="btn-cta">M'inscrire</button>
+          </div>
+          <p class="form-note">Pas de spam. Juste les dates et infos.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <VideoTeaser />
+
+  <section class="booking section">
+    <div class="container">
+      <div class="section-inner fade-in">
+        <h2>Réservation</h2>
+        <p class="booking-desc">Prochaines représentations prévues à Grenoble. Pour être informé des prochaines dates, laissez votre email (pas de spam, promis) !</p>
+        <form class="email-form" action="https://formspree.io/f/placeholder" method="POST">
+          <input type="hidden" name="theme" value="reve" />
+          <div class="form-row">
+            <input type="email" name="email" placeholder="Je veux être informé des prochaines dates" required class="email-input" />
+            <button type="submit" class="btn-cta">M'inscrire</button>
+          </div>
+          <p class="form-note">Pas de spam. Juste les dates et infos.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 8rem 1.5rem 4rem;
+    overflow: hidden;
+  }
+
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 40%, rgba(232, 168, 73, 0.12) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 20%, rgba(214, 90, 122, 0.08) 0%, transparent 50%),
+                linear-gradient(to bottom, rgba(10, 10, 15, 0.4) 0%, rgba(10, 10, 15, 0.9) 100%);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 700px;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    background: rgba(232, 168, 73, 0.15);
+    border: 1px solid rgba(232, 168, 73, 0.4);
+    color: var(--accent-warm);
+    padding: 0.4rem 1.2rem;
+    border-radius: 100px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+
+  h1 {
+    font-size: 3.5rem;
+    color: var(--text-primary);
+    margin-bottom: 1.5rem;
+    line-height: 1.1;
+  }
+
+  .hero-tagline {
+    font-size: 1.25rem;
+    color: var(--text-secondary);
+    margin-bottom: 2.5rem;
+    line-height: 1.6;
+  }
+
+  .section-inner {
+    max-width: 750px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .description-content {
+    color: var(--text-primary);
+    line-height: 1.8;
+    font-size: 1.1rem;
+    text-align: left;
+  }
+
+  .description-content :global(p) {
+    margin-bottom: 1.25rem;
+  }
+
+  .description-content :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .description-content :global(em) {
+    color: var(--accent-warm);
+    font-style: normal;
+    font-weight: 600;
+  }
+
+  .dates, .booking {
+    background: radial-gradient(ellipse at 50% 50%, rgba(232, 168, 73, 0.08) 0%, transparent 70%);
+  }
+
+  h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .dates-place {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+  }
+
+  .booking-desc {
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+    line-height: 1.6;
+  }
+
+  .email-form {
+    margin-bottom: 1rem;
+  }
+
+  .form-row {
+    display: flex;
+    gap: 1rem;
+    align-items: stretch;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  .email-input {
+    flex: 1;
+    padding: 1rem 1.25rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s ease;
+  }
+
+  .email-input::placeholder {
+    color: var(--text-secondary);
+  }
+
+  .email-input:focus {
+    border-color: var(--accent-warm);
+  }
+
+  .form-note {
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    margin-top: 0.75rem;
+    opacity: 0.7;
+  }
+
+  @media (max-width: 768px) {
+    .hero {
+      min-height: auto;
+      padding: 7rem 1rem 3rem;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+    }
+
+    .hero-tagline {
+      font-size: 1.05rem;
+    }
+
+    .form-row {
+      flex-direction: column;
+    }
+  }
+</style>
