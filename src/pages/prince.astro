@@ -16,14 +16,17 @@ import Layout from '../layouts/Layout.astro';
         <span class="hero-sub">Spectacle sous hypnose</span>
       </h1>
       <p class="hero-tagline fade-in">Rejoignez le Petit Prince dans son monde pour y vivre votre propre voyage intérieur, guidé par le théâtre, la musique et l'hypnose.</p>
-      <form class="hero-form fade-in" action="https://formspree.io/f/placeholder" method="POST">
-        <input type="hidden" name="theme" value="prince" />
-        <div class="hero-form-row">
-          <input type="email" name="email" placeholder="Être informé des prochaines dates" required class="hero-email" />
-          <button type="submit" class="btn-cta">Me tenir informé</button>
-        </div>
-        <p class="form-note">Pas de spam. Promis.</p>
-      </form>
+      <div class="hero-form fade-in">
+        <p class="hero-form-label">Être informé des prochaines dates</p>
+        <form action="https://formspree.io/f/placeholder" method="POST">
+          <input type="hidden" name="theme" value="prince" />
+          <div class="hero-form-row">
+            <input type="email" name="email" placeholder="Email" required class="hero-email" />
+            <button type="submit" class="btn-cta">Me tenir informé</button>
+          </div>
+          <p class="form-note">Pas de spam. Promis.</p>
+        </form>
+      </div>
     </div>
   </section>
 
@@ -154,6 +157,12 @@ import Layout from '../layouts/Layout.astro';
 
   .hero-form {
     margin-bottom: 0;
+  }
+
+  .hero-form-label {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    margin-bottom: 0.75rem;
   }
 
   .hero-form-row {

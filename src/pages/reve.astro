@@ -8,6 +8,7 @@ import Layout from '../layouts/Layout.astro';
   currentPage="reve"
 >
   <section class="hero">
+    <img src="/hero-reve.png" alt="" class="hero-image" loading="eager" />
     <div class="hero-overlay"></div>
     <div class="container hero-content">
       <h1 class="hero-title fade-in">
@@ -15,14 +16,17 @@ import Layout from '../layouts/Layout.astro';
         <span class="hero-sub">Spectacle sous hypnose</span>
       </h1>
       <p class="hero-tagline fade-in">Un spectacle entre rêve éveillé, histoires vraies et hypnose, pour rapprocher ce qu'on imagine de ce qu'on ose vivre.</p>
-      <form class="hero-form fade-in" action="https://formspree.io/f/placeholder" method="POST">
-        <input type="hidden" name="theme" value="reve" />
-        <div class="hero-form-row">
-          <input type="email" name="email" placeholder="Être informé des prochaines dates" required class="hero-email" />
-          <button type="submit" class="btn-cta">Me tenir informé</button>
-        </div>
-        <p class="form-note">Pas de spam. Promis.</p>
-      </form>
+      <div class="hero-form fade-in">
+        <p class="hero-form-label">Être informé des prochaines dates</p>
+        <form action="https://formspree.io/f/placeholder" method="POST">
+          <input type="hidden" name="theme" value="reve" />
+          <div class="hero-form-row">
+            <input type="email" name="email" placeholder="Email" required class="hero-email" />
+            <button type="submit" class="btn-cta">Me tenir informé</button>
+          </div>
+          <p class="form-note">Pas de spam. Promis.</p>
+        </form>
+      </div>
     </div>
   </section>
 
@@ -44,7 +48,7 @@ import Layout from '../layouts/Layout.astro';
       </div>
       <div class="content-right fade-in">
         <div class="teaser-wrapper" id="teaser-wrapper">
-          <img src="/nana-banana-cover.png" alt="" class="teaser-cover" id="teaser-cover" />
+          <img src="/reve-teaser-cover.jpg" alt="" class="teaser-cover" id="teaser-cover" />
           <button class="play-btn" id="play-btn" aria-label="Lire la vidéo">
             <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
               <circle cx="40" cy="40" r="38" fill="rgba(0,0,0,0.6)" stroke="rgba(255,255,255,0.8)" stroke-width="2"/>
@@ -142,6 +146,12 @@ import Layout from '../layouts/Layout.astro';
 
   .hero-form {
     margin-bottom: 0;
+  }
+
+  .hero-form-label {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    margin-bottom: 0.75rem;
   }
 
   .hero-form-row {
