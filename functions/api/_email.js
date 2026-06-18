@@ -12,7 +12,7 @@ export async function sendTicketEmail(env, toEmail, billet, pdfBase64) {
   <div style="max-width:560px;margin:0 auto;padding:40px 24px;">
     <div style="text-align:center;margin-bottom:32px;">
       <h1 style="color:#E8C76A;font-size:28px;letter-spacing:4px;margin:0;font-weight:700;">PRINCE</h1>
-      <p style="color:#F2EFEA;font-size:14px;opacity:0.6;margin:4px 0 0 0;">11 juillet 2026 · Théâtre Vif</p>
+      <p style="color:#F2EFEA;font-size:14px;opacity:0.6;margin:4px 0 0 0;">11 juillet 2026 · 20h · Salle polyvalente Louis Maisonat, Vif</p>
     </div>
 
     <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(232,199,106,0.2);border-radius:16px;padding:32px;margin-bottom:24px;">
@@ -30,14 +30,40 @@ export async function sendTicketEmail(env, toEmail, billet, pdfBase64) {
         <p style="color:#F2EFEA;font-size:13px;opacity:0.6;margin:0;">${billet.type} · ${billet.prix_paye}€</p>
       </div>
 
+      <div style="background:rgba(0,0,0,0.3);border-radius:12px;padding:20px;margin-bottom:24px;">
+        <p style="color:#E8C76A;font-size:11px;letter-spacing:2px;margin:0 0 8px 0;">LIEU</p>
+        <p style="color:#F2EFEA;font-size:14px;margin:0 0 4px 0;">Salle polyvalente Louis Maisonat</p>
+        <p style="color:#F2EFEA;font-size:13px;opacity:0.6;margin:0 0 4px 0;">43 Rue du 19 Mars 1962</p>
+        <p style="color:#F2EFEA;font-size:13px;opacity:0.6;margin:0;">38450 Vif</p>
+      </div>
+
+      <div style="background:rgba(0,0,0,0.3);border-radius:12px;padding:20px;margin-bottom:24px;">
+        <p style="color:#E8C76A;font-size:11px;letter-spacing:2px;margin:0 0 8px 0;">HORAIRES</p>
+        <p style="color:#F2EFEA;font-size:14px;margin:0 0 4px 0;">Ouverture des portes : 19h30</p>
+        <p style="color:#F2EFEA;font-size:14px;margin:0 0 4px 0;">Fermeture des portes : 19h55</p>
+        <p style="color:#F2EFEA;font-size:14px;margin:0 0 12px 0;">Début du spectacle : 20h</p>
+        <p style="color:#F2EFEA;font-size:13px;opacity:0.85;line-height:1.6;margin:0;">
+          Afin de garantir un bon spectacle à tous, aucune entrée ne sera possible après la fermeture des portes. On vous conseille donc de bien vous organiser !
+        </p>
+      </div>
+
+      <div style="background:rgba(0,0,0,0.3);border-radius:12px;padding:20px;margin-bottom:24px;">
+        <p style="color:#E8C76A;font-size:11px;letter-spacing:2px;margin:0 0 8px 0;">SUR PLACE</p>
+        <p style="color:#F2EFEA;font-size:13px;opacity:0.85;line-height:1.6;margin:0 0 8px 0;">
+          Buvette et snack disponibles avant et après le spectacle, au profit de l'association XXX.
+        </p>
+        <p style="color:#F2EFEA;font-size:13px;opacity:0.85;line-height:1.6;margin:0;">
+          Parking gratuit sur place.
+        </p>
+      </div>
+
       <p style="color:#F2EFEA;font-size:14px;line-height:1.6;opacity:0.7;margin:0;">
         Le billet PDF est joint à cet email. Conservez-le précieusement.
       </p>
     </div>
 
     <p style="color:#F2EFEA;font-size:12px;opacity:0.4;text-align:center;line-height:1.6;margin:0;">
-      Théâtre Vif · Paris<br>
-      Questions ? billets@mathieukuntz.com
+      Questions ? Répondez à cet email ou écrivez à mk@mathieukuntz.org
     </p>
   </div>
 </body>
@@ -46,6 +72,7 @@ export async function sendTicketEmail(env, toEmail, billet, pdfBase64) {
   const body = {
     from: 'PRINCE <billets@mathieukuntz.com>',
     to: [toEmail],
+    reply_to: 'mk@mathieukuntz.org',
     subject: `Votre billet — PRINCE · ${billet.numero_billet}`,
     html,
     attachments: [{
