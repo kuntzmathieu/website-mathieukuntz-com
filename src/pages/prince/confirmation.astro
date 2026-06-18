@@ -105,11 +105,19 @@ const sessionId = Astro.url.searchParams.get('session_id');
           `Email: ${data.email} · Total: ${data.montant_total}€`;
 
         const meta = data.metadata || {};
-        const counts = JSON.parse(meta.billet_types || '{}');
         const billets = [];
-        for (const [type, n] of Object.entries(counts)) {
-          const prix = { 'plein tarif': 19, 'tarif réduit': 14, 'invitation': 0, 'custom': 0 }[type] || 0;
-          for (let i = 0; i < n; i++) billets.push({ type, prix });
+        if (meta.billets_detail) {
+          try {
+            const detail = JSON.parse(meta.billets_detail);
+            for (const b of detail) billets.push({ type: b.type, prix: b.prix });
+          } catch (e) { /* fallback below */ }
+        }
+        if (billets.length === 0) {
+          const counts = JSON.parse(meta.billet_types || '{}');
+          for (const [type, n] of Object.entries(counts)) {
+            const prix = { 'plein tarif': 19, 'tarif réduit': 14, 'invitation': 0, 'custom': 0 }[type] || 0;
+            for (let i = 0; i < n; i++) billets.push({ type, prix });
+          }
         }
 
         const container = document.getElementById('billets-fields');

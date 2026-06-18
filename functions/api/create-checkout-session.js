@@ -79,6 +79,7 @@ export async function onRequestPost({ request, env }) {
       'metadata[montant_total]': String(montantTotal),
       'metadata[code_promo]': promoCode || '',
       'metadata[billet_types]': JSON.stringify(counts),
+      'metadata[billets_detail]': JSON.stringify(billetsPreview.map(b => ({ type: b.type, prix: b.prix }))),
     }, env.STRIPE_SECRET_KEY);
 
     return jsonResponse({
