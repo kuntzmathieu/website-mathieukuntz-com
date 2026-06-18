@@ -59,7 +59,16 @@ export async function onRequestPost({ request, env }) {
       });
       const numero = `PRINCE110726VIF-${String(billet.Id).padStart(4, '0')}`;
       await nocodbPatch(env, env.NOCODB_TABLE_BILLETS, billet.Id, { numero_billet: numero });
-      billetsCrees.push({ ...billet, numero_billet: numero });
+      billetsCrees.push({
+        Id: billet.Id,
+        numero_billet: numero,
+        type: b.type,
+        prix_paye: b.prix_paye,
+        nom: b.nom,
+        prenom: b.prenom,
+        annee_naissance: b.annee_naissance,
+        email_personne: b.email_personne || '',
+      });
     }
 
     if (codePromo) {
