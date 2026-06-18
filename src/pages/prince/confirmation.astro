@@ -1,0 +1,157 @@
+---
+import PrinceLayout from '../../layouts/PrinceLayout.astro';
+
+const sessionId = Astro.url.searchParams.get('session_id');
+---
+
+<PrinceLayout
+  title="Confirmation — PRINCE | Mathieu Kuntz"
+  description="Confirmez les informations de chaque participant."
+>
+  <section class="py-24 px-6 md:px-12 min-h-[80vh] flex items-center justify-center">
+    <div class="max-w-3xl mx-auto w-full">
+      <div id="loading" class="text-center space-y-4">
+        <div class="w-16 h-16 mx-auto rounded-full border-2 border-[#E8C76A]/30 border-t-[#E8C76A] animate-spin"></div>
+        <p class="text-[#F2EFEA]/60 font-light">Récupération de votre réservation...</p>
+      </div>
+
+      <div id="content" class="hidden space-y-8">
+        <div class="text-center space-y-4">
+          <span class="text-sm uppercase tracking-widest text-[#E8C76A] font-bold">
+            Paiement confirmé
+          </span>
+          <h1 class="text-3xl md:text-5xl font-serif tracking-tight text-[#F2EFEA]">
+            Merci ! Remplissez vos places.
+          </h1>
+          <p class="text-base md:text-lg text-[#F2EFEA]/85 font-light leading-relaxed">
+            Pour chaque place, indiquez le nom, prénom et année de naissance du
+            participant. L'email est optionnel (pour envoyer le billet
+            directement à la personne).
+          </p>
+          <p id="order-info" class="text-sm text-white/40 font-light"></p>
+        </div>
+
+        <form id="reservation-form" class="space-y-6">
+          <div id="billets-fields" class="space-y-6"></div>
+
+          <div class="pt-4">
+            <button type="submit" id="submit-btn" class="w-full px-10 py-5 bg-[#E8C76A] text-[#0A0A14] font-bold text-sm tracking-widest uppercase rounded-full hover:bg-white hover:scale-[1.02] transition-all duration-300 shadow-xl shadow-[#E8C76A]/20">
+              Enregistrer et recevoir mes billets
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div id="error" class="hidden text-center space-y-4">
+        <iconify-icon icon="solar:close-circle-linear" class="text-5xl text-red-400"></iconify-icon>
+        <h1 class="text-2xl font-serif text-[#F2EFEA]">Une erreur est survenue</h1>
+        <p id="error-msg" class="text-[#F2EFEA]/60 font-light"></p>
+        <a href="/prince" class="inline-block px-6 py-3 border border-white/10 rounded-full text-sm text-[#E8C76A] hover:bg-white/5 transition-colors">Retour à la réservation</a>
+      </div>
+    </div>
+  </section>
+
+  <script is:inline define:vars={{ sessionId }}>
+    const SESSION_ID = sessionId;
+
+    function billetField(index, type, prix) {
+      const typeLabel = { 'plein tarif': 'Plein tarif', 'tarif réduit': 'Tarif réduit', 'invitation': 'Invitation', 'custom': 'Prix custom' }[type] || type;
+      return `
+        <div class="p-6 rounded-2xl bg-white/[0.02] border border-white/10 space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 class="text-lg font-serif text-[#E8C76A]">Place ${index + 1}</h3>
+            <span class="text-xs uppercase tracking-widest text-white/40">${typeLabel} · ${prix}€</span>
+          </div>
+          <input type="hidden" name="billet_${index}_type" value="${type}" />
+          <input type="hidden" name="billet_${index}_prix" value="${prix}" />
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="text-xs uppercase tracking-widest text-white/50 block mb-1">Prénom *</label>
+              <input type="text" name="billet_${index}_prenom" required class="w-full px-4 py-3 bg-white/[0.02] border border-white/10 rounded-lg text-[#F2EFEA] outline-none focus:border-[#E8C76A]/40 transition-colors" />
+            </div>
+            <div>
+              <label class="text-xs uppercase tracking-widest text-white/50 block mb-1">Nom *</label>
+              <input type="text" name="billet_${index}_nom" required class="w-full px-4 py-3 bg-white/[0.02] border border-white/10 rounded-lg text-[#F2EFEA] outline-none focus:border-[#E8C76A]/40 transition-colors" />
+            </div>
+            <div>
+              <label class="text-xs uppercase tracking-widest text-white/50 block mb-1">Année de naissance *</label>
+              <input type="text" name="billet_${index}_annee" required placeholder="1990" maxlength="4" pattern="[0-9]{4}" class="w-full px-4 py-3 bg-white/[0.02] border border-white/10 rounded-lg text-[#F2EFEA] outline-none focus:border-[#E8C76A]/40 transition-colors" />
+            </div>
+            <div>
+              <label class="text-xs uppercase tracking-widest text-white/50 block mb-1">Email (optionnel)</label>
+              <input type="email" name="billet_${index}_email" class="w-full px-4 py-3 bg-white/[0.02] border border-white/10 rounded-lg text-[#F2EFEA] outline-none focus:border-[#E8C76A]/40 transition-colors" />
+            </div>
+          </div>
+        </div>`;
+    }
+
+    async function init() {
+      if (!SESSION_ID) {
+        document.getElementById('error').classList.remove('hidden');
+        document.getElementById('error-msg').textContent = 'Session de paiement introuvable.';
+        document.getElementById('loading').classList.add('hidden');
+        return;
+      }
+
+      try {
+        const res = await fetch(`/api/session-info?session_id=${SESSION_ID}`);
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error);
+
+        document.getElementById('loading').classList.add('hidden');
+        document.getElementById('content').classList.remove('hidden');
+
+        document.getElementById('order-info').textContent =
+          `Email: ${data.email} · Total: ${data.montant_total}€`;
+
+        const meta = data.metadata || {};
+        const counts = JSON.parse(meta.billet_types || '{}');
+        const billets = [];
+        for (const [type, n] of Object.entries(counts)) {
+          const prix = { 'plein tarif': 19, 'tarif réduit': 14, 'invitation': 0, 'custom': 0 }[type] || 0;
+          for (let i = 0; i < n; i++) billets.push({ type, prix });
+        }
+
+        const container = document.getElementById('billets-fields');
+        container.innerHTML = billets.map((b, i) => billetField(i, b.type, b.prix)).join('');
+
+        document.getElementById('reservation-form').addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const btn = document.getElementById('submit-btn');
+          btn.disabled = true;
+          btn.textContent = 'Enregistrement...';
+
+          const billetsData = billets.map((b, i) => ({
+            type: b.type,
+            prix_paye: b.prix,
+            nom: e.target[`billet_${i}_nom`].value,
+            prenom: e.target[`billet_${i}_prenom`].value,
+            annee_naissance: e.target[`billet_${i}_annee`].value,
+            email_personne: e.target[`billet_${i}_email`].value,
+          }));
+
+          try {
+            const sres = await fetch('/api/submit-reservation', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ session_id: SESSION_ID, billets: billetsData }),
+            });
+            const sdata = await sres.json();
+            if (!sres.ok) throw new Error(sdata.error);
+            window.location.href = '/prince/merci';
+          } catch (err) {
+            alert(err.message);
+            btn.disabled = false;
+            btn.textContent = 'Enregistrer et recevoir mes billets';
+          }
+        });
+      } catch (err) {
+        document.getElementById('loading').classList.add('hidden');
+        document.getElementById('error').classList.remove('hidden');
+        document.getElementById('error-msg').textContent = err.message;
+      }
+    }
+
+    init();
+  </script>
+</PrinceLayout>

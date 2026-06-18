@@ -1,0 +1,35 @@
+---
+import PrinceLayout from '../../layouts/PrinceLayout.astro';
+---
+
+<PrinceLayout
+  title="Merci — PRINCE | Mathieu Kuntz"
+  description="Votre réservation est confirmée."
+>
+  <section class="py-24 px-6 md:px-12 min-h-[80vh] flex items-center justify-center relative overflow-hidden">
+    <div class="absolute inset-0 glow-gold opacity-50 -z-10"></div>
+    <div class="max-w-2xl mx-auto text-center space-y-8 z-10">
+      <iconify-icon icon="solar:check-circle-bold" class="text-6xl text-[#E8C76A]"></iconify-icon>
+
+      <h1 class="text-4xl md:text-6xl font-serif tracking-tight text-[#F2EFEA]">
+        Merci pour votre réservation.
+      </h1>
+
+      <p class="text-lg md:text-xl text-[#F2EFEA]/85 font-light leading-relaxed max-w-xl mx-auto">
+        Vos places sont enregistrées. Vous recevrez vos billets par email
+        dans les prochaines minutes. Pensez à vérifier vos spams.
+      </p>
+
+      <div class="pt-8 space-y-4">
+        <a href="/prince" class="inline-flex items-center gap-2 px-10 py-5 bg-[#E8C76A] text-[#0A0A14] font-bold text-sm tracking-widest uppercase rounded-full hover:bg-white hover:scale-105 transition-all duration-300 shadow-xl shadow-[#E8C76A]/20">
+          Retour à la page du spectacle
+          <iconify-icon icon="solar:arrow-right-linear" stroke-width="1.5" class="text-sm"></iconify-icon>
+        </a>
+      </div>
+
+      <p class="text-sm text-white/40 font-light pt-8">
+        Une question ? Écrivez à <a href="mailto:mk@mathieukuntz.org" class="text-[#E8C76A] hover:underline">mk@mathieukuntz.org</a> ou appelez le 06 44 09 25 60.
+      </p>
+    </div>
+  </section>
+</PrinceLayout>
