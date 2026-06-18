@@ -80,12 +80,15 @@
   let promoResult = null;
   let stripe = null;
 
-  async function loadStripe() {
-    if (!stripe) {
-      const mod = await import('https://js.stripe.com/v3/');
-      stripe = mod.Stripe(PUBLISHABLE_KEY);
-    }
-    return stripe;
+  function loadStripeScript() {
+    return new Promise((resolve, reject) => {
+      if (window.Stripe) return resolve(window.Stripe(PUBLISHABLE_KEY));
+      const s = document.createElement('script');
+      s.src = 'https://js.stripe.com/v3/';
+      s.onload = () => resolve(window.Stripe(PUBLISHABLE_KEY));
+      s.onerror = () => reject(new Error('Impossible de charger Stripe'));
+      document.head.appendChild(s);
+    });
   }
 
   function updateDisplay() {
@@ -159,7 +162,7 @@
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Erreur');
-      const s = await loadStripe();
+      const s = await loadStripeScript();
       const checkout = await s.initEmbeddedCheckout({
         clientSecret: data.clientSecret,
       });
