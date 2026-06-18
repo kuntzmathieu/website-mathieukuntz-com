@@ -1,0 +1,69 @@
+---
+import '../styles/global.css';
+
+export interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+}
+
+const {
+  title,
+  description,
+  ogImage = 'https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?q=80&w=1200&auto=format&fit=crop',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="fr" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body
+        class="antialiased selection:bg-[#E8C76A] selection:text-[#0A0A14] overflow-x-hidden relative"
+        style="font-family: 'Manrope', sans-serif; background-color: #0A0A14; color: #F2EFEA;"
+  >
+    <!-- Ambient background light -->
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[1000px] glow-radial -z-10 pointer-events-none"></div>
+    <div class="absolute top-[2500px] right-0 w-[600px] h-[600px] glow-radial -z-10 pointer-events-none opacity-60"></div>
+    <div class="absolute bottom-[1000px] left-0 w-[800px] h-[800px] glow-radial -z-10 pointer-events-none opacity-50"></div>
+
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  .font-serif {
+    font-family: 'Cormorant Garamond', serif;
+  }
+  .glow-radial {
+    background: radial-gradient(
+      circle at center,
+      rgba(42, 30, 92, 0.45) 0%,
+      rgba(7, 19, 38, 0.2) 70%,
+      transparent 100%
+    );
+  }
+  .glow-gold {
+    background: radial-gradient(circle at center, rgba(232, 199, 106, 0.08) 0%, transparent 70%);
+  }
+  details summary::-webkit-details-marker {
+    display: none;
+  }
+</style>

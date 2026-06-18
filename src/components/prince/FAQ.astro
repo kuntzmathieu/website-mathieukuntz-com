@@ -1,0 +1,62 @@
+---
+const faqs = [
+  {
+    q: "Est-ce que je serai hypnotisé devant tout le monde ?",
+    a: "Non. Ici, tout le monde participe depuis sa place, les yeux fermés. Personne n'est mis en scène, exposé ou choisi pour faire l'attraction. L'expérience est purement intime et personnelle.",
+  },
+  {
+    q: "Est-ce que l'hypnose est dangereuse ?",
+    a: "Non. C'est un état naturel d'attention élargie et d'imagination active. Vous gardez toujours le contrôle complet de votre corps et de vos pensées. Vous pouvez ouvrir les yeux et sortir de l'état d'hypnose à tout instant si vous le souhaitez.",
+  },
+  {
+    q: "Est-ce que je peux être hypnotisé si je suis sceptique ?",
+    a: "Oui. Il n'est pas nécessaire d'y \"croire\" comme à de la magie. L'hypnose repose sur votre capacité d'imagination et d'écoute. Si vous acceptez de jouer le jeu et de vous prêter à l'exercice poétique, cela fonctionnera parfaitement.",
+  },
+  {
+    q: "Faut-il connaître Le Petit Prince ?",
+    a: "Absolument pas. Le spectacle s'appuie sur la trame et les métaphores célèbres du conte de Saint-Exupéry, mais l'écriture est pensée pour que le voyage soit limpide et parlant pour chacun, même sans aucun souvenir du livre d'origine.",
+  },
+  {
+    q: "Est-ce comme une méditation guidée ?",
+    a: "Il y a des similitudes (relaxation physique, yeux fermés, voix apaisante). Cependant, l'intention est artistique : le but est de vous faire traverser une œuvre littéraire et musicale, de stimuler vos émotions créatives et d'ouvrir votre imaginaire, plutôt que de vider votre esprit.",
+  },
+  {
+    q: "Il y a-t-il un âge minimum ?",
+    a: "Nous recommandons d'y assister à partir de 7 ans. Bien que l'hypnose fonctionne magnifiquement sur les enfants, le format d'une heure et demie les yeux fermés dans le calme requiert une capacité d'attention soutenue. Si votre enfant est curieux et calme, il en profitera à coup sûr !",
+  },
+  {
+    q: "Puis-je réserver par téléphone ?",
+    a: "Oui. Bien que la réservation en ligne soit fortement conseillée car plus rapide et sécurisée, vous pouvez réserver par téléphone au <strong class=\"text-[#E8C76A]\">06 44 09 25 60</strong> (laissez un message clair avec vos coordonnées et le nombre de places souhaitées).",
+  },
+];
+---
+
+<section id="faq" class="py-24 px-6 md:px-12 border-t border-white/5 relative">
+  <div class="max-w-4xl mx-auto">
+    <div class="text-center space-y-4 mb-16">
+      <span class="text-sm uppercase tracking-widest text-[#E8C76A] font-bold">
+        Questions fréquentes
+      </span>
+      <h2 class="text-3xl md:text-5xl font-serif tracking-tight text-[#F2EFEA]">
+        On vous dit tout !
+      </h2>
+    </div>
+
+    <!-- Custom Elegant Accordions -->
+    <div class="space-y-4">
+      {
+        faqs.map((item) => (
+          <details class="group border border-white/5 rounded-2xl bg-white/[0.01] hover:border-[#E8C76A]/20 transition-all duration-300">
+            <summary class="flex justify-between items-center p-6 cursor-pointer select-none">
+              <span class="text-sm md:text-base font-bold text-[#F2EFEA] uppercase tracking-wide" set:html={item.q} />
+              <div class="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-open:rotate-45 transition-transform duration-300">
+                <iconify-icon icon="solar:add-circle-linear" class="text-[#E8C76A]" />
+              </div>
+            </summary>
+            <div class="px-6 pb-6 text-sm md:text-base text-[#F2EFEA]/80 font-light leading-relaxed" set:html={item.a} />
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
