@@ -73,16 +73,21 @@ export async function onRequestPost({ request, env }) {
     }
 
     let emailErrors = [];
-    if (env.RESEND_API_KEY) {
+    if (!env.RESEND_API_KEY) {
+      emailErrors.push({ error: 'RESEND_API_KEY non configuré dans env' });
+    } else {
       for (const b of billetsCrees) {
         const emailDest = b.email_personne || emailCommande;
-        if (!emailDest) continue;
+        if (!emailDest) {
+          emailErrors.push({ billet: b.Id, error: 'Pas d\'email destinataire' });
+          continue;
+        }
         try {
           const pdfBase64 = await generateTicketPDF(b);
           await sendTicketEmail(env, emailDest, b, pdfBase64);
           await nocodbPatch(env, env.NOCODB_TABLE_BILLETS, b.Id, { email_envoye: true });
         } catch (e) {
-          emailErrors.push({ billet: b.Id, error: e.message });
+          emailErrors.push({ billet: b.Id, error: e.message, email: emailDest });
         }
       }
     }
