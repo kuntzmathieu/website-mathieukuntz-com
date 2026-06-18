@@ -1,4 +1,6 @@
 import { stripeRequest, nocodbPost, nocodbGet, nocodbPatch, jsonResponse, errorResponse } from './_lib.js';
+import { generateTicketPDF } from './_pdf.js';
+import { sendTicketEmail } from './_email.js';
 
 export async function onRequestPost({ request, env }) {
   try {
@@ -70,26 +72,17 @@ export async function onRequestPost({ request, env }) {
       } catch (e) { }
     }
 
-    if (env.N8N_WEBHOOK_URL) {
-      const hasEmail = billetsCrees.some(b => b.email_personne) || emailCommande;
-      if (hasEmail) {
+    if (env.RESEND_API_KEY) {
+      for (const b of billetsCrees) {
+        const emailDest = b.email_personne || emailCommande;
+        if (!emailDest) continue;
         try {
-          await fetch(env.N8N_WEBHOOK_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              commande_id: commandeId,
-              email_commande: emailCommande,
-              billets: billetsCrees.map(b => ({
-                numero: b.numero_billet,
-                type: b.type,
-                nom: b.nom,
-                prenom: b.prenom,
-                email_personne: b.email_personne || emailCommande,
-              })),
-            }),
-          });
-        } catch (e) { }
+          const pdfBase64 = await generateTicketPDF(b);
+          await sendTicketEmail(env, emailDest, b, pdfBase64);
+          await nocodbPatch(env, env.NOCODB_TABLE_BILLETS, b.Id, { email_envoye: true });
+        } catch (e) {
+          console.error('Email envoi échoué pour billet', b.Id, e.message);
+        }
       }
     }
 
