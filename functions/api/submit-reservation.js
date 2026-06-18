@@ -72,6 +72,7 @@ export async function onRequestPost({ request, env }) {
       } catch (e) { }
     }
 
+    let emailErrors = [];
     if (env.RESEND_API_KEY) {
       for (const b of billetsCrees) {
         const emailDest = b.email_personne || emailCommande;
@@ -81,12 +82,12 @@ export async function onRequestPost({ request, env }) {
           await sendTicketEmail(env, emailDest, b, pdfBase64);
           await nocodbPatch(env, env.NOCODB_TABLE_BILLETS, b.Id, { email_envoye: true });
         } catch (e) {
-          console.error('Email envoi échoué pour billet', b.Id, e.message);
+          emailErrors.push({ billet: b.Id, error: e.message });
         }
       }
     }
 
-    return jsonResponse({ success: true, commande_id: commandeId, billets: billetsCrees });
+    return jsonResponse({ success: true, commande_id: commandeId, billets: billetsCrees, email_errors: emailErrors });
   } catch (err) {
     return errorResponse(err.message, 500);
   }
