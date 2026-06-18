@@ -66,17 +66,22 @@
       </div>
     </div>
     <div class="lg:col-span-5 w-full max-w-lg mx-auto lg:mx-0 h-full min-h-[450px] flex">
-      <div onclick="this.innerHTML = '<iframe class=\'absolute inset-0 w-full h-full rounded-2xl\' src=\'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1\' frameborder=\'0\' allow=\'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\' allowfullscreen></iframe>'; this.removeAttribute('onclick');" class="relative w-full rounded-2xl overflow-hidden bg-black/40 border border-white/10 flex flex-col justify-between p-6 group hover:border-[#E8C76A]/40 transition-all duration-300 cursor-pointer min-h-[450px]">
-        <div class="absolute inset-0 bg-cover bg-center opacity-70 transition-opacity group-hover:opacity-80" style="background-image: url('https://images.unsplash.com/photo-1518156677180-95a2893f3e9f?q=80&w=800&auto=format&fit=crop');"></div>
-        <span class="z-10 self-start px-3 py-1.5 bg-black/70 border border-white/10 rounded-md text-xs font-semibold uppercase tracking-wider text-[#E8C76A] flex items-center gap-1.5">
-          <iconify-icon icon="solar:videocamera-record-bold" class="text-red-500 animate-pulse"></iconify-icon>
-          Teaser Vidéo
-        </span>
-        <div class="absolute inset-0 flex items-center justify-center z-10">
-          <div class="w-16 h-16 rounded-full bg-[#E8C76A] text-[#0A0A14] flex items-center justify-center shadow-lg shadow-[#E8C76A]/20 group-hover:scale-110 transition-transform duration-300">
-            <iconify-icon icon="solar:play-bold" class="text-2xl ml-1"></iconify-icon>
-          </div>
-        </div>
+      <div class="relative w-full rounded-2xl overflow-hidden bg-black/40 border border-white/10 flex flex-col justify-between group hover:border-[#E8C76A]/40 transition-all duration-300 min-h-[450px]">
+        <video id="prince-hero-video" class="absolute inset-0 w-full h-full rounded-2xl object-cover hidden" controls playsinline preload="metadata" poster="/teaser-prince-cover.png">
+          <source src="/teaser-prince-vertical.mp4" type="video/mp4" />
+        </video>
+        <button id="prince-hero-video-button" type="button" class="absolute inset-0 p-6 flex flex-col justify-between text-left cursor-pointer" aria-label="Lire le teaser vidéo Prince">
+          <img src="/teaser-prince-cover.png" alt="Teaser vidéo Prince" class="absolute inset-0 w-full h-full object-cover opacity-80 transition-opacity group-hover:opacity-90" loading="eager" />
+          <span class="z-10 self-start px-3 py-1.5 bg-black/70 border border-white/10 rounded-md text-xs font-semibold uppercase tracking-wider text-[#E8C76A] flex items-center gap-1.5">
+            <iconify-icon icon="solar:videocamera-record-bold" class="text-red-500 animate-pulse"></iconify-icon>
+            Teaser Vidéo
+          </span>
+          <span class="absolute inset-0 flex items-center justify-center z-10">
+            <span class="w-16 h-16 rounded-full bg-[#E8C76A] text-[#0A0A14] flex items-center justify-center shadow-lg shadow-[#E8C76A]/20 group-hover:scale-110 transition-transform duration-300">
+              <iconify-icon icon="solar:play-bold" class="text-2xl ml-1"></iconify-icon>
+            </span>
+          </span>
+        </button>
       </div>
     </div>
   </div>
@@ -91,3 +96,16 @@
     </div>
   </div>
 </header>
+
+<script>
+  const princeHeroVideo = document.getElementById('prince-hero-video');
+  const princeHeroVideoButton = document.getElementById('prince-hero-video-button');
+
+  if (princeHeroVideo instanceof HTMLVideoElement && princeHeroVideoButton instanceof HTMLButtonElement) {
+    princeHeroVideoButton.addEventListener('click', () => {
+      princeHeroVideoButton.classList.add('hidden');
+      princeHeroVideo.classList.remove('hidden');
+      princeHeroVideo.play().catch(() => {});
+    });
+  }
+</script>
