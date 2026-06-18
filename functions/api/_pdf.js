@@ -82,7 +82,7 @@ export async function generateTicketPDF(billet) {
   page.drawText('Salle polyvalente', {
     x: 30, y: 215, size: 11, font: font, color: WHITE,
   });
-  page.drawText('Louis Maisonat', {
+  page.drawText('Louis Maisonnat', {
     x: 30, y: 200, size: 11, font: font, color: WHITE,
   });
   page.drawText('43 Rue du 19 Mars 1962', {
@@ -127,6 +127,9 @@ export async function generateTicketPDF(billet) {
   });
   page.drawText('Présentez ce billet à l\'entrée', {
     x: 30, y: 20, size: 8, font: font, color: MUTED,
+  });
+  page.drawText('(numérique ou papier)', {
+    x: 30, y: 8, size: 8, font: font, color: MUTED,
   });
 
   return pdf.saveAsBase64({ dataUri: false });

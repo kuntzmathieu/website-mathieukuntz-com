@@ -12,7 +12,7 @@ export async function sendTicketEmail(env, toEmail, billet, pdfBase64) {
   <div style="max-width:560px;margin:0 auto;padding:40px 24px;">
     <div style="text-align:center;margin-bottom:32px;">
       <h1 style="color:#E8C76A;font-size:28px;letter-spacing:4px;margin:0;font-weight:700;">PRINCE</h1>
-      <p style="color:#F2EFEA;font-size:14px;opacity:0.6;margin:4px 0 0 0;">11 juillet 2026 · 20h · Salle polyvalente Louis Maisonat, Vif</p>
+      <p style="color:#F2EFEA;font-size:14px;opacity:0.6;margin:4px 0 0 0;">11 juillet 2026 · 20h · Salle polyvalente Louis Maisonnat, Vif</p>
     </div>
 
     <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(232,199,106,0.2);border-radius:16px;padding:32px;margin-bottom:24px;">
@@ -32,7 +32,7 @@ export async function sendTicketEmail(env, toEmail, billet, pdfBase64) {
 
       <div style="background:rgba(0,0,0,0.3);border-radius:12px;padding:20px;margin-bottom:24px;">
         <p style="color:#E8C76A;font-size:11px;letter-spacing:2px;margin:0 0 8px 0;">LIEU</p>
-        <p style="color:#F2EFEA;font-size:14px;margin:0 0 4px 0;">Salle polyvalente Louis Maisonat</p>
+        <p style="color:#F2EFEA;font-size:14px;margin:0 0 4px 0;">Salle polyvalente Louis Maisonnat</p>
         <p style="color:#F2EFEA;font-size:13px;opacity:0.6;margin:0 0 4px 0;">43 Rue du 19 Mars 1962</p>
         <p style="color:#F2EFEA;font-size:13px;opacity:0.6;margin:0;">38450 Vif</p>
       </div>
@@ -58,12 +58,12 @@ export async function sendTicketEmail(env, toEmail, billet, pdfBase64) {
       </div>
 
       <p style="color:#F2EFEA;font-size:14px;line-height:1.6;opacity:0.7;margin:0;">
-        Le billet PDF est joint à cet email. Conservez-le précieusement.
+        Le billet PDF est joint à cet email. Présentez-le à l'entrée (en numérique ou papier). Conservez-le précieusement.
       </p>
     </div>
 
     <p style="color:#F2EFEA;font-size:12px;opacity:0.4;text-align:center;line-height:1.6;margin:0;">
-      Questions ? Répondez à cet email ou écrivez à mk@mathieukuntz.org
+      Questions ? Répondez à cet email, écrivez à mk@mathieukuntz.org ou appelez le 06 44 09 25 60.
     </p>
   </div>
 </body>
