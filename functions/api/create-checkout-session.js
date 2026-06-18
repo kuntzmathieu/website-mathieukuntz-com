@@ -67,7 +67,7 @@ export async function onRequestPost({ request, env }) {
     }, {});
 
     const origin = new URL(request.url).origin;
-    const session = await stripeRequest('POST', '/v1/checkout/sessions', {
+    const session = await stripeRequest('POST', '/checkout/sessions', {
       mode: 'payment',
       'ui_mode': 'embedded',
       'line_items': lineItems,

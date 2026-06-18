@@ -6,7 +6,7 @@ export async function onRequestGet({ request, env }) {
     const sessionId = url.searchParams.get('session_id');
     if (!sessionId) return errorResponse('session_id manquant', 400);
 
-    const session = await stripeRequest('GET', `/v1/checkout/sessions/${sessionId}`, null, env.STRIPE_SECRET_KEY);
+    const session = await stripeRequest('GET', `/checkout/sessions/${sessionId}`, null, env.STRIPE_SECRET_KEY);
 
     return jsonResponse({
       session_id: session.id,

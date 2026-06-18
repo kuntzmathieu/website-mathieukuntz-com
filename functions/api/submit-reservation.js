@@ -9,7 +9,7 @@ export async function onRequestPost({ request, env }) {
       return errorResponse('Données manquantes', 400);
     }
 
-    const session = await stripeRequest('GET', `/v1/checkout/sessions/${session_id}`, null, env.STRIPE_SECRET_KEY);
+    const session = await stripeRequest('GET', `/checkout/sessions/${session_id}`, null, env.STRIPE_SECRET_KEY);
     if (session.payment_status !== 'paid') {
       return errorResponse('Paiement non confirmé', 400);
     }
