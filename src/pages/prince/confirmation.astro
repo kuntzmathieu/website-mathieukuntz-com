@@ -1,7 +1,5 @@
 ---
 import PrinceLayout from '../../layouts/PrinceLayout.astro';
-
-const sessionId = Astro.url.searchParams.get('session_id');
 ---
 
 <PrinceLayout
@@ -51,8 +49,8 @@ const sessionId = Astro.url.searchParams.get('session_id');
     </div>
   </section>
 
-  <script is:inline define:vars={{ sessionId }}>
-    const SESSION_ID = sessionId;
+  <script is:inline>
+    const SESSION_ID = new URLSearchParams(window.location.search).get('session_id');
 
     function billetField(index, type, prix) {
       const typeLabel = { 'plein tarif': 'Plein tarif', 'tarif réduit': 'Tarif réduit', 'invitation': 'Invitation', 'custom': 'Prix custom' }[type] || type;
