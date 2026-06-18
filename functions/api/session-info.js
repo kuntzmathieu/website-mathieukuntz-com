@@ -1,15 +1,12 @@
-import Stripe from 'stripe';
-import { jsonResponse, errorResponse } from './_lib.js';
+import { stripeRequest, jsonResponse, errorResponse } from './_lib.js';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-
-export async function onRequestGet({ request }) {
+export async function onRequestGet({ request, env }) {
   try {
     const url = new URL(request.url);
     const sessionId = url.searchParams.get('session_id');
     if (!sessionId) return errorResponse('session_id manquant', 400);
 
-    const session = await stripe.checkout.sessions.retrieve(sessionId);
+    const session = await stripeRequest('GET', `/v1/checkout/sessions/${sessionId}`, null, env.STRIPE_SECRET_KEY);
 
     return jsonResponse({
       session_id: session.id,

@@ -1,9 +1,6 @@
 import { nocodbGet, jsonResponse, errorResponse } from './_lib.js';
 
-const TABLE_PROMO = process.env.NOCODB_TABLE_PROMO;
-const TABLE_TARIFS = process.env.NOCODB_TABLE_TARIFS;
-
-export async function onRequestPost({ request }) {
+export async function onRequestPost({ request, env }) {
   try {
     const body = await request.json();
     const code = (body.code || '').trim().toUpperCase();
@@ -12,7 +9,7 @@ export async function onRequestPost({ request }) {
 
     if (!code) return errorResponse('Code manquant', 400);
 
-    const data = await nocodbGet(TABLE_PROMO, { where: `(code,eq,${code})` });
+    const data = await nocodbGet(env, env.NOCODB_TABLE_PROMO, { where: `(code,eq,${code})` });
     const promo = (data.list || [])[0];
 
     if (!promo) return errorResponse('Code invalide', 404);
@@ -24,7 +21,7 @@ export async function onRequestPost({ request }) {
       return errorResponse('Code épuisé', 400);
     }
 
-    const tarifsData = await nocodbGet(TABLE_TARIFS);
+    const tarifsData = await nocodbGet(env, env.NOCODB_TABLE_TARIFS);
     const list = tarifsData.list || [];
     const prixPlein = (list.find(r => r.nom === 'plein tarif') || {}).prix_en_ligne || 19;
     const prixReduit = (list.find(r => r.nom === 'tarif réduit') || {}).prix_en_ligne || 14;

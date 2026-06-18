@@ -1,13 +1,6 @@
-import Stripe from 'stripe';
-import { nocodbPost, nocodbGet, nocodbPatch, jsonResponse, errorResponse } from './_lib.js';
+import { stripeRequest, nocodbPost, nocodbGet, nocodbPatch, jsonResponse, errorResponse } from './_lib.js';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-const TABLE_COMMANDES = process.env.NOCODB_TABLE_COMMANDES;
-const TABLE_BILLETS = process.env.NOCODB_TABLE_BILLETS;
-const TABLE_PROMO = process.env.NOCODB_TABLE_PROMO;
-const N8N_WEBHOOK_URL = process.env.N8N_WEBHOOK_URL;
-
-export async function onRequestPost({ request }) {
+export async function onRequestPost({ request, env }) {
   try {
     const body = await request.json();
     const { session_id, billets: billetsData } = body;
@@ -16,7 +9,7 @@ export async function onRequestPost({ request }) {
       return errorResponse('Données manquantes', 400);
     }
 
-    const session = await stripe.checkout.sessions.retrieve(session_id);
+    const session = await stripeRequest('GET', `/v1/checkout/sessions/${session_id}`, null, env.STRIPE_SECRET_KEY);
     if (session.payment_status !== 'paid') {
       return errorResponse('Paiement non confirmé', 400);
     }
@@ -26,10 +19,9 @@ export async function onRequestPost({ request }) {
     const montantTotal = parseFloat(meta.montant_total) || session.amount_total / 100;
     const montantAvant = parseFloat(meta.montant_avant) || montantTotal;
     const codePromo = meta.code_promo || '';
-
     const counts = JSON.parse(meta.billet_types || '{}');
 
-    const commande = await nocodbPost(TABLE_COMMANDES, {
+    const commande = await nocodbPost(env, env.NOCODB_TABLE_COMMANDES, {
       stripe_session_id: session_id,
       email_commande: emailCommande,
       date_commande: new Date().toISOString(),
@@ -50,7 +42,7 @@ export async function onRequestPost({ request }) {
       if (!b.nom || !b.prenom || !b.annee_naissance) {
         return errorResponse('Champs obligatoires manquants pour un billet', 400);
       }
-      const billet = await nocodbPost(TABLE_BILLETS, {
+      const billet = await nocodbPost(env, env.NOCODB_TABLE_BILLETS, {
         numero_billet: 'temp',
         type: b.type,
         prix_paye: b.prix_paye,
@@ -64,25 +56,25 @@ export async function onRequestPost({ request }) {
         commande: commandeId,
       });
       const numero = `PRINCE110726VIF-${String(billet.Id).padStart(4, '0')}`;
-      await nocodbPatch(TABLE_BILLETS, billet.Id, { numero_billet: numero });
+      await nocodbPatch(env, env.NOCODB_TABLE_BILLETS, billet.Id, { numero_billet: numero });
       billetsCrees.push({ ...billet, numero_billet: numero });
     }
 
     if (codePromo) {
       try {
-        const promoData = await nocodbGet(TABLE_PROMO, { where: `(code,eq,${codePromo})` });
+        const promoData = await nocodbGet(env, env.NOCODB_TABLE_PROMO, { where: `(code,eq,${codePromo})` });
         const promo = (promoData.list || [])[0];
         if (promo) {
-          await nocodbPatch(TABLE_PROMO, promo.Id, { utilisations: (promo.utilisations || 0) + 1 });
+          await nocodbPatch(env, env.NOCODB_TABLE_PROMO, promo.Id, { utilisations: (promo.utilisations || 0) + 1 });
         }
       } catch (e) { }
     }
 
-    if (N8N_WEBHOOK_URL) {
+    if (env.N8N_WEBHOOK_URL) {
       const hasEmail = billetsCrees.some(b => b.email_personne) || emailCommande;
       if (hasEmail) {
         try {
-          await fetch(N8N_WEBHOOK_URL, {
+          await fetch(env.N8N_WEBHOOK_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({

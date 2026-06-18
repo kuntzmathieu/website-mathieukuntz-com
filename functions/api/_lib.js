@@ -1,23 +1,55 @@
-const NOCODB_URL = process.env.NOCODB_URL;
-const NOCODB_TOKEN = process.env.NOCODB_TOKEN;
+const STRIPE_BASE = 'https://api.stripe.com/v1';
 
-async function nocodbGet(tableId, params = {}) {
-  const url = new URL(`${NOCODB_URL}/api/v2/tables/${tableId}/records`);
+async function stripeRequest(method, path, body, secretKey) {
+  const opts = {
+    method,
+    headers: {
+      'Authorization': `Bearer ${secretKey}`,
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+  };
+  if (body) {
+    const params = new URLSearchParams();
+    for (const [k, v] of Object.entries(body)) {
+      if (Array.isArray(v)) {
+        v.forEach((item, i) => {
+          if (typeof item === 'object') {
+            for (const [ik, iv] of Object.entries(item)) {
+              params.append(`${k}[${i}][${ik}]`, iv);
+            }
+          } else {
+            params.append(`${k}[${i}]`, item);
+          }
+        });
+      } else {
+        params.append(k, v);
+      }
+    }
+    opts.body = params;
+  }
+  const res = await fetch(`${STRIPE_BASE}${path}`, opts);
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error?.message || `Stripe ${res.status}`);
+  return data;
+}
+
+async function nocodbGet(env, tableId, params = {}) {
+  const url = new URL(`${env.NOCODB_URL}/api/v2/tables/${tableId}/records`);
   for (const [k, v] of Object.entries(params)) {
     url.searchParams.set(k, v);
   }
   const res = await fetch(url, {
-    headers: { 'xc-token': NOCODB_TOKEN },
+    headers: { 'xc-token': env.NOCODB_TOKEN },
   });
   if (!res.ok) throw new Error(`NocoDB GET ${tableId}: ${res.status}`);
   return res.json();
 }
 
-async function nocodbPost(tableId, body) {
-  const res = await fetch(`${NOCODB_URL}/api/v2/tables/${tableId}/records`, {
+async function nocodbPost(env, tableId, body) {
+  const res = await fetch(`${env.NOCODB_URL}/api/v2/tables/${tableId}/records`, {
     method: 'POST',
     headers: {
-      'xc-token': NOCODB_TOKEN,
+      'xc-token': env.NOCODB_TOKEN,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(body),
@@ -26,11 +58,11 @@ async function nocodbPost(tableId, body) {
   return res.json();
 }
 
-async function nocodbPatch(tableId, recordId, body) {
-  const res = await fetch(`${NOCODB_URL}/api/v2/tables/${tableId}/records`, {
+async function nocodbPatch(env, tableId, recordId, body) {
+  const res = await fetch(`${env.NOCODB_URL}/api/v2/tables/${tableId}/records`, {
     method: 'PATCH',
     headers: {
-      'xc-token': NOCODB_TOKEN,
+      'xc-token': env.NOCODB_TOKEN,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ Id: recordId, ...body }),
@@ -50,4 +82,4 @@ function errorResponse(message, status = 400) {
   return jsonResponse({ error: message }, status);
 }
 
-export { nocodbGet, nocodbPost, nocodbPatch, jsonResponse, errorResponse };
+export { stripeRequest, nocodbGet, nocodbPost, nocodbPatch, jsonResponse, errorResponse };
