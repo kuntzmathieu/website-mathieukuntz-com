@@ -119,8 +119,8 @@ export async function generateTicketPDF(billet) {
   page.drawText('Buvette et snack sur place', {
     x: 30, y: 68, size: 8, font: font, color: MUTED,
   });
-  page.drawText('au profit de l\'association XXX', {
-    x: 30, y: 55, size: 8, font: font, color: MUTED,
+  page.drawText('au profit de l\'association Histoire 2 Gazelles', {
+    x: 30, y: 55, size: 7, font: font, color: MUTED,
   });
   page.drawText('Parking gratuit sur place', {
     x: 30, y: 38, size: 8, font: font, color: MUTED,

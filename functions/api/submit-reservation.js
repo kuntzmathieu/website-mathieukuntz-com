@@ -101,7 +101,7 @@ export async function onRequestPost({ request, env }) {
       }
     }
 
-    return jsonResponse({ success: true, commande_id: commandeId, billets: billetsCrees, email_errors: emailErrors });
+    return jsonResponse({ success: true, commande_id: commandeId, montant_total: montantTotal, billets: billetsCrees, email_errors: emailErrors });
   } catch (err) {
     return errorResponse(err.message, 500);
   }

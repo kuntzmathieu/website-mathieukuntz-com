@@ -50,7 +50,7 @@ export async function sendTicketEmail(env, toEmail, billet, pdfBase64) {
       <div style="background:rgba(0,0,0,0.3);border-radius:12px;padding:20px;margin-bottom:24px;">
         <p style="color:#E8C76A;font-size:11px;letter-spacing:2px;margin:0 0 8px 0;">SUR PLACE</p>
         <p style="color:#F2EFEA;font-size:13px;opacity:0.85;line-height:1.6;margin:0 0 8px 0;">
-          Buvette et snack disponibles avant et après le spectacle, au profit de l'association XXX.
+          Buvette et snack disponibles avant et après le spectacle, au profit de l'association Histoire 2 Gazelles.
         </p>
         <p style="color:#F2EFEA;font-size:13px;opacity:0.85;line-height:1.6;margin:0;">
           Parking gratuit sur place.
@@ -73,7 +73,7 @@ export async function sendTicketEmail(env, toEmail, billet, pdfBase64) {
     from: 'PRINCE <billets@mathieukuntz.com>',
     to: [toEmail],
     reply_to: 'mk@mathieukuntz.org',
-    subject: `Votre billet — PRINCE · ${billet.numero_billet}`,
+    subject: `Votre billet - PRINCE · ${billet.numero_billet}`,
     html,
     attachments: [{
       filename: `billet-${billet.numero_billet}.pdf`,

@@ -1,0 +1,199 @@
+---
+import PrinceLayout from '../../layouts/PrinceLayout.astro';
+---
+
+<PrinceLayout
+  title="Vente admin - PRINCE | Mathieu Kuntz"
+  description="Créer des billets manuellement pour PRINCE."
+>
+  <section class="py-20 px-6 md:px-12 min-h-screen">
+    <div class="max-w-5xl mx-auto space-y-8">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div class="space-y-3">
+          <span class="text-sm uppercase tracking-widest text-[#E8C76A] font-bold">Admin</span>
+          <h1 class="text-4xl md:text-6xl font-serif tracking-tight text-[#F2EFEA]">Vente manuelle</h1>
+          <p class="text-[#F2EFEA]/70 font-light max-w-2xl">Créez des billets pour les ventes sur place, par téléphone, invitations ou paiements hors Stripe.</p>
+        </div>
+        <div class="flex gap-3">
+          <a href="/prince/admin-checkin" class="px-5 py-3 rounded-full border border-white/10 text-xs uppercase tracking-widest text-[#F2EFEA] hover:border-[#E8C76A]/40 hover:bg-white/5 transition-all">Check-in</a>
+          <a href="/prince/admin-login" class="px-5 py-3 rounded-full border border-white/10 text-xs uppercase tracking-widest text-[#E8C76A] hover:border-[#E8C76A]/40 hover:bg-white/5 transition-all">Login</a>
+        </div>
+      </div>
+
+      <form id="sale-form" class="rounded-2xl bg-white/[0.03] border border-white/10 p-6 md:p-8 space-y-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+            <label class="text-xs uppercase tracking-widest text-white/50 block mb-2">Email commande</label>
+            <input name="email_commande" type="email" placeholder="optionnel" class="w-full px-4 py-3 bg-white/[0.02] border border-white/10 rounded-lg text-[#F2EFEA] outline-none focus:border-[#E8C76A]/40 transition-colors" />
+          </div>
+          <div>
+            <label class="text-xs uppercase tracking-widest text-white/50 block mb-2">Paiement</label>
+            <select name="paiement" class="w-full px-4 py-3 bg-[#0A0A14] border border-white/10 rounded-lg text-[#F2EFEA] outline-none focus:border-[#E8C76A]/40 transition-colors">
+              <option value="espèces">Espèces</option>
+              <option value="carte">Carte</option>
+              <option value="virement">Virement</option>
+              <option value="invitation">Invitation</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-xs uppercase tracking-widest text-white/50 block mb-2">Canal</label>
+            <select name="canal_vente" class="w-full px-4 py-3 bg-[#0A0A14] border border-white/10 rounded-lg text-[#F2EFEA] outline-none focus:border-[#E8C76A]/40 transition-colors">
+              <option value="sur place">Sur place</option>
+              <option value="téléphone">Téléphone</option>
+              <option value="admin">Admin</option>
+              <option value="invitation">Invitation</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="text-xs uppercase tracking-widest text-white/50 block mb-2">Note</label>
+          <input name="note" type="text" placeholder="optionnel" class="w-full px-4 py-3 bg-white/[0.02] border border-white/10 rounded-lg text-[#F2EFEA] outline-none focus:border-[#E8C76A]/40 transition-colors" />
+        </div>
+
+        <div class="space-y-4">
+          <div class="flex items-center justify-between gap-4">
+            <h2 class="text-2xl font-serif text-[#F2EFEA]">Billets</h2>
+            <button type="button" id="add-ticket" class="px-5 py-3 rounded-full bg-white/5 border border-white/10 text-xs uppercase tracking-widest text-[#E8C76A] hover:border-[#E8C76A]/40 transition-all">Ajouter</button>
+          </div>
+          <div id="tickets" class="space-y-4"></div>
+        </div>
+
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-5 border-t border-white/10 pt-6">
+          <div>
+            <p class="text-xs uppercase tracking-widest text-white/40">Total</p>
+            <p id="sale-total" class="text-3xl font-serif text-[#E8C76A]">0€</p>
+          </div>
+          <button id="submit-sale" type="submit" class="px-10 py-5 bg-[#E8C76A] text-[#0A0A14] font-bold text-sm tracking-widest uppercase rounded-full hover:bg-white hover:scale-[1.02] transition-all duration-300 shadow-xl shadow-[#E8C76A]/20">
+            Créer les billets
+          </button>
+        </div>
+        <p id="sale-message" class="hidden text-sm"></p>
+      </form>
+    </div>
+  </section>
+
+  <script is:inline>
+    const token = localStorage.getItem('prince_admin_token') || '';
+    const tickets = document.getElementById('tickets');
+    const message = document.getElementById('sale-message');
+    let ticketCount = 0;
+
+    if (!token) window.location.href = '/prince/admin-login';
+
+    function defaultPrice(type) {
+      if (type === 'plein tarif') return 20;
+      if (type === 'tarif réduit') return 15;
+      return 0;
+    }
+
+    function updateTotal() {
+      const total = [...tickets.querySelectorAll('[data-price]')].reduce((sum, input) => sum + (parseFloat(input.value) || 0), 0);
+      document.getElementById('sale-total').textContent = `${total}€`;
+    }
+
+    function addTicket() {
+      const index = ticketCount++;
+      const wrapper = document.createElement('div');
+      wrapper.className = 'p-5 rounded-2xl bg-white/[0.02] border border-white/10 space-y-4';
+      wrapper.dataset.ticket = String(index);
+      wrapper.innerHTML = `
+        <div class="flex items-center justify-between gap-4">
+          <h3 class="text-xl font-serif text-[#E8C76A]">Billet ${index + 1}</h3>
+          <button type="button" data-remove class="text-xs uppercase tracking-widest text-red-400 hover:text-red-300">Retirer</button>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+            <label class="text-xs uppercase tracking-widest text-white/50 block mb-2">Type</label>
+            <select data-type class="w-full px-4 py-3 bg-[#0A0A14] border border-white/10 rounded-lg text-[#F2EFEA] outline-none focus:border-[#E8C76A]/40 transition-colors">
+              <option value="plein tarif">Plein tarif</option>
+              <option value="tarif réduit">Tarif réduit</option>
+              <option value="invitation">Invitation</option>
+              <option value="custom">Prix custom</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-xs uppercase tracking-widest text-white/50 block mb-2">Prix payé</label>
+            <input data-price type="number" min="0" step="0.01" value="20" class="w-full px-4 py-3 bg-white/[0.02] border border-white/10 rounded-lg text-[#F2EFEA] outline-none focus:border-[#E8C76A]/40 transition-colors" />
+          </div>
+          <div>
+            <label class="text-xs uppercase tracking-widest text-white/50 block mb-2">Année naissance *</label>
+            <input data-annee type="text" required maxlength="4" pattern="[0-9]{4}" class="w-full px-4 py-3 bg-white/[0.02] border border-white/10 rounded-lg text-[#F2EFEA] outline-none focus:border-[#E8C76A]/40 transition-colors" />
+          </div>
+          <div>
+            <label class="text-xs uppercase tracking-widest text-white/50 block mb-2">Prénom *</label>
+            <input data-prenom type="text" required class="w-full px-4 py-3 bg-white/[0.02] border border-white/10 rounded-lg text-[#F2EFEA] outline-none focus:border-[#E8C76A]/40 transition-colors" />
+          </div>
+          <div>
+            <label class="text-xs uppercase tracking-widest text-white/50 block mb-2">Nom *</label>
+            <input data-nom type="text" required class="w-full px-4 py-3 bg-white/[0.02] border border-white/10 rounded-lg text-[#F2EFEA] outline-none focus:border-[#E8C76A]/40 transition-colors" />
+          </div>
+          <div>
+            <label class="text-xs uppercase tracking-widest text-white/50 block mb-2">Email billet</label>
+            <input data-email type="email" placeholder="optionnel" class="w-full px-4 py-3 bg-white/[0.02] border border-white/10 rounded-lg text-[#F2EFEA] outline-none focus:border-[#E8C76A]/40 transition-colors" />
+          </div>
+        </div>`;
+      tickets.appendChild(wrapper);
+      wrapper.querySelector('[data-remove]').addEventListener('click', () => {
+        wrapper.remove();
+        updateTotal();
+      });
+      wrapper.querySelector('[data-type]').addEventListener('change', (event) => {
+        wrapper.querySelector('[data-price]').value = defaultPrice(event.target.value);
+        updateTotal();
+      });
+      wrapper.querySelector('[data-price]').addEventListener('input', updateTotal);
+      updateTotal();
+    }
+
+    document.getElementById('add-ticket').addEventListener('click', addTicket);
+    addTicket();
+
+    document.getElementById('sale-form').addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const button = document.getElementById('submit-sale');
+      const form = event.target;
+      const billets = [...tickets.querySelectorAll('[data-ticket]')].map((node) => ({
+        type: node.querySelector('[data-type]').value,
+        prix_paye: parseFloat(node.querySelector('[data-price]').value) || 0,
+        prenom: node.querySelector('[data-prenom]').value.trim(),
+        nom: node.querySelector('[data-nom]').value.trim(),
+        annee_naissance: node.querySelector('[data-annee]').value.trim(),
+        email_personne: node.querySelector('[data-email]').value.trim(),
+      }));
+      button.disabled = true;
+      button.textContent = 'Création...';
+      message.classList.remove('hidden');
+      message.className = 'text-sm text-white/50';
+      message.textContent = 'Création des billets...';
+      try {
+        const res = await fetch('/api/admin/create-sale', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+          body: JSON.stringify({
+            email_commande: form.email_commande.value.trim(),
+            paiement: form.paiement.value,
+            canal_vente: form.canal_vente.value,
+            note: form.note.value.trim(),
+            billets,
+          }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Erreur');
+        message.className = 'text-sm text-[#E8C76A]';
+        message.textContent = `${data.billets.length} billet(s) créé(s) : ${data.billets.map(b => b.numero_billet).join(', ')}`;
+        form.reset();
+        tickets.innerHTML = '';
+        ticketCount = 0;
+        addTicket();
+      } catch (err) {
+        message.className = 'text-sm text-red-400';
+        message.textContent = err.message;
+      } finally {
+        button.disabled = false;
+        button.textContent = 'Créer les billets';
+      }
+    });
+  </script>
+</PrinceLayout>

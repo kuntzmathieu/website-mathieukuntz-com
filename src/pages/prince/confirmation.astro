@@ -24,7 +24,7 @@ import PrinceLayout from '../../layouts/PrinceLayout.astro';
           <p class="text-base md:text-lg text-[#F2EFEA]/85 font-light leading-relaxed">
             Pour chaque place, indiquez le nom, prénom et année de naissance du
             participant. L'email sert à envoyer son billet à chaque personne
-            (pas de spam, promis 😉).
+            (pas de spam, promis).
           </p>
           <p id="order-info" class="text-base text-white/60 font-light"></p>
         </div>
@@ -147,6 +147,9 @@ import PrinceLayout from '../../layouts/PrinceLayout.astro';
 
             if (sdata.email_errors && sdata.email_errors.length > 0) {
               alert('Billets enregistrés mais erreur envoi email: ' + sdata.email_errors.map(e => e.error).join(', '));
+            }
+            if (window.fbq) {
+              window.fbq('track', 'Purchase', { currency: 'EUR', value: sdata.montant_total || 0 });
             }
             window.location.href = '/prince/merci';
           } catch (err) {

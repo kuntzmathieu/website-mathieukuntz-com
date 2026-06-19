@@ -162,6 +162,9 @@
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Erreur');
+      if (window.fbq) {
+        window.fbq('track', 'InitiateCheckout', { currency: 'EUR', value: data.montant_total || 0 });
+      }
       const s = await loadStripeScript();
       const checkout = await s.initEmbeddedCheckout({
         clientSecret: data.clientSecret,
