@@ -28,6 +28,7 @@ export async function onRequestGet({ request, env }) {
         ...b,
         paiement_commande: cmd.paiement || '',
         canal_vente_commande: cmd.canal_vente || '',
+        note_commande: cmd.note || '',
       };
     });
 

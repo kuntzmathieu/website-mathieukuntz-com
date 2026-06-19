@@ -37,7 +37,7 @@ export async function onRequestPost({ request, env }) {
       nb_custom: counts['custom'] || 0,
       paiement: body.paiement || 'admin',
       canal_vente: body.canal_vente || 'admin',
-      code_promo_utilise: body.note || '',
+      note: body.note || '',
     });
     const commandeId = commande.Id;
 

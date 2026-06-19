@@ -18,7 +18,7 @@ export async function onRequestPost({ request, env }) {
 
     const patchBody = {};
     if (paiement) patchBody.paiement = paiement;
-    if (typeof note === 'string') patchBody.code_promo_utilise = note;
+    if (typeof note === 'string') patchBody.note = note;
     if (Object.keys(patchBody).length === 0) return errorResponse('Rien à mettre à jour', 400);
 
     await nocodbPatch(env, env.NOCODB_TABLE_COMMANDES, commande_id, patchBody);
@@ -54,8 +54,8 @@ export async function onRequestPost({ request, env }) {
       commande_id,
       ancien_paiement: prev.paiement,
       nouveau_paiement: paiement || prev.paiement,
-      ancienne_note: prev.code_promo_utilise,
-      nouvelle_note: typeof note === 'string' ? note : prev.code_promo_utilise,
+      ancienne_note: prev.note || '',
+      nouvelle_note: typeof note === 'string' ? note : (prev.note || ''),
       emails_sent: emailsSent,
       email_errors: emailErrors,
     });
