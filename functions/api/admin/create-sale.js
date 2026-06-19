@@ -75,7 +75,8 @@ export async function onRequestPost({ request, env }) {
       billetsCrees.push(billetComplet);
 
       const emailDest = billetComplet.email_personne || emailCommande;
-      if (emailDest && env.RESEND_API_KEY) {
+      const shouldSendEmail = emailDest && env.RESEND_API_KEY && (body.paiement || 'espèces') !== 'à encaisser';
+      if (shouldSendEmail) {
         try {
           const pdfBase64 = await generateTicketPDF(billetComplet);
           await sendTicketEmail(env, emailDest, billetComplet, pdfBase64);

@@ -69,6 +69,15 @@ import PrinceLayout from '../../layouts/PrinceLayout.astro';
         </div>
         <p id="sale-message" class="hidden text-sm"></p>
       </form>
+
+      <div class="rounded-2xl bg-white/[0.03] border border-white/10 p-6 md:p-8 space-y-6">
+        <div>
+          <h2 class="text-2xl font-serif text-[#F2EFEA]">Commandes non réglées</h2>
+          <p class="text-sm text-white/50 font-light mt-1">Mettez à jour le paiement quand une commande "à encaisser" est réglée. L'email du billet sera envoyé automatiquement.</p>
+        </div>
+        <div id="unpaid-list" class="space-y-3"></div>
+        <p id="unpaid-message" class="hidden text-sm"></p>
+      </div>
     </div>
   </section>
 
@@ -193,5 +202,79 @@ import PrinceLayout from '../../layouts/PrinceLayout.astro';
         button.textContent = 'Créer les billets';
       }
     });
+
+    const unpaidList = document.getElementById('unpaid-list');
+    const unpaidMessage = document.getElementById('unpaid-message');
+
+    async function loadUnpaid() {
+      try {
+        const res = await fetch('/api/admin/list-billets', { headers: { Authorization: `Bearer ${token}` } });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Erreur');
+        const unpaid = (data.billets || []).filter(b => b.paiement_commande === 'à encaisser');
+        if (unpaid.length === 0) {
+          unpaidList.innerHTML = '<p class="text-white/40 font-light">Aucune commande non réglée.</p>';
+          return;
+        }
+        const byCommande = {};
+        for (const b of unpaid) {
+          const cmdId = b.commande && typeof b.commande === 'object' ? b.commande.Id : b.commande;
+          if (!byCommande[cmdId]) byCommande[cmdId] = { billets: [], email: b.email_personne || '' };
+          byCommande[cmdId].billets.push(b);
+        }
+        unpaidList.innerHTML = Object.entries(byCommande).map(([cmdId, info]) => {
+          const nums = info.billets.map(b => b.numero_billet).join(', ');
+          const noms = info.billets.map(b => `${b.prenom || ''} ${b.nom || ''}`).join(', ');
+          const total = info.billets.reduce((s, b) => s + (b.prix_paye || 0), 0);
+          return `
+          <div class="p-4 rounded-xl border border-red-500/20 bg-red-500/[0.03] flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <p class="font-mono text-sm text-red-400">Commande #${cmdId} · ${total}€</p>
+              <p class="text-base font-serif text-[#F2EFEA]">${noms}</p>
+              <p class="text-xs text-white/40">${nums}</p>
+            </div>
+            <div class="flex items-center gap-3">
+              <select data-update-cmd="${cmdId}" class="px-4 py-3 bg-[#0A0A14] border border-white/10 rounded-lg text-[#F2EFEA] outline-none focus:border-[#E8C76A]/40 transition-colors">
+                <option value="">Changer le paiement...</option>
+                <option value="espèces">Espèces</option>
+                <option value="chèque">Chèque</option>
+                <option value="virement">Virement</option>
+                <option value="invitation">Invitation</option>
+              </select>
+            </div>
+          </div>`;
+        }).join('');
+        unpaidList.querySelectorAll('[data-update-cmd]').forEach((select) => {
+          select.addEventListener('change', () => updateCommande(select.dataset.updateCmd, select.value));
+        });
+      } catch (err) {
+        unpaidList.innerHTML = `<p class="text-red-400">${err.message}</p>`;
+      }
+    }
+
+    async function updateCommande(cmdId, paiement) {
+      if (!paiement) return;
+      unpaidMessage.classList.remove('hidden');
+      unpaidMessage.className = 'text-sm text-white/50';
+      unpaidMessage.textContent = 'Mise à jour...';
+      try {
+        const res = await fetch('/api/admin/update-commande', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+          body: JSON.stringify({ commande_id: parseInt(cmdId), paiement }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Erreur');
+        const emailsCount = (data.emails_sent || []).length;
+        unpaidMessage.className = 'text-sm text-[#E8C76A]';
+        unpaidMessage.textContent = `Commande #${cmdId} mise à jour : ${data.ancien_paiement} -> ${data.nouveau_paiement}${emailsCount > 0 ? ` · ${emailsCount} email(s) envoyé(s)` : ''}`;
+        await loadUnpaid();
+      } catch (err) {
+        unpaidMessage.className = 'text-sm text-red-400';
+        unpaidMessage.textContent = err.message;
+      }
+    }
+
+    loadUnpaid();
   </script>
 </PrinceLayout>
