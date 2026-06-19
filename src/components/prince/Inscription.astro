@@ -1,0 +1,68 @@
+---
+
+---
+
+<section id="inscription" class="py-16 px-6 md:px-12 border-t border-white/5 relative">
+  <div class="max-w-2xl mx-auto text-center space-y-6">
+    <div class="space-y-3">
+      <span class="text-sm uppercase tracking-widest text-[#E8C76A] font-bold">
+        Pas dispo à cette date ?
+      </span>
+      <h3 class="text-2xl md:text-3xl font-serif tracking-tight text-[#F2EFEA]">
+        Soyez informé des prochaines représentations.
+      </h3>
+      <p class="text-base text-[#F2EFEA]/70 font-light">
+        Laissez votre email, on vous prévient dès qu'une nouvelle date est annoncée.
+      </p>
+    </div>
+
+    <form id="subscribe-form" class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+      <input id="subscribe-email" type="email" required placeholder="Votre email" class="flex-1 px-4 py-3.5 bg-white/[0.02] border border-white/10 rounded-full text-[#F2EFEA] placeholder-white/30 font-light outline-none focus:border-[#E8C76A]/40 transition-colors text-center sm:text-left" />
+      <button type="submit" id="subscribe-btn" class="px-6 py-3.5 bg-white/5 border border-white/10 text-[#E8C76A] font-semibold text-sm tracking-widest uppercase rounded-full hover:bg-white/10 hover:border-[#E8C76A]/40 transition-all duration-300 whitespace-nowrap">
+        Me tenir informé
+      </button>
+    </form>
+    <p id="subscribe-message" class="hidden text-sm font-light"></p>
+  </div>
+</section>
+
+<script is:inline>
+  document.getElementById('subscribe-form').addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const email = document.getElementById('subscribe-email').value.trim();
+    const btn = document.getElementById('subscribe-btn');
+    const msg = document.getElementById('subscribe-message');
+    if (!email) return;
+
+    btn.disabled = true;
+    btn.textContent = '...';
+    msg.classList.remove('hidden');
+    msg.className = 'text-sm text-white/50 font-light';
+    msg.textContent = 'Inscription...';
+
+    const leadEventId = 'lead_' + crypto.randomUUID();
+    if (window.fbq) {
+      window.fbq('track', 'Lead', { content_name: 'PRINCE - Me tenir informé' }, { eventID: leadEventId });
+    }
+
+    try {
+      const res = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, event_id: leadEventId, source: 'prince_landing' }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Erreur');
+
+      msg.className = 'text-sm text-[#E8C76A] font-light';
+      msg.textContent = data.already_subscribed ? 'Vous êtes déjà inscrit !' : 'Merci, vous serez informé des prochaines dates.';
+      document.getElementById('subscribe-email').value = '';
+    } catch (err) {
+      msg.className = 'text-sm text-red-400 font-light';
+      msg.textContent = err.message;
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Me tenir informé';
+    }
+  });
+</script>

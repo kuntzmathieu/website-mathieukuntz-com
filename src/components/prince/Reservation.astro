@@ -158,12 +158,14 @@
           plein_tarif: qty.plein,
           tarif_reduit: qty.reduit,
           code_promo: document.getElementById('promo-code').value.trim(),
+          event_id: checkoutEventId,
         }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Erreur');
+      const checkoutEventId = 'ic_' + crypto.randomUUID();
       if (window.fbq) {
-        window.fbq('track', 'InitiateCheckout', { currency: 'EUR', value: data.montant_total || 0 });
+        window.fbq('track', 'InitiateCheckout', { currency: 'EUR', value: data.montant_total || 0 }, { eventID: checkoutEventId });
       }
       const s = await loadStripeScript();
       const checkout = await s.initEmbeddedCheckout({

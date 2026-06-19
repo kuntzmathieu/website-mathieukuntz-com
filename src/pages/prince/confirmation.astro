@@ -136,11 +136,12 @@ import PrinceLayout from '../../layouts/PrinceLayout.astro';
             email_personne: e.target[`billet_${i}_email`].value,
           }));
 
+          const purchaseEventId = 'pur_' + crypto.randomUUID();
           try {
             const sres = await fetch('/api/submit-reservation', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ session_id: SESSION_ID, billets: billetsData }),
+              body: JSON.stringify({ session_id: SESSION_ID, billets: billetsData, event_id: purchaseEventId }),
             });
             const sdata = await sres.json();
             if (!sres.ok) throw new Error(sdata.error);
@@ -149,7 +150,7 @@ import PrinceLayout from '../../layouts/PrinceLayout.astro';
               alert('Billets enregistrés mais erreur envoi email: ' + sdata.email_errors.map(e => e.error).join(', '));
             }
             if (window.fbq) {
-              window.fbq('track', 'Purchase', { currency: 'EUR', value: sdata.montant_total || 0 });
+              window.fbq('track', 'Purchase', { currency: 'EUR', value: sdata.montant_total || 0 }, { eventID: purchaseEventId });
             }
             window.location.href = '/prince/merci';
           } catch (err) {
