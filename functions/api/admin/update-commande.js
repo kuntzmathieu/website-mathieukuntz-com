@@ -9,18 +9,22 @@ export async function onRequestPost({ request, env }) {
 
   try {
     const body = await request.json();
-    const { commande_id, paiement } = body;
+    const { commande_id, paiement, note } = body;
     if (!commande_id) return errorResponse('commande_id manquant', 400);
-    if (!paiement) return errorResponse('paiement manquant', 400);
 
     const prevData = await nocodbGet(env, env.NOCODB_TABLE_COMMANDES, { where: `(Id,eq,${commande_id})`, limit: 1 });
     const prev = (prevData.list || [])[0];
     if (!prev) return errorResponse('Commande introuvable', 404);
 
-    await nocodbPatch(env, env.NOCODB_TABLE_COMMANDES, commande_id, { paiement });
+    const patchBody = {};
+    if (paiement) patchBody.paiement = paiement;
+    if (typeof note === 'string') patchBody.code_promo_utilise = note;
+    if (Object.keys(patchBody).length === 0) return errorResponse('Rien à mettre à jour', 400);
+
+    await nocodbPatch(env, env.NOCODB_TABLE_COMMANDES, commande_id, patchBody);
 
     const wasUnpaid = prev.paiement === 'à encaisser';
-    const isNowPaid = paiement !== 'à encaisser';
+    const isNowPaid = paiement && paiement !== 'à encaisser';
 
     let emailsSent = [];
     let emailErrors = [];
@@ -49,7 +53,9 @@ export async function onRequestPost({ request, env }) {
       success: true,
       commande_id,
       ancien_paiement: prev.paiement,
-      nouveau_paiement: paiement,
+      nouveau_paiement: paiement || prev.paiement,
+      ancienne_note: prev.code_promo_utilise,
+      nouvelle_note: typeof note === 'string' ? note : prev.code_promo_utilise,
       emails_sent: emailsSent,
       email_errors: emailErrors,
     });

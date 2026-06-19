@@ -219,55 +219,73 @@ import PrinceLayout from '../../layouts/PrinceLayout.astro';
         const byCommande = {};
         for (const b of unpaid) {
           const cmdId = b.commande && typeof b.commande === 'object' ? b.commande.Id : b.commande;
-          if (!byCommande[cmdId]) byCommande[cmdId] = { billets: [], email: b.email_personne || '' };
+          if (!byCommande[cmdId]) byCommande[cmdId] = { billets: [] };
           byCommande[cmdId].billets.push(b);
         }
         unpaidList.innerHTML = Object.entries(byCommande).map(([cmdId, info]) => {
-          const nums = info.billets.map(b => b.numero_billet).join(', ');
-          const noms = info.billets.map(b => `${b.prenom || ''} ${b.nom || ''}`).join(', ');
           const total = info.billets.reduce((s, b) => s + (b.prix_paye || 0), 0);
+          const billetsRecap = info.billets.map(b => `<div class="flex justify-between text-xs text-white/60 py-0.5"><span class="font-mono">${b.numero_billet}</span><span>${b.prenom || ''} ${b.nom || ''}</span><span class="text-[#E8C76A]">${b.prix_paye || 0}€</span></div>`).join('');
           return `
-          <div class="p-4 rounded-xl border border-red-500/20 bg-red-500/[0.03] flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div class="p-5 rounded-xl border border-red-500/20 bg-red-500/[0.03] space-y-4" data-cmd-block="${cmdId}">
+            <div class="flex items-center justify-between">
+              <p class="font-mono text-sm text-red-400">Commande #${cmdId}</p>
+              <p class="text-lg font-serif text-[#E8C76A]">${total}€ à encaisser</p>
+            </div>
+            <div class="rounded-lg bg-black/20 p-3 space-y-1">${billetsRecap}</div>
             <div>
-              <p class="font-mono text-sm text-red-400">Commande #${cmdId} · ${total}€</p>
-              <p class="text-base font-serif text-[#F2EFEA]">${noms}</p>
-              <p class="text-xs text-white/40">${nums}</p>
+              <label class="text-[10px] uppercase tracking-widest text-white/40 block mb-1">Note</label>
+              <input data-note-cmd="${cmdId}" type="text" placeholder="Ajouter une note..." class="w-full px-3 py-2 bg-white/[0.02] border border-white/10 rounded-lg text-sm text-[#F2EFEA] outline-none focus:border-[#E8C76A]/40 transition-colors" />
             </div>
             <div class="flex items-center gap-3">
-              <select data-update-cmd="${cmdId}" class="px-4 py-3 bg-[#0A0A14] border border-white/10 rounded-lg text-[#F2EFEA] outline-none focus:border-[#E8C76A]/40 transition-colors">
+              <select data-paiement-cmd="${cmdId}" class="flex-1 px-4 py-3 bg-[#0A0A14] border border-white/10 rounded-lg text-[#F2EFEA] outline-none focus:border-[#E8C76A]/40 transition-colors">
                 <option value="">Changer le paiement...</option>
                 <option value="espèces">Espèces</option>
                 <option value="chèque">Chèque</option>
                 <option value="virement">Virement</option>
                 <option value="invitation">Invitation</option>
               </select>
+              <button type="button" data-confirm-cmd="${cmdId}" disabled class="px-6 py-3 rounded-full text-xs uppercase tracking-widest font-bold bg-[#E8C76A] text-[#0A0A14] hover:bg-white transition-all disabled:opacity-30 disabled:cursor-not-allowed">Confirmer</button>
             </div>
           </div>`;
         }).join('');
-        unpaidList.querySelectorAll('[data-update-cmd]').forEach((select) => {
-          select.addEventListener('change', () => updateCommande(select.dataset.updateCmd, select.value));
+        unpaidList.querySelectorAll('[data-paiement-cmd]').forEach((select) => {
+          select.addEventListener('change', () => {
+            const block = select.closest('[data-cmd-block]');
+            const btn = block.querySelector('[data-confirm-cmd]');
+            btn.disabled = !select.value;
+          });
+        });
+        unpaidList.querySelectorAll('[data-confirm-cmd]').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const cmdId = btn.dataset.confirmCmd;
+            const block = btn.closest('[data-cmd-block]');
+            const paiement = block.querySelector('[data-paiement-cmd]').value;
+            const note = block.querySelector('[data-note-cmd]').value.trim();
+            if (paiement) updateCommande(cmdId, paiement, note);
+          });
         });
       } catch (err) {
         unpaidList.innerHTML = `<p class="text-red-400">${err.message}</p>`;
       }
     }
 
-    async function updateCommande(cmdId, paiement) {
-      if (!paiement) return;
+    async function updateCommande(cmdId, paiement, note) {
       unpaidMessage.classList.remove('hidden');
       unpaidMessage.className = 'text-sm text-white/50';
       unpaidMessage.textContent = 'Mise à jour...';
       try {
+        const payload = { commande_id: parseInt(cmdId), paiement };
+        if (note) payload.note = note;
         const res = await fetch('/api/admin/update-commande', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-          body: JSON.stringify({ commande_id: parseInt(cmdId), paiement }),
+          body: JSON.stringify(payload),
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || 'Erreur');
         const emailsCount = (data.emails_sent || []).length;
         unpaidMessage.className = 'text-sm text-[#E8C76A]';
-        unpaidMessage.textContent = `Commande #${cmdId} mise à jour : ${data.ancien_paiement} -> ${data.nouveau_paiement}${emailsCount > 0 ? ` · ${emailsCount} email(s) envoyé(s)` : ''}`;
+        unpaidMessage.textContent = `Commande #${cmdId} mise à jour : ${data.ancien_paiement} -> ${data.nouveau_paiement}${emailsCount > 0 ? ` · ${emailsCount} email(s) envoyé(s)` : ''}${note ? ` · note enregistrée` : ''}`;
         await loadUnpaid();
       } catch (err) {
         unpaidMessage.className = 'text-sm text-red-400';
