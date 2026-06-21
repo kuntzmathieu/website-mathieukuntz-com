@@ -1,39 +1,37 @@
 ---
 ---
 
-<nav class="sticky top-0 z-50 w-full px-6 py-4 flex justify-between items-center bg-[#F7F5F1]/90 backdrop-blur-md border-b border-stone-200/40 transition-all duration-300">
-  <a href="/" class="text-lg md:text-xl font-semibold tracking-tighter text-stone-900 leading-none uppercase">
-    MATHIEU KUNTZ
-  </a>
+<nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-[#f5f4f0]/80 backdrop-blur-md border-b border-transparent" id="navbar">
+  <div class="max-w-screen-2xl mx-auto px-6 md:px-12 h-24 flex items-center justify-between">
+    <a href="/" class="flex items-center gap-3 z-50">
+      <div class="relative w-8 h-8">
+        <svg viewBox="0 0 24 24" fill="currentColor" class="w-full h-full text-[#1a1a1a]">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"></path>
+          <path d="M12 6c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"></path>
+          <circle cx="12" cy="12" r="2"></circle>
+        </svg>
+      </div>
+      <div class="flex flex-col">
+        <span class="text-[10px] tracking-widest text-[#5c5c5a] uppercase leading-none">Mathieu</span>
+        <span class="text-[10px] font-medium tracking-widest text-[#1a1a1a] uppercase mt-1">KUNTZ</span>
+      </div>
+    </a>
 
-  <!-- Desktop Navigation -->
-  <div class="hidden lg:flex items-center space-x-8 text-xs font-normal tracking-wide text-stone-600 uppercase">
-    <a href="/#qui-je-suis" class="hover:text-stone-900 transition-colors">
-      Qui je suis
-    </a>
-    <a href="/#ce-que-je-fais" class="hover:text-stone-900 transition-colors">
-      Ce que je fais
-    </a>
+    <div class="hidden lg:flex items-center gap-10">
+      <a href="/#activites" class="text-base text-[#1a1a1a] hover:text-[#5d674f] transition-colors font-normal">Ce que je fais</a>
+      <a href="/#qui-je-suis" class="text-base text-[#1a1a1a] hover:text-[#5d674f] transition-colors font-normal">Qui je suis</a>
+      <a href="/#contact" class="text-base text-[#1a1a1a] hover:text-[#5d674f] transition-colors font-normal">Contact</a>
+      <a href="/#contact" class="bg-[#1a1a1a] text-white px-6 py-3 rounded-full text-base font-normal hover:bg-[#333] transition-colors">Me contacter</a>
+    </div>
 
-    <a href="/#spectacles" class="hover:text-stone-900 transition-colors">
-      Spectacles
-    </a>
-    <a href="/#accompagnement" class="hover:text-stone-900 transition-colors">
-      Accompagnement
-    </a>
-    <a href="/#sur-mesure" class="hover:text-stone-900 transition-colors">
-      Sur-mesure
-    </a>
-    <a href="/#contact" class="hover:text-stone-900 transition-colors">
-      Contact
-    </a>
-    <a href="/#contact" class="ml-4 px-5 py-2.5 bg-stone-900 text-[#F7F5F1] rounded-full hover:bg-stone-700 transition-colors duration-300 tracking-wider">
-      Me contacter
-    </a>
+    <button class="lg:hidden z-50 p-2" id="mobile-menu-btn" aria-label="Toggle Menu">
+      <i data-lucide="menu" class="w-6 h-6 stroke-[1.5]"></i>
+    </button>
   </div>
 
-  <!-- Mobile Navigation Menu Toggle -->
-  <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="lg:hidden text-2xl" aria-label="Menu">
-    <iconify-icon icon="solar:hamburger-menu-linear" stroke-width="1.5"></iconify-icon>
-  </button>
+  <div id="mobile-menu" class="fixed inset-0 bg-[#f5f4f0] z-40 flex flex-col justify-center items-center gap-8 opacity-0 pointer-events-none transition-opacity duration-300">
+    <a href="/#activites" class="text-3xl font-medium tracking-tight text-[#1a1a1a] mobile-link">Ce que je fais</a>
+    <a href="/#qui-je-suis" class="text-3xl font-medium tracking-tight text-[#1a1a1a] mobile-link">Qui je suis</a>
+    <a href="/#contact" class="text-3xl font-medium tracking-tight text-[#1a1a1a] mobile-link">Contact</a>
+  </div>
 </nav>
