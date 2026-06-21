@@ -92,4 +92,17 @@ const {
       navbar?.classList.add('border-transparent');
     }
   });
+
+  // Promo banner dismiss
+  const promoBanner = document.getElementById('promo-banner');
+  const promoClose = document.getElementById('promo-close');
+  if (sessionStorage.getItem('promo-dismissed') === 'true') {
+    promoBanner?.classList.add('hidden');
+  }
+  promoClose?.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    promoBanner?.classList.add('hidden');
+    sessionStorage.setItem('promo-dismissed', 'true');
+  });
 </script>
