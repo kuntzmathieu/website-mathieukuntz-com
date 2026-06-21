@@ -37,10 +37,21 @@
     </button>
   </div>
 
-  <div id="mobile-menu" class="fixed inset-0 bg-[#f5f4f0] z-40 flex flex-col justify-center items-center gap-8 opacity-0 pointer-events-none transition-opacity duration-300">
-    <a href="/#activites" class="text-3xl font-medium tracking-tight text-[#1a1a1a] mobile-link">Ce que je fais</a>
-    <a href="/#qui-je-suis" class="text-3xl font-medium tracking-tight text-[#1a1a1a] mobile-link">Qui je suis</a>
-    <a href="/#contact" class="text-3xl font-medium tracking-tight text-[#1a1a1a] mobile-link">Contact</a>
+  <!-- Mobile dropdown menu -->
+  <div id="mobile-menu" class="lg:hidden absolute top-full left-0 right-0 bg-[#f5f4f0] border-b border-[#dcdacd] shadow-lg origin-top scale-y-0 opacity-0 pointer-events-none transition-all duration-200 z-40">
+    <div class="px-6 py-6 flex flex-col gap-1">
+      <a href="/prince" class="flex items-center justify-between py-3.5 px-4 rounded-xl bg-[#1a1a1a] text-white font-medium hover:bg-[#333] transition-colors mobile-link">
+        <span class="flex items-center gap-2">
+          <i data-lucide="ticket" class="w-5 h-5 stroke-[1.5]"></i>
+          PRINCE — 11 juillet
+        </span>
+        <i data-lucide="arrow-right" class="w-5 h-5 stroke-[1.5]"></i>
+      </a>
+      <a href="/#activites" class="py-3.5 px-4 rounded-xl text-lg font-normal text-[#1a1a1a] hover:bg-[#e8eae4] transition-colors mobile-link">Ce que je fais</a>
+      <a href="/#qui-je-suis" class="py-3.5 px-4 rounded-xl text-lg font-normal text-[#1a1a1a] hover:bg-[#e8eae4] transition-colors mobile-link">Qui je suis</a>
+      <a href="/#contact" class="py-3.5 px-4 rounded-xl text-lg font-normal text-[#1a1a1a] hover:bg-[#e8eae4] transition-colors mobile-link">Contact</a>
+      <a href="/#contact" class="mt-2 py-3.5 px-4 rounded-full bg-[#5d674f] text-white text-center font-medium hover:bg-[#4a523f] transition-colors mobile-link">Me contacter</a>
+    </div>
   </div>
 </nav>
 
