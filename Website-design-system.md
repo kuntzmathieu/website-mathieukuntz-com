@@ -1,18 +1,20 @@
 ---
 type: reference
 tags: [design-system, website, astro, tailwind]
-created: 2026-06-18
-last_updated: 2026-06-18
+created: 2026-06-21
+last_updated: 2026-06-21
 ---
 
-# Design System — mathieukuntz.com
+# Design System — mathieukuntz.com (nouveau)
 
 **Référence obligatoire** pour toute création ou modification de page sur le site `website-mathieukuntz-com`. À consulter avant d'écrire le moindre composant Astro.
 
-Le site fonctionne avec **deux thèmes distincts** partageant un accent doré commun (`#E8C76A`). Chaque thème a son propre layout, sa palette et ses polices.
+Le site fonctionne avec **deux thèmes distincts** :
 
-- **Thème Clair** (`MainLayout.astro`) — page principale et pages institutionnelles
-- **Thème Sombre** (`PrinceLayout.astro`) — pages de vente spectacle (immersive, poétique)
+- **Thème Clair** (`MainLayout.astro`) — page d'accueil et pages institutionnelles (nouveau design, juin 2026)
+- **Thème Sombre** (`PrinceLayout.astro`) — pages de vente spectacle (immersive, poétique, inchangé)
+
+L'ancien design system est archivé dans [[Website-design-system ARCHIVE]].
 
 ---
 
@@ -22,13 +24,18 @@ Le site fonctionne avec **deux thèmes distincts** partageant un accent doré co
 |---------|--------|
 | Framework | Astro 6 (static output) |
 | CSS | Tailwind v4 via `@tailwindcss/vite` (compilé, **pas de CDN**) |
-| Icônes | Iconify via `<script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js">` (chargé dans les layouts) |
+| Icônes (thème clair) | **Lucide** via `<script src="https://unpkg.com/lucide@latest"></script>` (chargé dans `MainLayout.astro`) |
+| Icônes (thème sombre) | **Iconify/Solar** via `<script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js">` (chargé dans `PrinceLayout.astro`) |
 | Polices | Google Fonts (chargées dans les layouts) |
 | CSS global | `src/styles/global.css` → `@import "tailwindcss";` |
+| Analytics | GA4 (`G-2M6V79H761`) dans `MainLayout.astro` |
+| Meta Pixel | Dans `PrinceLayout.astro` uniquement (via `PUBLIC_META_PIXEL_ID`) |
 
-**Règle :** ne jamais réinjecter `<script src="https://cdn.tailwindcss.com">`. Les classes Tailwind sont compilées à la build. Toute classe utilisée dans un composant `.astro` est automatiquement incluse dans le CSS final.
+**Règle :** ne jamais réinjecter `<script src="https://cdn.tailwindcss.com">`. Les classes Tailwind sont compilées à la build.
 
-**Règle :** ne jamais réimporter les polices ni le script Iconify dans les composants. Ils sont déjà dans les layouts. Les composants ne contiennent que du markup + styles scoped.
+**Règle :** ne jamais réimporter les polices, les icônes ni GA4 dans les composants. Ils sont déjà dans les layouts. Les composants ne contiennent que du markup + styles scoped.
+
+**Règle :** le thème clair utilise **Lucide** (`<i data-lucide="icon-name" class="w-5 h-5 stroke-[1.5]"></i>`), le thème sombre utilise **Iconify/Solar** (`<iconify-icon icon="solar:icon-name" stroke-width="1.5"></iconify-icon>`). Ne pas mélanger.
 
 ---
 
@@ -40,132 +47,109 @@ Pour : page d'accueil, pages institutionnelles, pages "qui je suis", contact, et
 
 | Usage | Famille | Google Fonts import |
 |-------|---------|---------------------|
-| Tout le texte | `'Plus Jakarta Sans', sans-serif` | weights `300;400;500;600;700;800` |
+| Tout le texte | `'Inter', sans-serif` | weights `300;400;500;600` |
 
-Pas de police serif sur ce thème. Les titres utilisent la même police sans-serif, en `font-semibold` ou `font-bold`.
+Une seule police. Les titres utilisent la même Inter, en `font-medium` ou `font-normal`, jouant sur la taille et le `tracking-tighter` pour la hiérarchie.
 
 ### Couleurs
 
 | Token | Valeur | Usage |
 |-------|--------|-------|
-| **Background primary** | `#F7F5F1` | fond de page (crème chaud) |
-| **Background secondary** | `#EDEAE4` | sections alternées, blobs flous (souvent en `/40` ou `/20` d'opacité) |
-| **Text primary** | `#1A1A1A` | texte courant |
-| **Text secondary** | `stone-600` | descriptions, paragraphes |
-| **Text muted** | `stone-400` | labels, métadonnées |
-| **Card background** | `white` | cartes |
-| **Border** | `stone-200` (`/60` ou `/80`) | bordures de cartes, séparateurs |
-| **Dark surface** | `stone-900` | footer, boutons primaires, cartes sombres |
-| **Dark surface hover** | `stone-700` / `stone-800` | hover boutons |
-| **Accent gold** | `#E8C76A` | puces de listes, highlights sur fond sombre uniquement (promo banner, footer) |
-| **Promo banner bg** | `#0F172A` | bandeau promo (slate sombre) |
-| **Promo banner text** | `#F2EFEA` | texte du bandeau promo |
+| **Background primary** | `#f5f4f0` | fond de page (beige chaud) |
+| **Background secondary** | `#f5f4f0` | sections alternées (même couleur, alternance avec `bg-white`) |
+| **Background tertiary** | `#e8eae4` | stats bar, section contact (vert gris clair) |
+| **Background dark** | `#1a1a1a` | navbar CTA, promo banner, footer sombre |
+| **Text primary** | `#1a1a1a` | texte courant, titres |
+| **Text secondary** | `#5c5c5a` | descriptions, paragraphes, labels |
+| **Text muted** | `#a0a09e` | placeholders, mentions discrètes |
+| **Card background** | `#f5f4f0` | cartes d'activités (même que fond page, sur sections blanches) |
+| **White surface** | `white` | sections alternées, intérieur de cartes image |
+| **Border** | `#dcdacd` | bordures, séparateurs (souvent `/50` d'opacité) |
+| **Accent (olive)** | `#5d674f` | kickers, liens hover, boutons primaires, icônes accent |
+| **Accent hover (olive dark)** | `#4a523f` | hover boutons primaires |
+| **Accent light** | `#e8eae4` | texte sur fond sombre, CTA du promo banner |
+| **Badge cream** | `#f2ece5` | badges flottants du hero, badges gradient |
 
 ### Sélection de texte
-- `selection:bg-stone-800 selection:text-white`
+- `selection:bg-[#5d674f] selection:text-white`
+
+### PromoBanner
+
+| Token | Valeur | Usage |
+|-------|--------|-------|
+| **Background** | `#1a1a1a` | fond noir |
+| **Text** | `text-white/80` | texte descriptif |
+| **Accent label** | `#e8eae4` | nom du spectacle, CTA |
+| **CTA bg** | `#e8eae4` | bouton réserver (fond clair sur noir) |
+| **CTA hover** | `white` | hover du bouton |
+| **Position** | `fixed top-24` | sous la navbar (qui fait `h-24` = 96px) |
 
 ---
 
 ## 3. Thème Sombre — `PrinceLayout.astro`
 
-Pour : pages de vente spectacle (immersif, poétique, nocturne).
+**Inchangé.** Voir l'ancien design system archivé ([[Website-design-system ARCHIVE]]) pour le détail complet du thème sombre.
 
-### Polices
-
-| Usage | Famille | Classe | Google Fonts import |
-|-------|---------|--------|---------------------|
-| Texte courant | `'Manrope', sans-serif` | (défaut body) | weights `300;400;500;600;700;800` |
-| Titres / accents | `'Cormorant Garamond', serif` | `.font-serif` | `0,400;0,500;0,600;0,700;1,400;1,500` (italique inclus) |
-
-**Règle :** utiliser `.font-serif` sur tous les `h1`, `h2`, `h3`, les grands chiffres décoratifs (`01`, `02`...) et les citations poétiques. Le body reste en Manrope.
-
-### Couleurs
-
-| Token | Valeur | Usage |
-|-------|--------|-------|
-| **Background primary** | `#0A0A14` | fond de page (noir bleuté profond) |
-| **Background secondary** | `#0C0C18` | sections alternées (`/60` ou `/40` d'opacité) |
-| **Footer background** | `#05050C` | footer (encore plus sombre) |
-| **Text primary** | `#F2EFEA` | texte courant (blanc chaud) |
-| **Text secondary** | `#F2EFEA` à `/80`, `/85`, `/90` | descriptions (jouer sur l'opacité) |
-| **Text muted** | `white/50`, `white/40`, `white/30` | labels, mentions discrètes |
-| **Accent gold** | `#E8C76A` | CTA, titres accentués, icônes, badges |
-| **Accent gold hover** | `white` | hover CTA (passe au blanc) |
-| **Accent purple** | `#2A1E5C` | glow, badges d'étapes (`/30`, `/40`, `/50`) |
-| **Card background** | `white/[0.02]` | cartes (presque transparent) |
-| **Card hover bg** | `white/[0.04]` | hover cartes |
-| **Border subtle** | `white/5`, `white/10` | bordures discrètes |
-| **Border accent hover** | `#E8C76A/20`, `#E8C76A/40` | bordures au hover |
-| **Negative (anti-checklist)** | `red-400` (texte), `red-950/[0.05]` (bg), `red-500/10` (border) | section "n'est pas pour vous si" |
-
-### Sélection de texte
-- `selection:bg-[#E8C76A] selection:text-[#0A0A14]`
-
-### Effets de lumière (uniques au thème sombre)
-
-Définis en CSS global dans `PrinceLayout.astro` :
-
-| Classe | Effet |
-|--------|-------|
-| `.glow-radial` | `radial-gradient(circle at center, rgba(42,30,92,0.45) 0%, rgba(7,19,38,0.2) 70%, transparent 100%)` — halo violet |
-| `.glow-gold` | `radial-gradient(circle at center, rgba(232,199,106,0.08) 0%, transparent 70%)` — halo doré |
-
-Blobs ambiants placés en `absolute -z-10 pointer-events-none` dans le layout (3 instances : haut centre, droite, bas gauche). Ne pas les supprimer.
+Résumé rapide :
+- Polices : Manrope (body) + Cormorant Garamond (titres via `.font-serif`)
+- Fond : `#0A0A14` (noir bleuté)
+- Accent : `#E8C76A` (doré)
+- Icônes : Iconify/Solar
+- Effets : `.glow-radial`, `.glow-gold`
 
 ---
 
 ## 4. Espacements
 
-Valeurs Tailwind utilisées de façon systématique. Respecter ces standards pour la cohérence.
-
 ### Sections
 
 | Contexte | Classe |
 |----------|--------|
-| Section standard (clair) | `py-24 px-6 lg:px-16 border-t border-stone-200` |
-| Section alternée (clair) | + `bg-[#EDEAE4]/40` ou `bg-[#EDEAE4]/20` |
-| Section standard (sombre) | `py-24 px-6 md:px-12 border-t border-white/5` |
-| Section alternée (sombre) | + `bg-[#0C0C18]/60` ou `bg-[#0C0C18]/40` |
+| Section standard (clair) | `py-24 md:py-40 px-6 md:px-12` |
+| Section alternée (clair) | alterner `bg-white` et `bg-[#f5f4f0]` |
+| Section avec bordure | `border-t border-[#dcdacd]` |
+| Section contact | `bg-[#e8eae4] text-center px-6` |
+| Hero | `min-h-screen pt-44 lg:pt-52` (padding top pour navbar + promobanner) |
 
 ### Conteneurs (max-width)
 
 | Classe | Usage |
-|--------|-------|
-| `max-w-7xl mx-auto` | conteneur principal (sections larges) |
-| `max-w-5xl mx-auto` | section centrée étroite (déroulé, FAQ) |
-| `max-w-4xl mx-auto` | infos pratiques, CTA final |
-| `max-w-3xl mx-auto` | intro de section centrée |
-| `max-w-2xl` | paragraphe d'intro, limite de lecture |
-| `max-w-xl` | texte hero |
+|--------|--------|
+| `max-w-screen-2xl mx-auto` | conteneur principal large (hero, navbar, footer) |
+| `max-w-screen-xl mx-auto` | sections moyennes (activités, schedule) |
+| `max-w-3xl mx-auto` | section contact (centrée étroite) |
+| `max-w-xl` | stats bar, textes limités |
+| `max-w-md` | subheadline du hero |
 
 ### Grilles
 
 | Contexte | Classe |
 |----------|--------|
-| Hero (texte + visuel) | `grid grid-cols-1 lg:grid-cols-12 gap-12 items-center` (col-span-7 / col-span-5) |
-| Cartes en 2 colonnes | `grid grid-cols-1 md:grid-cols-2 gap-8` |
-| Cartes en 3 colonnes | `grid grid-cols-1 md:grid-cols-3 gap-6` ou `gap-8` |
-| Cartes en 4 colonnes | `grid grid-cols-1 md:grid-cols-4 gap-6` |
+| Hero (texte + visuel) | `grid lg:grid-cols-12 gap-12 lg:gap-0` (col-span-5 / col-span-7) |
+| Cartes en 2 colonnes | `grid grid-cols-1 md:grid-cols-2 gap-6` |
+| Stats (3 colonnes) | `grid grid-cols-3 gap-6 lg:gap-12` |
+| Footer (4 colonnes) | `grid grid-cols-1 md:grid-cols-4 gap-12 lg:gap-24` |
 
-### Cartes
+### Cartes (section Activités)
 
 | Contexte | Classe |
 |----------|--------|
-| Carte claire | `p-8 bg-white border border-stone-200/60 rounded-2xl` |
-| Carte sombre | `p-8 rounded-2xl bg-white/[0.02] border border-white/5` |
-| Carte sombre hover | `hover:border-[#E8C76A]/20 hover:bg-white/[0.04] transition-all duration-300` |
-| Carte claire hover | `hover:shadow-sm transition-shadow duration-300` |
+| Carte d'activité | `bg-[#f5f4f0] rounded-[32px] p-4 flex flex-col group hover:shadow-xl hover:shadow-black/5 duration-500` |
+| Image de carte | `w-full aspect-[4/3] rounded-[24px] overflow-hidden mb-6` |
+| Hover image | `group-hover:scale-105 transition-transform duration-700` |
 
 ### Border-radius
 
 | Classe | Usage |
-|--------|-------|
-| `rounded-2xl` | cartes, conteneurs de section, badges d'image |
-| `rounded-3xl` | gros visuels artistiques (artiste) |
-| `rounded-full` | boutons, pills, badges, puces |
-| `rounded-xl` | petites cartes secondaires |
-| `rounded-t-[2.5rem]` | haut de footer arrondi (clair uniquement) |
-| `rounded-lg` / `rounded-md` | éléments plus petits (badges, tags) |
+|--------|--------|
+| `rounded-[32px]` | cartes d'activités (grand rayon) |
+| `rounded-[24px]` | images dans les cartes |
+| `rounded-3xl` | portraits, grands visuels |
+| `rounded-full` | boutons, pills, badges circulaires, écrous |
+| `rounded-[2rem]` | cartes template (scroll horizontal, pricing) |
+| `rounded-tr-[80px] lg:rounded-tr-[120px]` | stats bar (forme organique) |
+| `rounded-bl-[40px]` | (ancien bouton flottant, plus utilisé) |
+| `rounded-t-full rounded-bl-full rounded-br-sm` | badge "Un projet ?" (forme organique) |
 
 ---
 
@@ -175,26 +159,29 @@ Valeurs Tailwind utilisées de façon systématique. Respecter ces standards pou
 
 | Contexte | Classe |
 |----------|--------|
-| Hero h1 (clair) | `text-4xl md:text-5xl lg:text-6xl ... font-normal leading-tight tracking-tight` |
-| Hero h1 (sombre) | `text-4xl md:text-6xl lg:text-7xl font-serif leading-[1.15] tracking-tight` |
-| Section h2 (clair) | `text-5xl md:text-6xl ... font-semibold tracking-tight` |
-| Section h2 (sombre) | `text-3xl md:text-5xl font-serif tracking-tight` |
-| Sous-titre h3 | `text-xl` à `text-2xl`, `font-medium` ou `font-semibold` |
-| Carte h3 (sombre) | `text-xl md:text-2xl font-serif tracking-tight` |
+| Hero h1 | `text-6xl md:text-7xl lg:text-[5.5rem] leading-[1.05] tracking-tighter font-medium` |
+| Section h2 | `text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight` |
+| Section h2 (compact) | `text-4xl md:text-5xl tracking-tight font-medium` |
+| Sous-titre h3 | `text-2xl font-medium tracking-tight` |
+| Contact h2 | `text-5xl md:text-7xl tracking-tighter font-medium` |
 
 ### Tailles de corps
 
 | Contexte | Classe |
 |----------|--------|
-| Paragraphe principal | `text-lg md:text-xl font-light leading-relaxed` |
-| Paragraphe secondaire | `text-base md:text-lg font-light leading-relaxed` |
-| Petit texte / mention | `text-sm` ou `text-xs` |
-| Label / kicker | `text-xs font-semibold uppercase tracking-widest` |
+| Subheadline hero | `text-lg md:text-xl text-[#5c5c5a] font-normal leading-relaxed` |
+| Paragraphe standard | `text-lg text-[#5c5c5a] font-normal leading-relaxed` |
+| Description carte | `text-base text-[#5c5c5a] font-light leading-relaxed` |
+| Petit texte | `text-sm` ou `text-xs` |
+| Label / kicker | `text-[10px] font-medium tracking-[0.2em] uppercase text-[#5d674f]` |
+| Label section (Qui je suis) | `text-sm font-medium tracking-widest uppercase text-[#5d674f]` |
+| Stats label | `text-[10px] tracking-widest uppercase text-[#5c5c5a]` |
+| Stats chiffre | `text-3xl lg:text-4xl font-medium tracking-tight text-[#1a1a1a]` |
 
 ### Kickers (petits labels au-dessus des titres)
 
-- Clair : `text-xs font-semibold uppercase tracking-widest text-stone-400 block mb-3`
-- Sombre : `text-sm uppercase tracking-widest text-[#E8C76A] font-bold`
+- Avec tiret : `inline-flex items-center gap-3` > `<span class="w-8 h-[1px] bg-[#5d674f]"></span>` + `<span class="text-sm font-medium tracking-widest uppercase text-[#5d674f]">Texte</span>`
+- Simple : `text-[10px] font-medium tracking-[0.2em] uppercase text-[#5d674f] mb-4 block`
 
 ---
 
@@ -204,122 +191,133 @@ Valeurs Tailwind utilisées de façon systématique. Respecter ces standards pou
 
 | Type | Classe |
 |------|--------|
-| **Primaire** | `px-8 py-3.5 bg-stone-900 text-[#F7F5F1] rounded-full text-sm font-medium hover:bg-stone-700 transition-colors duration-300` |
-| **Secondaire (outline)** | `px-8 py-3.5 border border-stone-300 text-stone-900 rounded-full text-sm font-medium hover:bg-stone-200/50 transition-colors duration-300` |
-| **Gros CTA final** | `inline-flex items-center gap-2 px-8 py-4 bg-stone-900 text-[#F7F5F1] rounded-full text-base font-semibold hover:bg-stone-700 transition-colors` |
-| **Pill sombre (sur fond clair, ex: programmer)** | `px-6 py-3 bg-stone-950 text-white text-sm font-semibold rounded-full hover:bg-stone-800 transition-colors` |
+| **Primaire (olive)** | `inline-flex bg-[#5d674f] text-white px-8 py-5 rounded-full items-center gap-3 hover:bg-[#4a523f] transition-colors group` |
+| **Navbar CTA (noir)** | `bg-[#1a1a1a] text-white px-6 py-3 rounded-full text-base font-normal hover:bg-[#333] transition-colors` |
+| **Lien texte (border-bottom)** | `inline-flex items-center gap-2 text-[#1a1a1a] border-b border-[#1a1a1a] pb-1 hover:text-[#5d674f] hover:border-[#5d674f] transition-colors group` |
+| **Lien carte (uppercase)** | `inline-flex items-center gap-2 text-[10px] font-medium tracking-[0.2em] uppercase text-[#1a1a1a] group-hover:text-[#5d674f] transition-colors mt-auto` |
+| **CTA contact (noir large)** | `bg-[#1a1a1a] text-white px-10 py-5 rounded-full flex items-center gap-3 font-normal text-lg hover:bg-[#333] transition-colors group` |
+| **Footer CTA (noir)** | `inline-block bg-[#1a1a1a] text-white px-6 py-3 rounded-full text-sm font-medium hover:bg-[#333] transition-colors` |
+| **PromoBanner CTA** | `px-5 py-2 bg-[#e8eae4] text-[#1a1a1a] rounded-full font-medium text-sm hover:bg-white transition-colors tracking-wide inline-flex items-center gap-1.5` |
 
-### Thème sombre
+### Icônes dans les boutons
 
-| Type | Classe |
-|------|--------|
-| **Primaire (gold)** | `px-8 py-4 bg-[#E8C76A] text-[#0A0A14] font-semibold text-sm tracking-widest uppercase rounded-full hover:bg-white hover:scale-105 transition-all duration-300 shadow-lg shadow-[#E8C76A]/10` |
-| **Secondaire (outline)** | `px-8 py-4 border border-white/10 text-[#F2EFEA] hover:bg-white/5 hover:border-white/30 rounded-full text-sm font-semibold tracking-widest uppercase transition-all duration-300` |
-| **Gros CTA final** | `px-12 py-5 bg-[#E8C76A] text-[#0A0A14] font-bold text-sm tracking-widest uppercase rounded-full hover:bg-white hover:scale-105 transition-all duration-300 shadow-xl shadow-[#E8C76A]/20` |
-| **Pill lien (footer)** | `inline-flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-[#E8C76A]/40 rounded-full text-xs font-semibold tracking-wider uppercase text-[#E8C76A]` |
+Flèche droite : `<i data-lucide="arrow-right" class="w-5 h-5 stroke-[1.5] group-hover:translate-x-1 transition-transform"></i>`
 
-**Règle :** sur le thème sombre, les CTAs principaux sont **toujours** en `uppercase tracking-widest`. Sur le thème clair, les CTAs restent en casse normale.
+Flèche diagonal : `<i data-lucide="arrow-up-right" class="w-4 h-4 stroke-[1.5]"></i>`
+
+### Thème sombre (PRINCE)
+
+**Inchangé.** Voir [[Website-design-system ARCHIVE]] section 6.
 
 ---
 
 ## 7. Composants réutilisables identifiés
 
-Patterns à reproduire pour toute nouvelle page cohérente.
+### Navbar (thème clair)
 
-### Badge / Pill (kicker doré, thème sombre)
-```html
-<span class="inline-flex items-center gap-2 py-2 px-4 border border-[#E8C76A]/20 rounded-full text-sm font-semibold uppercase tracking-widest text-[#E8C76A] bg-[#E8C76A]/5 backdrop-blur-sm">
-  <iconify-icon icon="solar:..."></iconify-icon>
-  Texte
-</span>
+```
+<Navbar />  ← fixed top-0, h-24, backdrop-blur, bg-[#f5f4f0]/80
 ```
 
-### Badge d'étape (timeline, thème sombre)
-```html
-<span class="inline-block px-4 py-1.5 bg-[#2A1E5C]/40 border border-white/5 text-[#E8C76A] text-sm font-semibold uppercase tracking-widest rounded-full">Étape 1</span>
+Logo : SVG circulaire + texte "Mathieu" (gris, normal) / "KUNTZ" (noir, medium), tous deux `text-[10px] tracking-widest uppercase`.
+
+Links desktop : 3 liens + 1 CTA pill noir "Me contacter".
+
+Mobile : hamburger Lucide `menu` / `x`, overlay plein écran `bg-[#f5f4f0]`.
+
+Script : toggle menu + navbar blur on scroll (déjà dans `MainLayout.astro`).
+
+### PromoBanner (thème clair, conditionnel)
+
+```
+<PromoBanner />  ← fixed top-24, bg-[#1a1a1a], z-40
 ```
 
-### Carte numérotée (thème sombre)
-```html
-<div class="p-8 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-[#E8C76A]/20 hover:bg-white/[0.04] transition-all duration-300 space-y-4">
-  <span class="font-serif text-4xl text-[#E8C76A]/50 block">01</span>
-  <h3 class="text-xl md:text-2xl text-[#F2EFEA] font-serif tracking-tight">Titre</h3>
-  <p class="text-sm md:text-base text-[#F2EFEA]/80 leading-relaxed font-light">Texte</p>
-</div>
-```
+Affiché quand un spectacle est en cours. Lien vers `/prince`. Icône Lucide `ticket`.
 
-### Carte icône (thème clair)
+### Hero (thème clair)
+
+Structure : grille 12 colonnes (5 texte / 7 visuel).
+- H1 grand avec `<br>` pour contrôle de ligne
+- Subheadline dans un bloc `border-l-[1.5px] border-[#dcdacd] pl-6`
+- CTA primaire olive
+- Image circulaire (rounded-full, overflow, qui déborde)
+- 3 badges flottants : écrous activités (lien), tampon rotatif olive, badge contact (lien)
+- Stats bar en bas : `bg-[#e8eae4]` avec `rounded-tr-[120px]`, 3 colonnes
+
+### Carte d'activité (thème clair)
+
 ```html
-<div class="p-8 bg-white border border-stone-200/60 rounded-2xl flex flex-col justify-between hover:shadow-sm transition-shadow duration-300">
-  <div>
-    <div class="w-10 h-10 rounded-full bg-stone-100 flex items-center justify-center mb-6">
-      <iconify-icon icon="solar:ticket-linear" class="text-xl text-stone-800" stroke-width="1.5"></iconify-icon>
-    </div>
-    <span class="text-xs font-semibold text-stone-400 tracking-wider block mb-1">01</span>
-    <h3 class="text-xl font-medium text-stone-900 mb-3 tracking-tight">Titre</h3>
-    <p class="text-base md:text-lg text-stone-600 font-light leading-relaxed">Texte</p>
+<div class="bg-[#f5f4f0] rounded-[32px] p-4 flex flex-col group transition-colors hover:shadow-xl hover:shadow-black/5 duration-500">
+  <div class="w-full aspect-[4/3] rounded-[24px] overflow-hidden mb-6 bg-white">
+    <img src="..." alt="..." class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+  </div>
+  <div class="px-2 flex-grow flex flex-col">
+    <h3 class="text-2xl font-medium tracking-tight text-[#1a1a1a] mb-3">Titre</h3>
+    <p class="text-base text-[#5c5c5a] font-light leading-relaxed mb-6 flex-grow">Description</p>
+    <a href="..." class="inline-flex items-center gap-2 text-[10px] font-medium tracking-[0.2em] uppercase text-[#1a1a1a] group-hover:text-[#5d674f] transition-colors mt-auto">
+      Lien <i data-lucide="arrow-right" class="w-4 h-4 stroke-[1.5]"></i>
+    </a>
   </div>
 </div>
 ```
 
-### Accordéon FAQ (thème sombre)
-```html
-<details class="group border border-white/5 rounded-2xl bg-white/[0.01] hover:border-[#E8C76A]/20 transition-all duration-300">
-  <summary class="flex justify-between items-center p-6 cursor-pointer select-none">
-    <span class="text-sm md:text-base font-bold text-[#F2EFEA] uppercase tracking-wide">Question</span>
-    <div class="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-open:rotate-45 transition-transform duration-300">
-      <iconify-icon icon="solar:add-circle-linear" class="text-[#E8C76A]"></iconify-icon>
-    </div>
-  </summary>
-  <div class="px-6 pb-6 text-sm md:text-base text-[#F2EFEA]/80 font-light leading-relaxed">Réponse</div>
-</details>
-```
+### Section "Qui je suis" (thème clair)
 
-### Ligne de tableau infos (thème sombre)
-```html
-<div class="grid grid-cols-3 p-6 gap-4 items-center">
-  <span class="text-xs md:text-sm uppercase tracking-widest text-[#E8C76A] font-bold col-span-1">Label</span>
-  <span class="text-sm md:text-base text-[#F2EFEA] col-span-2 font-semibold">Valeur</span>
-</div>
-```
+Structure : grille 2 colonnes (image + texte).
+- Image `aspect-[4/5] rounded-3xl` avec cercle décoratif en bas-droite
+- Kicker avec tiret (`w-8 h-[1px] bg-[#5d674f]`)
+- H2 avec `<br>` pour contrôle de ligne
+- Paragraphes `text-lg text-[#5c5c5a] font-normal leading-relaxed`
+- Lien texte avec border-bottom
+
+### Section Contact (thème clair)
+
+Structure : centrée, `bg-[#e8eae4]`, `text-center`.
+- Icône SVG soleil/décorative en `text-[#5d674f]`
+- H2 grand "Écrivez-moi."
+- Texte + email en bouton `mailto:` + Instagram
+
+### Footer (thème clair)
+
+Structure : 4 colonnes (brand, explorer, en ce moment, newsletter).
+- `bg-[#f5f4f0]`, `border-t border-[#dcdacd]`
+- Brand : logo SVG + nom + tagline
+- Explorer : 3 liens internes
+- En ce moment : PRINCE + CTA réserver
+- Newsletter : input border-bottom + bouton flèche
+- Bottom bar : copyright + liens légaux
 
 ---
 
-## 8. Icônes
+## 8. Icônes (thème clair)
 
-**Bibliothèque :** Solar (via Iconify). Préfixe `solar:`.
+**Bibliothèque :** Lucide. Chargement via `<script src="https://unpkg.com/lucide@latest"></script>` dans `MainLayout.astro`.
 
-Usage : `<iconify-icon icon="solar:ticket-linear" stroke-width="1.5"></iconify-icon>`
+Usage : `<i data-lucide="icon-name" class="w-5 h-5 stroke-[1.5]"></i>`
 
-Icônes déjà utilisées (réutiliser les mêmes pour cohérence) :
+**Important :** `lucide.createIcons()` est appelé dans le script du layout. Après toute modification dynamique du DOM (ex: toggle menu), rappeler `lucide.createIcons()`.
 
-| Icône | Usage |
+Icônes utilisées sur la homepage :
+
+| Icône Lucide | Usage |
 |-------|-------|
-| `solar:ticket-linear` | spectacles |
-| `solar:heart-linear` | thérapie / accompagnement |
-| `solar:compass-linear` | stages / aventures |
-| `solar:microphone-large-linear` | formation / conférence |
-| `solar:medal-ribbons-linear` | préparation mentale |
-| `solar:arrow-right-linear` | CTA flèche |
-| `solar:hamburger-menu-linear` | menu mobile |
-| `solar:close-circle-linear` | fermer |
-| `solar:chat-line-linear` | contact |
-| `solar:calendar-minimalistic-linear` | rendez-vous |
-| `solar:pen-new-square-linear` | construire / écrire |
-| `solar:user-circle-linear` | Instagram / profil |
-| `solar:users-group-two-rounded-linear` | groupe / identité |
-| `solar:stars-line-duotone` | hero spectacle |
-| `solar:play-bold` | lecture vidéo |
-| `solar:videocamera-record-bold` | teaser |
-| `solar:gallery-wide-bold` | affiche |
-| `solar:camera-linear` | Instagram (sombre) |
-| `solar:global-linear` | site web |
-| `solar:phone-linear` | téléphone |
-| `solar:letter-linear` | email |
-| `solar:add-circle-linear` | FAQ accordion |
-| `solar:close-circle-linear` | anti-checklist |
+| `menu` | bouton menu mobile |
+| `x` | fermer menu mobile |
+| `arrow-right` | CTA flèche droite (générique) |
+| `arrow-up-right` | lien externe (Voir PRINCE) |
+| `arrow-left` | navigation retour (template) |
+| `ticket` | promo banner (spectacle) |
+| `asterisk` | badge activités (hero) |
+| `user` | stat "10 ans d'hypnose" |
+| `heart` | stat "500+ personnes" |
+| `flower-2` | stat "∞ manières" |
+| `sun` | features (template) |
+| `droplets` | features (template) |
+| `users` | features (template) |
+| `check` | pricing (template) |
 
-**Règle :** rester dans la librairie Solar. `stroke-width="1.5"` par défaut sur les icônes lineaires.
+**Règle :** rester dans la librairie Lucide pour le thème clair. `stroke-[1.5]` par défaut.
 
 ---
 
@@ -330,11 +328,12 @@ Icônes déjà utilisées (réutiliser les mêmes pour cohérence) :
 | Cible | Lien |
 |-------|------|
 | Accueil | `/` |
-| Section accueil | `/#qui-je-suis`, `/#spectacles`, `/#contact`, etc. |
+| Section accueil | `/#activites`, `/#qui-je-suis`, `/#contact` |
 | Page Prince | `/prince` |
 | Section Prince | `/prince#experience`, `/prince#artiste`, etc. |
+| Email | `mailto:mk@mathieukuntz.org` |
 
-Les ancres `#` seules cassent la navigation inter-pages (elles restent sur la page courante). Toujours préfixer avec la route.
+Les ancres `#` seules cassent la navigation inter-pages. Toujours préfixer avec la route.
 
 ---
 
@@ -344,28 +343,27 @@ Les ancres `#` seules cassent la navigation inter-pages (elles restent sur la pa
 
 ```
 <MainLayout title="..." description="...">
-  <Navbar />          ← sticky, promo banner optionnel
-  <Hero />            ← min-h-[85vh], grille 12 colonnes
-  <Section />         ← py-24, kicker + h2 + contenu
-  ...
-  <Contact />
+  <Navbar />          ← fixed top-0, h-24
+  <PromoBanner />     ← fixed top-24 (conditionnel)
+  <main class="pt-16">
+    <Hero />          ← min-h-screen, grille 12 colonnes
+    <Activites />     ← bg-white, cartes en grille 2 colonnes
+    <QuiJeSuis />     ← bg-[#f5f4f0], grille 2 colonnes
+    <Contact />       ← bg-[#e8eae4], centré
+  </main>
   <Footer />
 </MainLayout>
 ```
 
 ### Page de vente spectacle (thème sombre)
 
+**Inchangé.** Voir [[Website-design-system ARCHIVE]] section 10.
+
 ```
 <PrinceLayout title="..." description="...">
   <Navbar />          ← sticky, logo spectacle + CTA billet
   <Hero />            ← min-h-[90vh], grille 12 colonnes + teaser vidéo
-  <Experience />      ← grille 5/7, texte + visuel
-  <Deroule />         ← timeline alternée
-  <PourQui />         ← grille 4 cartes + anti-checklist
-  <Artiste />         ← grille 5/7
-  <Infos />           ← tableau de infos pratiques
-  <FAQ />             ← accordions
-  <FinalCTA />        ← CTA centré sur glow-gold
+  ...
   <Footer />
   <MobileCTABar />    ← sticky bottom mobile
 </PrinceLayout>
@@ -373,13 +371,72 @@ Les ancres `#` seules cassent la navigation inter-pages (elles restent sur la pa
 
 ---
 
-## 11. Règles de création de nouvelle page
+## 11. Sections template archivées
+
+Les sections suivantes ont été retirées de la homepage mais **conservées dans `src/components/main/`** pour réutilisation future :
+
+| Composant | Section d'origine | Description |
+|-----------|-------------------|-------------|
+| `DiscoverFlow.astro` | "Discover your flow" | Scroll horizontal de cartes avec snap |
+| `Schedule.astro` | "Upcoming Schedule" | Liste tabulaire avec tabs filtres |
+| `Features.astro` | Bande verte olive | Grille 3 colonnes d'icônes + texte sur fond `#5d674f` |
+| `Teachers.astro` | "Meet your guides" | Grille de portraits circulaires en grayscale |
+| `Pricing.astro` | "Simple, transparent pricing" | 3 plans de prix avec toggle mensuel/annuel |
+| `Gallery.astro` | Galerie d'images | 2 images plein écran côte à côte avec hover overlay |
+
+Pour réutiliser ces sections dans une nouvelle page :
+1. Importer le composant dans la page `.astro`
+2. L'ajouter dans le `<main>` au bon endroit
+3. Adapter le contenu
+
+---
+
+## 12. Règles de création de nouvelle page
 
 1. **Choisir le thème** selon le type de page (clair = institutionnel, sombre = vente/immersif). Si doute, demander.
 2. **Créer un dossier de composants** dans `src/components/[nom-page]/` (un composant par section).
 3. **Créer la page** dans `src/pages/[route].astro` qui importe et assemble les composants dans le layout approprié.
-4. **Resposer les espacements standards** (`py-24`, `max-w-7xl mx-auto`, `gap-8`/`gap-12`).
+4. **Respecter les espacements standards** (`py-24 md:py-40`, `max-w-screen-2xl mx-auto`, `gap-6`/`gap-12`).
 5. **Liens internes en chemins absolus** (`/`, `/prince`, `/#section`).
-6. **Icônes Solar uniquement**, `stroke-width="1.5"`.
+6. **Icônes Lucide** pour le thème clair, **Iconify/Solar** pour le thème sombre. `stroke-[1.5]` par défaut.
 7. **Tester le build** : `npm run build` avant de pousser.
 8. **Push** : `git add -A && git commit -m "..." && git push origin main` (déploiement Cloudflare automatique).
+
+---
+
+## 13. Structure des fichiers
+
+```
+website-mathieukuntz-com/
+├── Website-design-system.md          ← ce fichier
+├── Website-design-system ARCHIVE.md  ← ancien design system (référence)
+├── astro.config.mjs
+├── package.json
+├── functions/api/                    ← API serverless (Stripe, billetterie, emails)
+├── src/
+│   ├── styles/global.css             ← @import "tailwindcss";
+│   ├── layouts/
+│   │   ├── MainLayout.astro          ← thème clair (Inter, Lucide)
+│   │   └── PrinceLayout.astro        ← thème sombre (Manrope, Cormorant, Solar)
+│   ├── components/
+│   │   ├── main/                     ← composants homepage (thème clair)
+│   │   │   ├── Navbar.astro
+│   │   │   ├── PromoBanner.astro
+│   │   │   ├── Hero.astro
+│   │   │   ├── Activites.astro
+│   │   │   ├── QuiJeSuis.astro
+│   │   │   ├── Contact.astro
+│   │   │   ├── Footer.astro
+│   │   │   ├── DiscoverFlow.astro    ← archivé (pas dans index.astro)
+│   │   │   ├── Schedule.astro        ← archivé
+│   │   │   ├── Features.astro        ← archivé
+│   │   │   ├── Teachers.astro        ← archivé
+│   │   │   ├── Pricing.astro         ← archivé
+│   │   │   └── Gallery.astro         ← archivé
+│   │   ├── prince/                   ← composants spectacle (thème sombre)
+│   │   └── archive/old-main/         ← anciens composants homepage (avant juin 2026)
+│   └── pages/
+│       ├── index.astro               ← homepage
+│       ├── prince.astro              ← page spectacle
+│       └── prince/                   ← sous-pages spectacle (admin, checkout, etc.)
+```
