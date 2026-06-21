@@ -87,7 +87,7 @@ Résumé rapide :
 - Accent : `#E8C76A` (doré)
 - Icônes : Iconify/Solar
 - Effets : `.glow-radial`, `.glow-gold`
-- Numéro de téléphone : `06 43 67 15 11` (mis à jour partout)
+- Numéro de téléphone (06 43 67 15 11) : c'est le numéro de Karine (Histoire 2 Gazelles), utilisé uniquement pour le spectacle PRINCE
 
 ---
 
@@ -379,9 +379,10 @@ Icônes utilisées sur la homepage :
 | Section Prince | `/prince#experience`, `/prince#artiste`, etc. |
 | Email | `mailto:mk@mathieukuntz.org` |
 | Instagram | `https://instagram.com/kuntz.mathieu` (target="_blank") |
-| Téléphone | `06 43 67 15 11` |
 
 Les ancres `#` seules cassent la navigation inter-pages. Toujours préfixer avec la route.
+
+**Note téléphone :** Le numéro `06 43 67 15 11` utilisé sur les pages PRINCE est celui de Karine (association Histoire 2 Gazelles), pas celui de Mathieu. Le numéro personnel de Mathieu (`07 82 23 35 07`) ne doit pas être mis sur le site pour l'instant.
 
 ---
 
