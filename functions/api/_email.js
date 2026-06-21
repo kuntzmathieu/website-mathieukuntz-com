@@ -63,7 +63,7 @@ export async function sendTicketEmail(env, toEmail, billet, pdfBase64) {
     </div>
 
     <p style="color:#F2EFEA;font-size:12px;opacity:0.4;text-align:center;line-height:1.6;margin:0;">
-      Questions ? Répondez à cet email, écrivez à mk@mathieukuntz.org ou appelez le 06 44 09 25 60.
+      Questions ? Répondez à cet email, écrivez à mk@mathieukuntz.org ou appelez le 06 43 67 15 11.
     </p>
   </div>
 </body>
