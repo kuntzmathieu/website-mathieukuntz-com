@@ -184,8 +184,19 @@
       });
       document.getElementById('checkout').innerHTML = '';
       checkout.mount('#checkout');
-      document.getElementById('checkout-container').classList.remove('hidden');
-      document.getElementById('checkout-container').scrollIntoView({ behavior: 'smooth' });
+      const checkoutContainer = document.getElementById('checkout-container');
+      checkoutContainer.classList.remove('hidden');
+      // Centre le container Stripe verticalement dans le viewport
+      function centerCheckout() {
+        const rect = checkoutContainer.getBoundingClientRect();
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const target = scrollTop + rect.top - (window.innerHeight - rect.height) / 2;
+        window.scrollTo({ top: Math.max(0, target), behavior: 'smooth' });
+      }
+      // Centre tout de suite, puis re-centre quand l'iframe Stripe a fini de charger
+      centerCheckout();
+      setTimeout(centerCheckout, 400);
+      setTimeout(centerCheckout, 1000);
     } catch (e) {
       alert(e.message);
     } finally {
