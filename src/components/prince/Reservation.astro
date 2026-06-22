@@ -112,7 +112,7 @@
       displayTotal = promoResult.montant_apres;
       detail = `Remise: -${(total - displayTotal).toFixed(2)}€ (code ${promoResult.code})`;
     }
-    document.getElementById('total-amount').textContent = displayTotal.toFixed(0) + '€';
+    document.getElementById('total-amount').textContent = displayTotal.toFixed(2).replace('.', ',') + '€';
     document.getElementById('total-detail').textContent = detail;
     document.getElementById('checkout-btn').disabled = (qty.plein + qty.reduit) === 0;
   }

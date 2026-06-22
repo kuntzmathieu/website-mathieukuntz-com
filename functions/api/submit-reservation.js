@@ -23,6 +23,7 @@ export async function onRequestPost({ request, env }) {
     const montantAvant = parseFloat(meta.montant_avant) || montantTotal;
     const codePromo = meta.code_promo || '';
     const counts = JSON.parse(meta.billet_types || '{}');
+    const billetsDetail = JSON.parse(meta.billets_detail || '[]');
 
     const commande = await nocodbPost(env, env.NOCODB_TABLE_COMMANDES, {
       stripe_session_id: session_id,
@@ -86,14 +87,19 @@ export async function onRequestPost({ request, env }) {
     if (!env.RESEND_API_KEY) {
       emailErrors.push({ error: 'RESEND_API_KEY non configuré dans env' });
     } else {
-      for (const b of billetsCrees) {
+      for (const [idx, b] of billetsCrees.entries()) {
         const emailDest = b.email_personne || emailCommande;
         if (!emailDest) {
           emailErrors.push({ billet: b.Id, error: 'Pas d\'email destinataire' });
           continue;
         }
         try {
-          const pdfBase64 = await generateTicketPDF(b);
+          const detail = billetsDetail[idx] || {};
+          const pdfBase64 = await generateTicketPDF({
+            ...b,
+            code_promo: codePromo,
+            prix_avant: detail.prix_avant || b.prix_paye,
+          });
           await sendTicketEmail(env, emailDest, b, pdfBase64);
           await nocodbPatch(env, env.NOCODB_TABLE_BILLETS, b.Id, { email_envoye: true });
         } catch (e) {

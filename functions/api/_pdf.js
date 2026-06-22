@@ -57,12 +57,24 @@ export async function generateTicketPDF(billet) {
   });
 
   // Price
+  const prixFormate = billet.prix_paye.toFixed(2).replace('.', ',');
   page.drawText('PRIX', {
     x: 150, y: 297, size: 8, font: font, color: MUTED,
   });
-  page.drawText(`${billet.prix_paye}€`, {
+  page.drawText(`${prixFormate}€`, {
     x: 150, y: 282, size: 14, font: fontBold, color: BLACK,
   });
+
+  // Promo info
+  if (billet.code_promo && billet.prix_avant && billet.prix_avant > billet.prix_paye) {
+    const prixAvantFormate = billet.prix_avant.toFixed(2).replace('.', ',');
+    page.drawText(`Avant remise: ${prixAvantFormate}€`, {
+      x: 150, y: 268, size: 7, font: font, color: MUTED,
+    });
+    page.drawText(`Code ${billet.code_promo}`, {
+      x: 150, y: 257, size: 7, font: font, color: GOLD,
+    });
+  }
 
   // Divider
   page.drawRectangle({

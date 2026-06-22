@@ -52,13 +52,15 @@ import PrinceLayout from '../../layouts/PrinceLayout.astro';
   <script is:inline>
     const SESSION_ID = new URLSearchParams(window.location.search).get('session_id');
 
+    function formatPrix(p) { return p.toFixed(2).replace('.', ',') + '€'; }
+
     function billetField(index, type, prix) {
       const typeLabel = { 'plein tarif': 'Plein tarif', 'tarif réduit': 'Tarif réduit', 'invitation': 'Invitation', 'custom': 'Prix custom' }[type] || type;
       return `
         <div class="p-6 rounded-2xl bg-white/[0.02] border border-white/10 space-y-4">
           <div class="flex items-center justify-between">
             <h3 class="text-lg font-serif text-[#E8C76A]">Place ${index + 1}</h3>
-            <span class="text-xs uppercase tracking-widest text-white/40">${typeLabel} · ${prix}€</span>
+            <span class="text-xs uppercase tracking-widest text-white/40">${typeLabel} · ${formatPrix(prix)}</span>
           </div>
           <input type="hidden" name="billet_${index}_type" value="${type}" />
           <input type="hidden" name="billet_${index}_prix" value="${prix}" />
@@ -100,21 +102,21 @@ import PrinceLayout from '../../layouts/PrinceLayout.astro';
         document.getElementById('content').classList.remove('hidden');
 
         document.getElementById('order-info').textContent =
-          `Email de la commande : ${data.email} · Total : ${data.montant_total}€`;
+          `Email de la commande : ${data.email} · Total : ${formatPrix(data.montant_total)}`;
 
         const meta = data.metadata || {};
         const billets = [];
         if (meta.billets_detail) {
           try {
             const detail = JSON.parse(meta.billets_detail);
-            for (const b of detail) billets.push({ type: b.type, prix: b.prix });
+            for (const b of detail) billets.push({ type: b.type, prix: b.prix, prix_avant: b.prix_avant || b.prix });
           } catch (e) { /* fallback below */ }
         }
         if (billets.length === 0) {
           const counts = JSON.parse(meta.billet_types || '{}');
           for (const [type, n] of Object.entries(counts)) {
             const prix = { 'plein tarif': 19, 'tarif réduit': 14, 'invitation': 0, 'custom': 0 }[type] || 0;
-            for (let i = 0; i < n; i++) billets.push({ type, prix });
+            for (let i = 0; i < n; i++) billets.push({ type, prix, prix_avant: prix });
           }
         }
 

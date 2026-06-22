@@ -1,5 +1,19 @@
 const STRIPE_BASE = 'https://api.stripe.com/v1';
 
+function flattenParams(params, prefix, value) {
+  if (Array.isArray(value)) {
+    value.forEach((item, i) => {
+      flattenParams(params, `${prefix}[${i}]`, item);
+    });
+  } else if (typeof value === 'object' && value !== null) {
+    for (const [k, v] of Object.entries(value)) {
+      flattenParams(params, `${prefix}[${k}]`, v);
+    }
+  } else {
+    params.append(prefix, value);
+  }
+}
+
 async function stripeRequest(method, path, body, secretKey) {
   const opts = {
     method,
@@ -11,19 +25,7 @@ async function stripeRequest(method, path, body, secretKey) {
   if (body) {
     const params = new URLSearchParams();
     for (const [k, v] of Object.entries(body)) {
-      if (Array.isArray(v)) {
-        v.forEach((item, i) => {
-          if (typeof item === 'object') {
-            for (const [ik, iv] of Object.entries(item)) {
-              params.append(`${k}[${i}][${ik}]`, iv);
-            }
-          } else {
-            params.append(`${k}[${i}]`, item);
-          }
-        });
-      } else {
-        params.append(k, v);
-      }
+      flattenParams(params, k, v);
     }
     opts.body = params;
   }

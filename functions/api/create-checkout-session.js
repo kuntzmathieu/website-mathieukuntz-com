@@ -45,7 +45,18 @@ export async function onRequestPost({ request, env }) {
       montantTotal += li.prix;
       billetsPreview.push(li);
       if (li.prix > 0) {
-        lineItems.push({ price: env.STRIPE_PRICE_PLEIN_ONLINE, quantity: 1 });
+        if (li.prix < prixPlein) {
+          lineItems.push({
+            price_data: {
+              currency: 'eur',
+              product_data: { name: 'Plein tarif' },
+              unit_amount: Math.round(li.prix * 100),
+            },
+            quantity: 1,
+          });
+        } else {
+          lineItems.push({ price: env.STRIPE_PRICE_PLEIN_ONLINE, quantity: 1 });
+        }
       }
     }
     for (let i = 0; i < reduitQt; i++) {
@@ -54,7 +65,18 @@ export async function onRequestPost({ request, env }) {
       montantTotal += li.prix;
       billetsPreview.push(li);
       if (li.prix > 0) {
-        lineItems.push({ price: env.STRIPE_PRICE_REDUIT_ONLINE, quantity: 1 });
+        if (li.prix < prixReduit) {
+          lineItems.push({
+            price_data: {
+              currency: 'eur',
+              product_data: { name: 'Tarif réduit' },
+              unit_amount: Math.round(li.prix * 100),
+            },
+            quantity: 1,
+          });
+        } else {
+          lineItems.push({ price: env.STRIPE_PRICE_REDUIT_ONLINE, quantity: 1 });
+        }
       }
     }
 
@@ -80,7 +102,7 @@ export async function onRequestPost({ request, env }) {
       'metadata[montant_total]': String(montantTotal),
       'metadata[code_promo]': promoCode || '',
       'metadata[billet_types]': JSON.stringify(counts),
-      'metadata[billets_detail]': JSON.stringify(billetsPreview.map(b => ({ type: b.type, prix: b.prix }))),
+      'metadata[billets_detail]': JSON.stringify(billetsPreview.map(b => ({ type: b.type, prix: b.prix, prix_avant: b.prix_avant }))),
     }, env.STRIPE_SECRET_KEY);
 
     const eventId = body.event_id || crypto.randomUUID();
@@ -113,17 +135,17 @@ export async function onRequestPost({ request, env }) {
 }
 
 function computeLineItem(typeBase, prixBase, promo) {
-  if (!promo) return { type: typeBase, prix: prixBase };
+  if (!promo) return { type: typeBase, prix: prixBase, prix_avant: prixBase };
   if (promo.cible !== 'tous' && promo.cible !== (typeBase === 'plein tarif' ? 'plein_tarif' : 'tarif_reduit')) {
-    return { type: typeBase, prix: prixBase };
+    return { type: typeBase, prix: prixBase, prix_avant: prixBase };
   }
   if (promo.type_reduction === 'prix_fixe') {
-    if (promo.valeur === 0) return { type: 'invitation', prix: 0 };
-    return { type: 'custom', prix: promo.valeur };
+    if (promo.valeur === 0) return { type: 'invitation', prix: 0, prix_avant: prixBase };
+    return { type: 'custom', prix: promo.valeur, prix_avant: prixBase };
   }
   let prix = prixBase;
   if (promo.type_reduction === 'pourcentage') prix = prixBase * (1 - promo.valeur / 100);
   else if (promo.type_reduction === 'montant_fixe') prix = prixBase - promo.valeur;
   prix = Math.max(0, Math.round(prix * 100) / 100);
-  return { type: typeBase, prix };
+  return { type: typeBase, prix, prix_avant: prixBase };
 }
