@@ -117,6 +117,9 @@ export async function generateTicketPDF(billet) {
   page.drawText('Aucune entrée tardive possible', {
     x: 30, y: 110, size: 8, font: font, color: GOLD,
   });
+  page.drawText('Placement libre (non numéroté)', {
+    x: 30, y: 96, size: 8, font: font, color: MUTED,
+  });
 
   // Divider
   page.drawRectangle({
