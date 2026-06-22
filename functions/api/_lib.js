@@ -73,6 +73,19 @@ async function nocodbPatch(env, tableId, recordId, body) {
   return res.json();
 }
 
+async function nocodbDelete(env, tableId, recordId) {
+  const res = await fetch(`${env.NOCODB_URL}/api/v2/tables/${tableId}/records`, {
+    method: 'DELETE',
+    headers: {
+      'xc-token': env.NOCODB_TOKEN,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ Id: recordId }),
+  });
+  if (!res.ok) throw new Error(`NocoDB DELETE ${tableId}: ${res.status}`);
+  return res.json();
+}
+
 function jsonResponse(data, status = 200) {
   return new Response(JSON.stringify(data), {
     status,
@@ -84,4 +97,4 @@ function errorResponse(message, status = 400) {
   return jsonResponse({ error: message }, status);
 }
 
-export { stripeRequest, nocodbGet, nocodbPost, nocodbPatch, jsonResponse, errorResponse };
+export { stripeRequest, nocodbGet, nocodbPost, nocodbPatch, nocodbDelete, jsonResponse, errorResponse };

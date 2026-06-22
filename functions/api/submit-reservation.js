@@ -1,4 +1,4 @@
-import { stripeRequest, nocodbPost, nocodbGet, nocodbPatch, jsonResponse, errorResponse } from './_lib.js';
+import { stripeRequest, nocodbPost, nocodbGet, nocodbPatch, nocodbDelete, jsonResponse, errorResponse } from './_lib.js';
 import { generateTicketPDF } from './_pdf.js';
 import { sendTicketEmail } from './_email.js';
 import { sendMetaEvent, buildUserData } from './_meta.js';
@@ -53,6 +53,20 @@ export async function onRequestPost({ request, env }) {
       code_promo_utilise: codePromo,
     });
     const commandeId = commande.Id;
+
+    // Nettoie la table pending_sessions si cette session y était stockée
+    if (env.NOCODB_TABLE_PENDING) {
+      try {
+        const pending = await nocodbGet(env, env.NOCODB_TABLE_PENDING, {
+          where: `(stripe_session_id,eq,${session_id})`,
+        });
+        if (pending.list && pending.list.length > 0) {
+          for (const p of pending.list) {
+            await nocodbDelete(env, env.NOCODB_TABLE_PENDING, p.Id);
+          }
+        }
+      } catch (e) { /* non bloquant */ }
+    }
 
     const billetsCrees = [];
     for (const b of billetsData) {
