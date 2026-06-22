@@ -7,6 +7,8 @@ const GOLD = rgb(0.72, 0.58, 0.25);
 const LINE = rgb(0.8, 0.8, 0.8);
 
 export async function generateTicketPDF(billet) {
+  const prixPaye = Number(billet.prix_paye) || 0;
+  const prixAvant = Number(billet.prix_avant) || 0;
   const pdf = await PDFDocument.create();
   const page = pdf.addPage([280, 500]); // Portrait, format billet
   const font = await pdf.embedFont(StandardFonts.Helvetica);
@@ -57,7 +59,7 @@ export async function generateTicketPDF(billet) {
   });
 
   // Price
-  const prixFormate = billet.prix_paye.toFixed(2).replace('.', ',');
+  const prixFormate = prixPaye.toFixed(2).replace('.', ',');
   page.drawText('PRIX', {
     x: 150, y: 297, size: 8, font: font, color: MUTED,
   });
@@ -66,8 +68,8 @@ export async function generateTicketPDF(billet) {
   });
 
   // Promo info
-  if (billet.code_promo && billet.prix_avant && billet.prix_avant > billet.prix_paye) {
-    const prixAvantFormate = billet.prix_avant.toFixed(2).replace('.', ',');
+  if (billet.code_promo && prixAvant > prixPaye) {
+    const prixAvantFormate = prixAvant.toFixed(2).replace('.', ',');
     page.drawText(`Avant remise: ${prixAvantFormate}€`, {
       x: 150, y: 268, size: 7, font: font, color: MUTED,
     });
