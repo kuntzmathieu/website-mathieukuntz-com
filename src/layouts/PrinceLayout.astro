@@ -40,11 +40,6 @@ const metaPixelId = import.meta.env.PUBLIC_META_PIXEL_ID;
         const pvEventId = 'pv_' + crypto.randomUUID();
         window.fbq('init', metaPixelId);
         window.fbq('track', 'PageView', {}, { eventID: pvEventId });
-        fetch('/api/meta-track', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ event_name: 'PageView', event_id: pvEventId })
-        }).catch(() => {});
       </script>
     )}
     <link rel="preconnect" href="https://fonts.googleapis.com" />

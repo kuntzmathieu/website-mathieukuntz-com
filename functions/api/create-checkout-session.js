@@ -1,5 +1,4 @@
 import { stripeRequest, nocodbGet, nocodbPost, jsonResponse, errorResponse } from './_lib.js';
-import { sendMetaEvent, buildUserData } from './_meta.js';
 
 export async function onRequestPost({ request, env }) {
   try {
@@ -104,29 +103,12 @@ export async function onRequestPost({ request, env }) {
       'metadata[billets_detail]': JSON.stringify(billetsPreview.map(b => ({ type: b.type, prix: b.prix, prix_avant: b.prix_avant }))),
     }, env.STRIPE_SECRET_KEY);
 
-    const eventId = body.event_id || crypto.randomUUID();
-    const userData = await buildUserData(request, {});
-    await sendMetaEvent(env, {
-      event_name: 'InitiateCheckout',
-      event_time: Math.floor(Date.now() / 1000),
-      event_id: eventId,
-      action_source: 'website',
-      user_data: userData,
-      custom_data: {
-        currency: 'EUR',
-        value: montantTotal,
-        content_name: 'PRINCE',
-        num_items: pleinQt + reduitQt,
-      },
-    });
-
     return jsonResponse({
       clientSecret: session.client_secret,
       session_id: session.id,
       montant_avant_remise: montantAvantRemise,
       montant_total: montantTotal,
       billets: billetsPreview,
-      event_id: eventId,
     });
   } catch (err) {
     return errorResponse(err.message, 500);

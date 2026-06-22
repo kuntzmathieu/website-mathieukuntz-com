@@ -147,7 +147,6 @@ import PrinceLayout from '../../layouts/PrinceLayout.astro';
           }));
 
             const purchaseEventId = 'pur_' + crypto.randomUUID();
-            const registrationEventId = 'cr_' + crypto.randomUUID();
             try {
               const sres = await fetch('/api/submit-reservation', {
                 method: 'POST',
@@ -166,7 +165,6 @@ import PrinceLayout from '../../layouts/PrinceLayout.astro';
                 alert('Billets enregistrés mais erreur envoi email: ' + sdata.email_errors.map(e => e.error).join(', '));
               }
               if (window.fbq) {
-                window.fbq('track', 'CompleteRegistration', { currency: 'EUR', value: sdata.montant_total || 0 }, { eventID: registrationEventId });
                 window.fbq('track', 'Purchase', { currency: 'EUR', value: sdata.montant_total || 0 }, { eventID: purchaseEventId });
               }
             window.location.href = '/prince/merci';
