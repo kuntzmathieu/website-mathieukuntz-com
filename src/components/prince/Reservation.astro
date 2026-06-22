@@ -197,6 +197,34 @@
       centerCheckout();
       setTimeout(centerCheckout, 400);
       setTimeout(centerCheckout, 1000);
+
+      // Polling : détecte la fin du paiement et redirige vers le formulaire
+      // (redirect_on_completion='never', on gère la redirection nous-mêmes)
+      const pollSessionId = data.session_id;
+      let pollCount = 0;
+      const maxPolls = 300; // 10 min à 2s par intervalle
+      const pollInterval = setInterval(async () => {
+        pollCount++;
+        if (pollCount > maxPolls) {
+          clearInterval(pollInterval);
+          return;
+        }
+        try {
+          const pres = await fetch(`/api/session-info?session_id=${pollSessionId}`);
+          const pdata = await pres.json();
+          if (pdata.payment_status === 'paid') {
+            clearInterval(pollInterval);
+            const overlay = document.createElement('div');
+            overlay.style.cssText = 'text-align:center;padding:20px;background:rgba(232,199,106,0.15);border-radius:12px;margin-bottom:16px;';
+            overlay.innerHTML = '<p style="color:#E8C76A;font-size:18px;font-weight:700;margin:0;">Paiement confirmé ! Redirection en cours...</p>';
+            checkoutContainer.prepend(overlay);
+            checkoutContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            setTimeout(() => {
+              window.location.href = `/prince/confirmation?session_id=${pollSessionId}`;
+            }, 800);
+          }
+        } catch (e) { /* ignore polling errors */ }
+      }, 2000);
     } catch (e) {
       alert(e.message);
     } finally {

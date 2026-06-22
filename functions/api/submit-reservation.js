@@ -17,6 +17,19 @@ export async function onRequestPost({ request, env }) {
       return errorResponse('Paiement non confirmé', 400);
     }
 
+    // Anti-doublon : vérifie si une commande existe déjà pour cette session
+    const existing = await nocodbGet(env, env.NOCODB_TABLE_COMMANDES, {
+      where: `(stripe_session_id,eq,${session_id})`,
+    });
+    if (existing.list && existing.list.length > 0) {
+      return jsonResponse({
+        success: true,
+        already_exists: true,
+        commande_id: existing.list[0].Id,
+        message: 'Cette commande a déjà été enregistrée.',
+      });
+    }
+
     const meta = session.metadata || {};
     const emailCommande = session.customer_email || session.customer_details?.email || '';
     const montantTotal = parseFloat(meta.montant_total) || session.amount_total / 100;

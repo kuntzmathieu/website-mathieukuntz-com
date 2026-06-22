@@ -151,6 +151,11 @@ import PrinceLayout from '../../layouts/PrinceLayout.astro';
             const sdata = await sres.json();
             if (!sres.ok) throw new Error(sdata.error);
 
+            if (sdata.already_exists) {
+              window.location.href = '/prince/merci';
+              return;
+            }
+
             if (sdata.email_errors && sdata.email_errors.length > 0) {
               alert('Billets enregistrés mais erreur envoi email: ' + sdata.email_errors.map(e => e.error).join(', '));
             }
