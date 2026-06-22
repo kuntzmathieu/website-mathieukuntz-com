@@ -80,6 +80,7 @@ export async function onRequestPost({ request, env }) {
         nom: b.nom,
         prenom: b.prenom,
         annee_naissance: b.annee_naissance,
+        code_postal: b.code_postal || '',
         email_personne: b.email_personne || '',
         date_achat: new Date().toISOString(),
         checkin: false,
@@ -96,6 +97,7 @@ export async function onRequestPost({ request, env }) {
         nom: b.nom,
         prenom: b.prenom,
         annee_naissance: b.annee_naissance,
+        code_postal: b.code_postal || '',
         email_personne: b.email_personne || '',
       });
     }
