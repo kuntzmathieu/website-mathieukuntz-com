@@ -15,6 +15,8 @@ const npsScales = [
   { key: 'nps_recommander', label: "Le recommanderiez-vous à d'autres ?" },
   { key: 'nps_revenir', label: 'Reviendriez-vous voir un autre spectacle de ce format ?' },
 ];
+
+const req = '<span class="text-[#E8C76A]">*</span>';
 ---
 
 <PrinceLayout
@@ -48,9 +50,9 @@ const npsScales = [
           </h2>
 
           <!-- Q1 -->
-          <div class="space-y-3">
+          <div class="req-block space-y-3">
             <label class="block text-base md:text-lg text-[#F2EFEA] font-medium">
-              Comment évalueriez-vous votre expérience ce soir ? <span class="req-dot"></span>
+              Comment évalueriez-vous votre expérience ce soir ? {req}
             </label>
             <div id="q1-stars" class="flex gap-2 text-4xl">
               <button type="button" data-star="1" class="star-btn text-white/20 hover:text-[#E8C76A] transition-colors">★</button>
@@ -97,9 +99,9 @@ const npsScales = [
           </div>
 
           <!-- Q5 -->
-          <div class="space-y-3">
+          <div class="req-block space-y-3">
             <label class="block text-base md:text-lg text-[#F2EFEA] font-medium">
-              Avec quoi repartez-vous de ce voyage ? <span class="req-dot"></span>
+              Avec quoi repartez-vous de ce voyage ? {req}
             </label>
             <p class="text-sm text-white/40 font-light">Une image, une émotion, un moment, une phrase, une pensée...</p>
             <textarea name="ce_qui_reste" rows="3" required class="w-full px-4 py-3 bg-white/[0.02] border border-white/10 rounded-lg text-[#F2EFEA] placeholder-white/30 font-light outline-none focus:border-[#E8C76A]/40 transition-colors resize-none" placeholder="..."></textarea>
@@ -113,10 +115,10 @@ const npsScales = [
           </h2>
 
           <!-- Q6 grille -->
-          <div class="space-y-4" id="q6-grille">
+          <div class="req-block space-y-4" id="q6-grille">
             {grilleItems.map(item => (
               <div class="grille-row" data-key={item.key}>
-                <span class="text-sm md:text-base text-[#F2EFEA]/85">{item.label} <span class="req-dot"></span></span>
+                <span class="text-sm md:text-base text-[#F2EFEA]/85">{item.label} {req}</span>
                 <div class="flex gap-1.5 md:gap-2">
                   {[1, 2, 3, 4, 5].map(v => (
                     <button type="button" class="grille-star" data-grille={item.key} data-val={v}>★</button>
@@ -146,9 +148,10 @@ const npsScales = [
               <label class="check-card"><input type="checkbox" name="emotions" value="Inspiré" class="sr-only" /><span class="check-box"></span><span class="text-sm text-[#F2EFEA]/85">Inspiré(e)</span></label>
               <label class="check-card"><input type="checkbox" name="emotions" value="Joyeux" class="sr-only" /><span class="check-box"></span><span class="text-sm text-[#F2EFEA]/85">Joyeux(se)</span></label>
               <label class="check-card"><input type="checkbox" name="emotions" value="Libéré" class="sr-only" /><span class="check-box"></span><span class="text-sm text-[#F2EFEA]/85">Libéré(e)</span></label>
-              <label class="check-card"><input type="checkbox" name="emotions" value="Autre" class="sr-only" /><span class="check-box"></span><span class="text-sm text-[#F2EFEA]/85">Autre</span></label>
+              <div class="sm:col-span-1">
+                <input type="text" name="emotions_autre" class="w-full h-full px-4 py-[0.6rem] bg-white/[0.02] border border-white/10 rounded-xl text-[#F2EFEA] placeholder-white/30 font-light text-sm outline-none focus:border-[#E8C76A]/40 transition-colors" placeholder="Autre..." />
+              </div>
             </div>
-            <input type="text" name="emotions_autre" class="w-full px-4 py-3 bg-white/[0.02] border border-white/10 rounded-lg text-[#F2EFEA] placeholder-white/30 font-light outline-none focus:border-[#E8C76A]/40 transition-colors" placeholder="Autre" />
           </div>
 
           <!-- Q8 -->
@@ -160,9 +163,9 @@ const npsScales = [
           </div>
 
           <!-- Q9 -->
-          <div class="space-y-3">
+          <div class="req-block space-y-3">
             <label class="block text-base md:text-lg text-[#F2EFEA] font-medium">
-              La durée vous a paru : <span class="req-dot"></span>
+              La durée vous a paru : {req}
             </label>
             <div class="space-y-2">
               <label class="radio-card"><input type="radio" name="rythme" value="Trop courte" class="sr-only" /><span class="radio-dot"></span><span class="text-sm md:text-base text-[#F2EFEA]/85">Trop courte</span></label>
@@ -173,9 +176,9 @@ const npsScales = [
           </div>
 
           <!-- Q10 -->
-          <div class="space-y-3">
+          <div class="req-block space-y-3">
             <label class="block text-base md:text-lg text-[#F2EFEA] font-medium">
-              Le prix du billet vous a semblé : <span class="req-dot"></span>
+              Le prix du billet vous a semblé : {req}
             </label>
             <div class="space-y-2">
               <label class="radio-card"><input type="radio" name="prix_percu" value="Très cher" class="sr-only" /><span class="radio-dot"></span><span class="text-sm md:text-base text-[#F2EFEA]/85">Très cher</span></label>
@@ -186,11 +189,11 @@ const npsScales = [
           </div>
 
           <!-- Q11 NPS -->
-          <div class="space-y-6">
+          <div class="req-block space-y-6">
             {npsScales.map(nps => (
               <div class="space-y-3">
                 <label class="block text-base md:text-lg text-[#F2EFEA] font-medium">
-                  {nps.label} <span class="req-dot"></span>
+                  {nps.label} {req}
                 </label>
                 <div class="flex gap-1 justify-center flex-wrap">
                   {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(v => (
@@ -218,30 +221,28 @@ const npsScales = [
               <label class="check-card"><input type="checkbox" name="decouverte" value="Connais l artiste ou l association" class="sr-only" /><span class="check-box"></span><span class="text-sm text-[#F2EFEA]/85">Je connais l'artiste ou l'association organisatrice</span></label>
               <label class="check-card"><input type="checkbox" name="decouverte" value="Affiche / panneau" class="sr-only" /><span class="check-box"></span><span class="text-sm text-[#F2EFEA]/85">Affiche, panneau</span></label>
               <label class="check-card"><input type="checkbox" name="decouverte" value="Radio" class="sr-only" /><span class="check-box"></span><span class="text-sm text-[#F2EFEA]/85">Radio</span></label>
-              <label class="check-card"><input type="checkbox" name="decouverte" value="Autre" class="sr-only" /><span class="check-box"></span><span class="text-sm text-[#F2EFEA]/85">Autre</span></label>
             </div>
-            <input type="text" name="decouverte_autre" class="w-full px-4 py-3 bg-white/[0.02] border border-white/10 rounded-lg text-[#F2EFEA] placeholder-white/30 font-light outline-none focus:border-[#E8C76A]/40 transition-colors" placeholder="Autre" />
+            <input type="text" name="decouverte_autre" class="w-full px-4 py-3 bg-white/[0.02] border border-white/10 rounded-xl text-[#F2EFEA] placeholder-white/30 font-light outline-none focus:border-[#E8C76A]/40 transition-colors" placeholder="Autre..." />
           </div>
 
           <!-- Q13 -->
-          <div class="space-y-3">
+          <div class="req-block space-y-3">
             <label class="block text-base md:text-lg text-[#F2EFEA] font-medium">
-              Qu'est-ce qui vous a donné envie de venir ? <span class="req-dot"></span> <span class="text-sm font-normal text-white/40">(plusieurs choix)</span>
+              Qu'est-ce qui vous a donné envie de venir ? {req} <span class="text-sm font-normal text-white/40">(plusieurs choix)</span>
             </label>
             <div class="space-y-2">
               <label class="check-card"><input type="checkbox" name="motivation" value="L univers du Petit Prince" class="sr-only" /><span class="check-box"></span><span class="text-sm text-[#F2EFEA]/85">L'univers du Petit Prince</span></label>
               <label class="check-card"><input type="checkbox" name="motivation" value="Curiosité pour l hypnose" class="sr-only" /><span class="check-box"></span><span class="text-sm text-[#F2EFEA]/85">Curiosité pour l'hypnose</span></label>
               <label class="check-card"><input type="checkbox" name="motivation" value="La musique en live" class="sr-only" /><span class="check-box"></span><span class="text-sm text-[#F2EFEA]/85">La musique en live</span></label>
               <label class="check-card"><input type="checkbox" name="motivation" value="L expérience immersive globale" class="sr-only" /><span class="check-box"></span><span class="text-sm text-[#F2EFEA]/85">L'expérience immersive globale (combo théâtre + musique + hypnose)</span></label>
-              <label class="check-card"><input type="checkbox" name="motivation" value="Autre" class="sr-only" /><span class="check-box"></span><span class="text-sm text-[#F2EFEA]/85">Autre</span></label>
             </div>
-            <input type="text" name="motivation_autre" class="w-full px-4 py-3 bg-white/[0.02] border border-white/10 rounded-lg text-[#F2EFEA] placeholder-white/30 font-light outline-none focus:border-[#E8C76A]/40 transition-colors" placeholder="Autre" />
+            <input type="text" name="motivation_autre" class="w-full px-4 py-3 bg-white/[0.02] border border-white/10 rounded-xl text-[#F2EFEA] placeholder-white/30 font-light outline-none focus:border-[#E8C76A]/40 transition-colors" placeholder="Autre..." />
           </div>
 
           <!-- Q14 -->
-          <div class="space-y-3">
+          <div class="req-block space-y-3">
             <label class="block text-base md:text-lg text-[#F2EFEA] font-medium">
-              Si vous deviez raconter le spectacle à un(e) ami(e) en une phrase, pour le(la) convaincre de venir, vous diriez... <span class="req-dot"></span>
+              Si vous deviez raconter le spectacle à un(e) ami(e) en une phrase, pour le(la) convaincre de venir, vous diriez... {req}
             </label>
             <textarea name="description_ami" rows="2" required class="w-full px-4 py-3 bg-white/[0.02] border border-white/10 rounded-lg text-[#F2EFEA] placeholder-white/30 font-light outline-none focus:border-[#E8C76A]/40 transition-colors resize-none" placeholder="..."></textarea>
           </div>
@@ -265,9 +266,8 @@ const npsScales = [
               <label class="check-card"><input type="checkbox" name="interets" value="Ateliers / séances collectives d hypnose" class="sr-only" /><span class="check-box"></span><span class="text-sm text-[#F2EFEA]/85">Des ateliers / séances collectives d'hypnose (découverte, auto-hypnose...)</span></label>
               <label class="check-card"><input type="checkbox" name="interets" value="Retraite / stage / immersion nature" class="sr-only" /><span class="check-box"></span><span class="text-sm text-[#F2EFEA]/85">Une retraite / stage / immersion (hypnose + aventure nature, quelques jours)</span></label>
               <label class="check-card"><input type="checkbox" name="interets" value="Rien de tout ça pour l instant" class="sr-only" /><span class="check-box"></span><span class="text-sm text-[#F2EFEA]/85">Rien de tout ça pour l'instant, ce spectacle c'était déjà très bien</span></label>
-              <label class="check-card"><input type="checkbox" name="interets" value="Autre" class="sr-only" /><span class="check-box"></span><span class="text-sm text-[#F2EFEA]/85">Autre chose</span></label>
             </div>
-            <input type="text" name="interets_autre" class="w-full px-4 py-3 bg-white/[0.02] border border-white/10 rounded-lg text-[#F2EFEA] placeholder-white/30 font-light outline-none focus:border-[#E8C76A]/40 transition-colors" placeholder="Autre" />
+            <input type="text" name="interets_autre" class="w-full px-4 py-3 bg-white/[0.02] border border-white/10 rounded-xl text-[#F2EFEA] placeholder-white/30 font-light outline-none focus:border-[#E8C76A]/40 transition-colors" placeholder="Autre..." />
           </div>
 
           <!-- Q16 -->
@@ -280,9 +280,9 @@ const npsScales = [
           </div>
 
           <!-- Q17 -->
-          <div class="space-y-4 p-6 rounded-2xl bg-white/[0.02] border border-white/10">
+          <div class="req-block space-y-4 p-6 rounded-2xl">
             <label class="block text-base md:text-lg text-[#F2EFEA] font-medium">
-              Restons en contact
+              Restons en contact {req}
             </label>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
@@ -295,7 +295,7 @@ const npsScales = [
               </div>
             </div>
             <div>
-              <label class="text-xs uppercase tracking-widest text-white/50 block mb-1">Email <span class="req-dot"></span></label>
+              <label class="text-xs uppercase tracking-widest text-white/50 block mb-1">Email {req}</label>
               <input type="email" name="email_contact" required class="w-full px-4 py-3 bg-white/[0.02] border border-white/10 rounded-lg text-[#F2EFEA] font-light outline-none focus:border-[#E8C76A]/40 transition-colors" placeholder="vous@email.com" />
             </div>
             <label class="flex items-center gap-3 cursor-pointer">
@@ -340,14 +340,12 @@ const npsScales = [
 </PrinceLayout>
 
 <style is:global>
-  .req-dot {
-    display: inline-block;
-    width: 0.45rem;
-    height: 0.45rem;
-    border-radius: 50%;
-    background: #E8C76A;
-    margin-left: 0.3rem;
-    vertical-align: middle;
+  .req-block {
+    border-radius: 1rem;
+    padding: 1.25rem;
+    background: rgba(232, 199, 106, 0.05);
+    border: 1px solid rgba(232, 199, 106, 0.15);
+    box-shadow: 0 0 24px rgba(232, 199, 106, 0.04);
   }
   .radio-card {
     display: flex;
