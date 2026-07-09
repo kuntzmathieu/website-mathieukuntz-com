@@ -1,0 +1,652 @@
+---
+import PrinceLayout from '../../layouts/PrinceLayout.astro';
+---
+
+<PrinceLayout
+  title="Votre avis — PRINCE | Mathieu Kuntz"
+  description="Donnez votre avis sur le spectacle PRINCE. 3 minutes suffisent."
+>
+  <section class="py-16 px-6 md:px-12 min-h-[80vh] relative">
+    <div class="max-w-2xl mx-auto w-full space-y-12">
+
+      <!-- Header -->
+      <div class="text-center space-y-4">
+        <span class="inline-block px-4 py-1.5 rounded-full bg-[#E8C76A]/10 border border-[#E8C76A]/30 text-[#E8C76A] text-xs font-bold uppercase tracking-widest">
+          ≈ 3 min
+        </span>
+        <h1 class="text-3xl md:text-5xl font-serif tracking-tight text-[#F2EFEA]">
+          Merci pour votre avis.
+        </h1>
+        <p class="text-base md:text-lg text-[#F2EFEA]/85 font-light leading-relaxed max-w-xl mx-auto">
+          Ce spectacle est nouveau et chaque retour compte pour l'améliorer. Soyez
+          honnête, soyez bref — tout est précieux.
+        </p>
+      </div>
+
+      <!-- Form -->
+      <form id="feedback-form" class="space-y-16">
+
+        <!-- BLOC A -->
+        <div class="space-y-8">
+          <h2 class="text-sm font-bold uppercase tracking-widest text-[#E8C76A] border-b border-[#E8C76A]/20 pb-3">
+            Votre ressenti
+          </h2>
+
+          <!-- Q1 -->
+          <div class="space-y-3">
+            <label class="block text-base md:text-lg text-[#F2EFEA] font-medium">
+              Comment évalueriez-vous votre expérience ce soir ? <span class="text-[#E8C76A]">*</span>
+            </label>
+            <div id="q1-stars" class="flex gap-2 text-4xl">
+              <button type="button" data-star="1" class="star-btn text-white/20 hover:text-[#E8C76A] transition-colors">★</button>
+              <button type="button" data-star="2" class="star-btn text-white/20 hover:text-[#E8C76A] transition-colors">★</button>
+              <button type="button" data-star="3" class="star-btn text-white/20 hover:text-[#E8C76A] transition-colors">★</button>
+              <button type="button" data-star="4" class="star-btn text-white/20 hover:text-[#E8C76A] transition-colors">★</button>
+              <button type="button" data-star="5" class="star-btn text-white/20 hover:text-[#E8C76A] transition-colors">★</button>
+            </div>
+            <input type="hidden" name="note" id="q1-value" required />
+          </div>
+
+          <!-- Q2 -->
+          <div class="space-y-3">
+            <label class="block text-base md:text-lg text-[#F2EFEA] font-medium">
+              Aviez-vous déjà expérimenté l'hypnose avant ?
+            </label>
+            <div class="space-y-2" data-radio-group="deja_vu_hypnose">
+              <label class="radio-card">
+                <input type="radio" name="deja_vu_hypnose" value="Accompagnement personnel / thérapie / bien-être" class="sr-only" />
+                <span class="radio-dot"></span>
+                <span class="text-sm md:text-base text-[#F2EFEA]/85">Accompagnement personnel, thérapie ou bien-être</span>
+              </label>
+              <label class="radio-card">
+                <input type="radio" name="deja_vu_hypnose" value="Hypnose de scène / divertissement" class="sr-only" />
+                <span class="radio-dot"></span>
+                <span class="text-sm md:text-base text-[#F2EFEA]/85">Oui, pour de l'hypnose de scène / divertissement</span>
+              </label>
+              <label class="radio-card">
+                <input type="radio" name="deja_vu_hypnose" value="Vu ou entendu parler, mais pas expérimenté" class="sr-only" />
+                <span class="radio-dot"></span>
+                <span class="text-sm md:text-base text-[#F2EFEA]/85">Non, mais j'en ai déjà vu ou entendu parlé</span>
+              </label>
+              <label class="radio-card">
+                <input type="radio" name="deja_vu_hypnose" value="Première fois, je découvre" class="sr-only" />
+                <span class="radio-dot"></span>
+                <span class="text-sm md:text-base text-[#F2EFEA]/85">Non, c'est la première fois et je découvre</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Q3 -->
+          <div class="space-y-3">
+            <label class="block text-base md:text-lg text-[#F2EFEA] font-medium">
+              Connaissiez-vous déjà l'histoire du Petit Prince ?
+            </label>
+            <div class="space-y-2" data-radio-group="connait_petit_prince">
+              <label class="radio-card">
+                <input type="radio" name="connait_petit_prince" value="Oui, je suis fan !" class="sr-only" />
+                <span class="radio-dot"></span>
+                <span class="text-sm md:text-base text-[#F2EFEA]/85">Oui, je suis fan !</span>
+              </label>
+              <label class="radio-card">
+                <input type="radio" name="connait_petit_prince" value="Oui mais incomplet / oublié" class="sr-only" />
+                <span class="radio-dot"></span>
+                <span class="text-sm md:text-base text-[#F2EFEA]/85">Oui mais je n'avais pas tout compris ou je ne me souviens pas de tout</span>
+              </label>
+              <label class="radio-card">
+                <input type="radio" name="connait_petit_prince" value="Entendu parler, jamais lu" class="sr-only" />
+                <span class="radio-dot"></span>
+                <span class="text-sm md:text-base text-[#F2EFEA]/85">Déjà entendu parler mais jamais vraiment lu</span>
+              </label>
+              <label class="radio-card">
+                <input type="radio" name="connait_petit_prince" value="Non, découvert avec le spectacle" class="sr-only" />
+                <span class="radio-dot"></span>
+                <span class="text-sm md:text-base text-[#F2EFEA]/85">Non, j'ai découvert avec ce spectacle</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Q4 -->
+          <div class="space-y-3">
+            <label class="block text-base md:text-lg text-[#F2EFEA] font-medium">
+              Quelles étaient vos attentes avant le spectacle ?
+            </label>
+            <textarea name="attentes" rows="2" class="w-full px-4 py-3 bg-white/[0.02] border border-white/10 rounded-lg text-[#F2EFEA] placeholder-white/30 font-light outline-none focus:border-[#E8C76A]/40 transition-colors resize-none" placeholder="Libre..."></textarea>
+          </div>
+
+          <!-- Q5 -->
+          <div class="space-y-3">
+            <label class="block text-base md:text-lg text-[#F2EFEA] font-medium">
+              Avec quoi repartez-vous de ce voyage ? <span class="text-[#E8C76A]">*</span>
+            </label>
+            <p class="text-sm text-white/40 font-light">Une image, une émotion, un moment, une phrase, une pensée...</p>
+            <textarea name="ce_qui_reste" rows="3" required class="w-full px-4 py-3 bg-white/[0.02] border border-white/10 rounded-lg text-[#F2EFEA] placeholder-white/30 font-light outline-none focus:border-[#E8C76A]/40 transition-colors resize-none" placeholder="..."></textarea>
+          </div>
+        </div>
+
+        <!-- BLOC B -->
+        <div class="space-y-6">
+          <h2 class="text-sm font-bold uppercase tracking-widest text-[#E8C76A] border-b border-[#E8C76A]/20 pb-3">
+            Notez ces aspects <span class="text-white/40 font-normal normal-case">(1 bof — 5 génial)</span>
+          </h2>
+
+          <!-- Q6 grille -->
+          <div class="space-y-4" id="q6-grille">
+            <div class="grille-row" data-key="immersion">
+              <span class="text-sm md:text-base text-[#F2EFEA]/85">Immersion (vous étiez "dedans") <span class="text-[#E8C76A]">*</span></span>
+              <div class="flex gap-1.5 md:gap-2 text-2xl md:text-3xl"></div>
+            </div>
+            <div class="grille-row" data-key="emotions">
+              <span class="text-sm md:text-base text-[#F2EFEA]/85">Émotions ressenties <span class="text-[#E8C76A]">*</span></span>
+              <div class="flex gap-1.5 md:gap-2 text-2xl md:text-3xl"></div>
+            </div>
+            <div class="grille-row" data-key="musique">
+              <span class="text-sm md:text-base text-[#F2EFEA]/85">Musique live <span class="text-[#E8C76A]">*</span></span>
+              <div class="flex gap-1.5 md:gap-2 text-2xl md:text-3xl"></div>
+            </div>
+            <div class="grille-row" data-key="voix_recit">
+              <span class="text-sm md:text-base text-[#F2EFEA]/85">Voix & récit <span class="text-[#E8C76A]">*</span></span>
+              <div class="flex gap-1.5 md:gap-2 text-2xl md:text-3xl"></div>
+            </div>
+            <div class="grille-row" data-key="rythme">
+              <span class="text-sm md:text-base text-[#F2EFEA]/85">Rythme & fluidité <span class="text-[#E8C76A]">*</span></span>
+              <div class="flex gap-1.5 md:gap-2 text-2xl md:text-3xl"></div>
+            </div>
+            <div class="grille-row" data-key="profondeur">
+              <span class="text-sm md:text-base text-[#F2EFEA]/85">Profondeur / utilité du propos <span class="text-[#E8C76A]">*</span></span>
+              <div class="flex gap-1.5 md:gap-2 text-2xl md:text-3xl"></div>
+            </div>
+            <div class="grille-row" data-key="equilibre">
+              <span class="text-sm md:text-base text-[#F2EFEA]/85">Équilibre global <span class="text-[#E8C76A]">*</span></span>
+              <div class="flex gap-1.5 md:gap-2 text-2xl md:text-3xl"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BLOC C -->
+        <div class="space-y-8">
+          <h2 class="text-sm font-bold uppercase tracking-widest text-[#E8C76A] border-b border-[#E8C76A]/20 pb-3">
+            Pour m'aider à grandir
+          </h2>
+
+          <!-- Q7 -->
+          <div class="space-y-3">
+            <label class="block text-base md:text-lg text-[#F2EFEA] font-medium">
+              En sortant, vous vous êtes senti(e) : <span class="text-sm font-normal text-white/40">(plusieurs choix possibles)</span>
+            </label>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <label class="check-card"><input type="checkbox" name="emotions" value="Plus connecté à soi-même" class="sr-only" /><span class="check-box"></span><span class="text-sm text-[#F2EFEA]/85">Plus connecté(e) à vous-même</span></label>
+              <label class="check-card"><input type="checkbox" name="emotions" value="Plus connecté aux autres" class="sr-only" /><span class="check-box"></span><span class="text-sm text-[#F2EFEA]/85">Plus connecté(e) aux autres</span></label>
+              <label class="check-card"><input type="checkbox" name="emotions" value="Plus grand que soi" class="sr-only" /><span class="check-box"></span><span class="text-sm text-[#F2EFEA]/85">Plus connecté(e) à "plus grand que vous"</span></label>
+              <label class="check-card"><input type="checkbox" name="emotions" value="Espoir / envie d'agir" class="sr-only" /><span class="check-box"></span><span class="text-sm text-[#F2EFEA]/85">Nourri(e) d'espoir / envie d'agir</span></label>
+              <label class="check-card"><input type="checkbox" name="emotions" value="Inspiré" class="sr-only" /><span class="check-box"></span><span class="text-sm text-[#F2EFEA]/85">Inspiré(e)</span></label>
+              <label class="check-card"><input type="checkbox" name="emotions" value="Joyeux" class="sr-only" /><span class="check-box"></span><span class="text-sm text-[#F2EFEA]/85">Joyeux(se)</span></label>
+              <label class="check-card"><input type="checkbox" name="emotions" value="Libéré" class="sr-only" /><span class="check-box"></span><span class="text-sm text-[#F2EFEA]/85">Libéré(e)</span></label>
+              <label class="check-card"><input type="checkbox" name="emotions" value="Autre" class="sr-only" /><span class="check-box"></span><span class="text-sm text-[#F2EFEA]/85">Autre</span></label>
+            </div>
+            <input type="text" name="emotions_autre" class="w-full px-4 py-3 bg-white/[0.02] border border-white/10 rounded-lg text-[#F2EFEA] placeholder-white/30 font-light outline-none focus:border-[#E8C76A]/40 transition-colors" placeholder="Autre émotion ressentie..." />
+          </div>
+
+          <!-- Q8 -->
+          <div class="space-y-3">
+            <label class="block text-base md:text-lg text-[#F2EFEA] font-medium">
+              Y a-t-il un moment où vous avez décroché, ou qui vous a moins touché ?
+            </label>
+            <textarea name="moment_decrochage" rows="2" class="w-full px-4 py-3 bg-white/[0.02] border border-white/10 rounded-lg text-[#F2EFEA] placeholder-white/30 font-light outline-none focus:border-[#E8C76A]/40 transition-colors resize-none" placeholder="Libre..."></textarea>
+          </div>
+
+          <!-- Q9 -->
+          <div class="space-y-3">
+            <label class="block text-base md:text-lg text-[#F2EFEA] font-medium">
+              La durée vous a paru : <span class="text-[#E8C76A]">*</span>
+            </label>
+            <div class="space-y-2" data-radio-group="rythme">
+              <label class="radio-card"><input type="radio" name="rythme" value="Trop courte" class="sr-only" /><span class="radio-dot"></span><span class="text-sm md:text-base text-[#F2EFEA]/85">Trop courte</span></label>
+              <label class="radio-card"><input type="radio" name="rythme" value="Parfaite" class="sr-only" /><span class="radio-dot"></span><span class="text-sm md:text-base text-[#F2EFEA]/85">Parfaite</span></label>
+              <label class="radio-card"><input type="radio" name="rythme" value="Un peu longue mais ça allait" class="sr-only" /><span class="radio-dot"></span><span class="text-sm md:text-base text-[#F2EFEA]/85">Un peu longue mais ça allait</span></label>
+              <label class="radio-card"><input type="radio" name="rythme" value="Trop longue" class="sr-only" /><span class="radio-dot"></span><span class="text-sm md:text-base text-[#F2EFEA]/85">Trop longue</span></label>
+            </div>
+          </div>
+
+          <!-- Q10 -->
+          <div class="space-y-3">
+            <label class="block text-base md:text-lg text-[#F2EFEA] font-medium">
+              Le prix du billet vous a semblé : <span class="text-[#E8C76A]">*</span>
+            </label>
+            <div class="space-y-2" data-radio-group="prix_percu">
+              <label class="radio-card"><input type="radio" name="prix_percu" value="Très cher" class="sr-only" /><span class="radio-dot"></span><span class="text-sm md:text-base text-[#F2EFEA]/85">Très cher</span></label>
+              <label class="radio-card"><input type="radio" name="prix_percu" value="Un peu cher mais ça valait le coup" class="sr-only" /><span class="radio-dot"></span><span class="text-sm md:text-base text-[#F2EFEA]/85">Un peu cher, mais ça valait le coup</span></label>
+              <label class="radio-card"><input type="radio" name="prix_percu" value="Juste / correct" class="sr-only" /><span class="radio-dot"></span><span class="text-sm md:text-base text-[#F2EFEA]/85">Juste / correct</span></label>
+              <label class="radio-card"><input type="radio" name="prix_percu" value="Pas cher pour la valeur offerte" class="sr-only" /><span class="radio-dot"></span><span class="text-sm md:text-base text-[#F2EFEA]/85">Pas cher pour la valeur offerte</span></label>
+            </div>
+          </div>
+
+          <!-- Q11 -->
+          <div class="space-y-4">
+            <div class="space-y-3">
+              <label class="block text-base md:text-lg text-[#F2EFEA] font-medium">
+                Le recommanderiez-vous à d'autres ? <span class="text-[#E8C76A]">*</span>
+              </label>
+              <div class="flex items-center gap-2" data-nps="nps_recommander">
+                <span class="text-xs text-white/40 font-light">0 pas du tout</span>
+                <div class="flex flex-1 gap-1 justify-center"></div>
+                <span class="text-xs text-white/40 font-light">10 absolument</span>
+              </div>
+              <input type="hidden" name="nps_recommander" id="nps-recommander-value" required />
+            </div>
+            <div class="space-y-3">
+              <label class="block text-base md:text-lg text-[#F2EFEA] font-medium">
+                Reviendriez-vous voir un autre spectacle de ce format ? <span class="text-[#E8C76A]">*</span>
+              </label>
+              <div class="flex items-center gap-2" data-nps="nps_revenir">
+                <span class="text-xs text-white/40 font-light">0 pas du tout</span>
+                <div class="flex flex-1 gap-1 justify-center"></div>
+                <span class="text-xs text-white/40 font-light">10 absolument</span>
+              </div>
+              <input type="hidden" name="nps_revenir" id="nps-revenir-value" required />
+            </div>
+          </div>
+
+          <!-- Q12 -->
+          <div class="space-y-3">
+            <label class="block text-base md:text-lg text-[#F2EFEA] font-medium">
+              Comment avez-vous découvert le spectacle ? <span class="text-sm font-normal text-white/40">(plusieurs choix possibles)</span>
+            </label>
+            <div class="space-y-2">
+              <label class="check-card"><input type="checkbox" name="decouverte" value="Publicité Facebook / Instagram" class="sr-only" /><span class="check-box"></span><span class="text-sm text-[#F2EFEA]/85">Publicité Facebook / Instagram</span></label>
+              <label class="check-card"><input type="checkbox" name="decouverte" value="Autre partage réseaux sociaux" class="sr-only" /><span class="check-box"></span><span class="text-sm text-[#F2EFEA]/85">Autre partage sur les réseaux sociaux</span></label>
+              <label class="check-card"><input type="checkbox" name="decouverte" value="Bouche-à-oreille / recommandation / invitation" class="sr-only" /><span class="check-box"></span><span class="text-sm text-[#F2EFEA]/85">Bouche-à-oreille, recommandation, invitation par un.e proche</span></label>
+              <label class="check-card"><input type="checkbox" name="decouverte" value="Connais l'artiste ou l'association" class="sr-only" /><span class="check-box"></span><span class="text-sm text-[#F2EFEA]/85">Je connais l'artiste ou l'association organisatrice</span></label>
+              <label class="check-card"><input type="checkbox" name="decouverte" value="Affiche / panneau" class="sr-only" /><span class="check-box"></span><span class="text-sm text-[#F2EFEA]/85">Affiche, panneau</span></label>
+              <label class="check-card"><input type="checkbox" name="decouverte" value="Radio" class="sr-only" /><span class="check-box"></span><span class="text-sm text-[#F2EFEA]/85">Radio</span></label>
+              <label class="check-card"><input type="checkbox" name="decouverte" value="Autre" class="sr-only" /><span class="check-box"></span><span class="text-sm text-[#F2EFEA]/85">Autre</span></label>
+            </div>
+            <input type="text" name="decouverte_autre" class="w-full px-4 py-3 bg-white/[0.02] border border-white/10 rounded-lg text-[#F2EFEA] placeholder-white/30 font-light outline-none focus:border-[#E8C76A]/40 transition-colors" placeholder="Autre source..." />
+          </div>
+
+          <!-- Q13 -->
+          <div class="space-y-3">
+            <label class="block text-base md:text-lg text-[#F2EFEA] font-medium">
+              Qu'est-ce qui vous a donné envie de venir ? <span class="text-[#E8C76A]">*</span> <span class="text-sm font-normal text-white/40">(plusieurs choix)</span>
+            </label>
+            <div class="space-y-2">
+              <label class="check-card"><input type="checkbox" name="motivation" value="L'univers du Petit Prince" class="sr-only" /><span class="check-box"></span><span class="text-sm text-[#F2EFEA]/85">L'univers du Petit Prince</span></label>
+              <label class="check-card"><input type="checkbox" name="motivation" value="Curiosité pour l'hypnose" class="sr-only" /><span class="check-box"></span><span class="text-sm text-[#F2EFEA]/85">Curiosité pour l'hypnose</span></label>
+              <label class="check-card"><input type="checkbox" name="motivation" value="La musique en live" class="sr-only" /><span class="check-box"></span><span class="text-sm text-[#F2EFEA]/85">La musique en live</span></label>
+              <label class="check-card"><input type="checkbox" name="motivation" value="L'expérience immersive globale" class="sr-only" /><span class="check-box"></span><span class="text-sm text-[#F2EFEA]/85">L'expérience immersive globale (combo théâtre + musique + hypnose)</span></label>
+              <label class="check-card"><input type="checkbox" name="motivation" value="Autre" class="sr-only" /><span class="check-box"></span><span class="text-sm text-[#F2EFEA]/85">Autre</span></label>
+            </div>
+            <input type="text" name="motivation_autre" class="w-full px-4 py-3 bg-white/[0.02] border border-white/10 rounded-lg text-[#F2EFEA] placeholder-white/30 font-light outline-none focus:border-[#E8C76A]/40 transition-colors" placeholder="Autre motivation..." />
+          </div>
+
+          <!-- Q14 -->
+          <div class="space-y-3">
+            <label class="block text-base md:text-lg text-[#F2EFEA] font-medium">
+              Si vous deviez raconter le spectacle à un(e) ami(e) en une phrase, pour le(la) convaincre de venir, vous diriez... <span class="text-[#E8C76A]">*</span>
+            </label>
+            <textarea name="description_ami" rows="2" required class="w-full px-4 py-3 bg-white/[0.02] border border-white/10 rounded-lg text-[#F2EFEA] placeholder-white/30 font-light outline-none focus:border-[#E8C76A]/40 transition-colors resize-none" placeholder="..."></textarea>
+          </div>
+        </div>
+
+        <!-- BLOC D -->
+        <div class="space-y-8">
+          <h2 class="text-sm font-bold uppercase tracking-widest text-[#E8C76A] border-b border-[#E8C76A]/20 pb-3">
+            Aller plus loin <span class="text-white/40 font-normal normal-case">(optionnel)</span>
+          </h2>
+
+          <!-- Q15 -->
+          <div class="space-y-3">
+            <label class="block text-base md:text-lg text-[#F2EFEA] font-medium">
+              Seriez-vous intéressé(e) à l'avenir par : <span class="text-sm font-normal text-white/40">(cochez ce qui vous parle)</span>
+            </label>
+            <div class="space-y-2">
+              <label class="check-card"><input type="checkbox" name="interets" value="Autre spectacle (même format, autre univers)" class="sr-only" /><span class="check-box"></span><span class="text-sm text-[#F2EFEA]/85">Un autre spectacle (même format, autre univers)</span></label>
+              <label class="check-card"><input type="checkbox" name="interets" value="Spectacle / prestation privée" class="sr-only" /><span class="check-box"></span><span class="text-sm text-[#F2EFEA]/85">Un spectacle ou prestation privée (événement, anniversaire, école, entreprise...)</span></label>
+              <label class="check-card"><input type="checkbox" name="interets" value="Accompagnement personnel (hypnothérapie/coaching)" class="sr-only" /><span class="check-box"></span><span class="text-sm text-[#F2EFEA]/85">De l'accompagnement personnel (hypnothérapie/coaching)</span></label>
+              <label class="check-card"><input type="checkbox" name="interets" value="Ateliers / séances collectives d'hypnose" class="sr-only" /><span class="check-box"></span><span class="text-sm text-[#F2EFEA]/85">Des ateliers / séances collectives d'hypnose (découverte, auto-hypnose...)</span></label>
+              <label class="check-card"><input type="checkbox" name="interets" value="Retraite / stage / immersion nature" class="sr-only" /><span class="check-box"></span><span class="text-sm text-[#F2EFEA]/85">Une retraite / stage / immersion (hypnose + aventure nature, quelques jours)</span></label>
+              <label class="check-card"><input type="checkbox" name="interets" value="Rien de tout ça pour l'instant" class="sr-only" /><span class="check-box"></span><span class="text-sm text-[#F2EFEA]/85">Rien de tout ça pour l'instant, ce spectacle c'était déjà très bien</span></label>
+              <label class="check-card"><input type="checkbox" name="interets" value="Autre" class="sr-only" /><span class="check-box"></span><span class="text-sm text-[#F2EFEA]/85">Autre chose</span></label>
+            </div>
+            <input type="text" name="interets_autre" class="w-full px-4 py-3 bg-white/[0.02] border border-white/10 rounded-lg text-[#F2EFEA] placeholder-white/30 font-light outline-none focus:border-[#E8C76A]/40 transition-colors" placeholder="Autre intérêt..." />
+          </div>
+
+          <!-- Q16 -->
+          <div class="space-y-3">
+            <label class="block text-base md:text-lg text-[#F2EFEA] font-medium">
+              Auriez-vous aimé quelque chose de différent ? Ou un dernier mot à partager ?
+            </label>
+            <p class="text-sm text-white/40 font-light">Plus/moins de quelque chose, une idée, ce qui vous a gêné...</p>
+            <textarea name="amelioration" rows="3" class="w-full px-4 py-3 bg-white/[0.02] border border-white/10 rounded-lg text-[#F2EFEA] placeholder-white/30 font-light outline-none focus:border-[#E8C76A]/40 transition-colors resize-none" placeholder="Libre..."></textarea>
+          </div>
+
+          <!-- Q17 -->
+          <div class="space-y-4 p-6 rounded-2xl bg-white/[0.02] border border-white/10">
+            <label class="block text-base md:text-lg text-[#F2EFEA] font-medium">
+              Restons en contact
+            </label>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="text-xs uppercase tracking-widest text-white/50 block mb-1">Nom (optionnel)</label>
+                <input type="text" name="nom_contact" class="w-full px-4 py-3 bg-white/[0.02] border border-white/10 rounded-lg text-[#F2EFEA] font-light outline-none focus:border-[#E8C76A]/40 transition-colors" />
+              </div>
+              <div>
+                <label class="text-xs uppercase tracking-widest text-white/50 block mb-1">Prénom (optionnel)</label>
+                <input type="text" name="prenom_contact" class="w-full px-4 py-3 bg-white/[0.02] border border-white/10 rounded-lg text-[#F2EFEA] font-light outline-none focus:border-[#E8C76A]/40 transition-colors" />
+              </div>
+            </div>
+            <div>
+              <label class="text-xs uppercase tracking-widest text-white/50 block mb-1">Email <span class="text-[#E8C76A]">*</span></label>
+              <input type="email" name="email_contact" required class="w-full px-4 py-3 bg-white/[0.02] border border-white/10 rounded-lg text-[#F2EFEA] font-light outline-none focus:border-[#E8C76A]/40 transition-colors" placeholder="vous@email.com" />
+            </div>
+            <label class="flex items-center gap-3 cursor-pointer">
+              <input type="checkbox" name="optin_newsletter" value="true" checked class="w-5 h-5 rounded accent-[#E8C76A] cursor-pointer" />
+              <span class="text-sm text-[#F2EFEA]/85 font-light leading-snug">
+                Oui, tenez-moi informé(e) des prochains spectacles, dates et offres/actualités de Mathieu Kuntz (pas de spam promis).
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Submit -->
+        <div class="space-y-4">
+          <button type="submit" id="submit-btn" class="w-full px-10 py-5 bg-[#E8C76A] text-[#0A0A14] font-bold text-sm tracking-widest uppercase rounded-full hover:bg-white hover:scale-[1.02] transition-all duration-300 shadow-xl shadow-[#E8C76A]/20">
+            Envoyer mon avis
+          </button>
+          <p class="text-center text-xs text-white/30 font-light leading-relaxed max-w-md mx-auto">
+            En répondant à ce formulaire, vous acceptez que vos réponses soient utilisées dans le cadre de l'amélioration et de la diffusion des spectacles de Mathieu KUNTZ.
+          </p>
+        </div>
+      </form>
+
+      <!-- Success state -->
+      <div id="success" class="hidden text-center space-y-6 py-16">
+        <iconify-icon icon="solar:check-circle-bold" class="text-6xl text-[#E8C76A]"></iconify-icon>
+        <h2 class="text-3xl md:text-4xl font-serif text-[#F2EFEA]">Merci, c'est envoyé.</h2>
+        <p class="text-base md:text-lg text-[#F2EFEA]/85 font-light leading-relaxed max-w-md mx-auto">
+          Votre avis me touche et m'aide vraiment. Profitez de la buvette avant
+          de partir, et bonne soirée.
+        </p>
+      </div>
+
+      <!-- Error state -->
+      <div id="error" class="hidden text-center space-y-4 py-16">
+        <iconify-icon icon="solar:close-circle-linear" class="text-5xl text-red-400"></iconify-icon>
+        <h2 class="text-2xl font-serif text-[#F2EFEA]">Une erreur est survenue</h2>
+        <p id="error-msg" class="text-[#F2EFEA]/60 font-light"></p>
+        <button type="button" id="retry-btn" class="inline-block px-6 py-3 border border-white/10 rounded-full text-sm text-[#E8C76A] hover:bg-white/5 transition-colors">Réessayer</button>
+      </div>
+    </div>
+  </section>
+</PrinceLayout>
+
+<style>
+  .radio-card {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-radius: 0.75rem;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.02);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .radio-card:hover {
+    border-color: rgba(232,199,106,0.3);
+    background: rgba(255,255,255,0.04);
+  }
+  .radio-card:has(input:checked) {
+    border-color: rgba(232,199,106,0.5);
+    background: rgba(232,199,106,0.08);
+  }
+  .radio-dot {
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.2);
+    flex-shrink: 0;
+    transition: all 0.2s;
+  }
+  .radio-card:has(input:checked) .radio-dot {
+    border-color: #E8C76A;
+    background: #E8C76A;
+    box-shadow: inset 0 0 0 3px #0A0A14;
+  }
+  .check-card {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 1rem;
+    border-radius: 0.75rem;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.02);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .check-card:hover {
+    border-color: rgba(232,199,106,0.3);
+    background: rgba(255,255,255,0.04);
+  }
+  .check-card:has(input:checked) {
+    border-color: rgba(232,199,106,0.5);
+    background: rgba(232,199,106,0.08);
+  }
+  .check-box {
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 0.3rem;
+    border: 2px solid rgba(255,255,255,0.2);
+    flex-shrink: 0;
+    transition: all 0.2s;
+    position: relative;
+  }
+  .check-card:has(input:checked) .check-box {
+    border-color: #E8C76A;
+    background: #E8C76A;
+  }
+  .check-card:has(input:checked) .check-box::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #0A0A14;
+    font-size: 0.85rem;
+    font-weight: bold;
+  }
+  .grille-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  @media (min-width: 640px) {
+    .grille-row {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+  .nps-btn {
+    width: 2rem;
+    height: 2.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(255,255,255,0.15);
+    color: rgba(242,239,234,0.6);
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    flex-shrink: 0;
+  }
+  @media (min-width: 640px) {
+    .nps-btn {
+      width: 2.25rem;
+      height: 2.75rem;
+    }
+  }
+  .nps-btn:hover {
+    border-color: rgba(232,199,106,0.4);
+    color: #E8C76A;
+  }
+  .nps-btn.selected {
+    background: #E8C76A;
+    color: #0A0A14;
+    border-color: #E8C76A;
+  }
+  .grille-star {
+    width: 1.75rem;
+    height: 1.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.3rem;
+    border: 1px solid rgba(255,255,255,0.1);
+    color: rgba(242,239,234,0.3);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  @media (min-width: 640px) {
+    .grille-star {
+      width: 2rem;
+      height: 2rem;
+    }
+  }
+  .grille-star:hover {
+    border-color: rgba(232,199,106,0.3);
+    color: #E8C76A;
+  }
+  .grille-star.selected {
+    background: rgba(232,199,106,0.15);
+    border-color: #E8C76A;
+    color: #E8C76A;
+  }
+</style>
+
+<script is:inline>
+  const SOURCE = new URLSearchParams(window.location.search).get('from') === 'email' ? 'email' : 'qr_site';
+
+  // Q1 stars
+  const stars = document.querySelectorAll('.star-btn');
+  let q1Value = 0;
+  stars.forEach(btn => {
+    btn.addEventListener('click', () => {
+      q1Value = parseInt(btn.dataset.star, 10);
+      document.getElementById('q1-value').value = q1Value;
+      stars.forEach((s, i) => {
+        s.classList.toggle('text-[#E8C76A]', i < q1Value);
+        s.classList.toggle('text-white/20', i >= q1Value);
+      });
+    });
+  });
+
+  // Q6 grille stars
+  document.querySelectorAll('.grille-row').forEach(row => {
+    const container = row.querySelector('div');
+    const key = row.dataset.key;
+    for (let i = 1; i <= 5; i++) {
+      const s = document.createElement('button');
+      s.type = 'button';
+      s.className = 'grille-star';
+      s.textContent = '★';
+      s.dataset.val = i;
+      s.addEventListener('click', () => {
+        const val = parseInt(s.dataset.val, 10);
+        container.querySelectorAll('.grille-star').forEach((star, idx) => {
+          star.classList.toggle('selected', idx < val);
+        });
+        row.dataset.value = val;
+      });
+      container.appendChild(s);
+    }
+  });
+
+  // Q11 NPS
+  document.querySelectorAll('[data-nps]').forEach(group => {
+    const container = group.querySelector('div');
+    const hiddenId = 'nps-' + group.dataset.nps.replace('nps_', '') + '-value';
+    for (let i = 0; i <= 10; i++) {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'nps-btn';
+      b.textContent = i;
+      b.addEventListener('click', () => {
+        container.querySelectorAll('.nps-btn').forEach(n => n.classList.remove('selected'));
+        b.classList.add('selected');
+        document.getElementById(hiddenId).value = i;
+      });
+      container.appendChild(b);
+    }
+  });
+
+  // Submit
+  document.getElementById('feedback-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+    btn.textContent = 'Envoi...';
+
+    const form = e.target;
+    const grille = {};
+    document.querySelectorAll('.grille-row').forEach(row => {
+      grille[row.dataset.key] = row.dataset.value || '';
+    });
+
+    const getChecked = (name) => Array.from(form.querySelectorAll(`input[name="${name}"]:checked`)).map(i => i.value);
+    const getText = (name) => form.querySelector(`[name="${name}"]`)?.value?.trim() || '';
+
+    const payload = {
+      note: document.getElementById('q1-value').value,
+      deja_vu_hypnose: form.querySelector('input[name="deja_vu_hypnose"]:checked')?.value || '',
+      connait_petit_prince: form.querySelector('input[name="connait_petit_prince"]:checked')?.value || '',
+      attentes: getText('attentes'),
+      ce_qui_reste: getText('ce_qui_reste'),
+      grille: grille,
+      emotions: getChecked('emotions'),
+      emotions_autre: getText('emotions_autre'),
+      moment_decrochage: getText('moment_decrochage'),
+      rythme: form.querySelector('input[name="rythme"]:checked')?.value || '',
+      prix_percu: form.querySelector('input[name="prix_percu"]:checked')?.value || '',
+      nps_recommander: document.getElementById('nps-recommander-value').value,
+      nps_revenir: document.getElementById('nps-revenir-value').value,
+      decouverte: getChecked('decouverte'),
+      decouverte_autre: getText('decouverte_autre'),
+      motivation: getChecked('motivation'),
+      motivation_autre: getText('motivation_autre'),
+      description_ami: getText('description_ami'),
+      interets: getChecked('interets'),
+      interets_autre: getText('interets_autre'),
+      amelioration: getText('amelioration'),
+      nom_contact: getText('nom_contact'),
+      prenom_contact: getText('prenom_contact'),
+      email_contact: getText('email_contact'),
+      optin_newsletter: form.querySelector('input[name="optin_newsletter"]').checked,
+      source_soumission: SOURCE,
+    };
+
+    try {
+      const res = await fetch('/api/submit-feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Erreur serveur');
+
+      form.style.display = 'none';
+      document.getElementById('success').classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (err) {
+      document.getElementById('error-msg').textContent = err.message;
+      document.getElementById('error').classList.remove('hidden');
+      btn.disabled = false;
+      btn.textContent = 'Envoyer mon avis';
+    }
+  });
+
+  document.getElementById('retry-btn').addEventListener('click', () => {
+    document.getElementById('error').classList.add('hidden');
+    document.getElementById('submit-btn').disabled = false;
+    document.getElementById('submit-btn').textContent = 'Envoyer mon avis';
+  });
+</script>
