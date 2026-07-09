@@ -54,6 +54,8 @@ export async function onRequestPost({ request, env }) {
       return errorResponse('Email manquant ou invalide (Q17)', 400);
     }
 
+    const filterAutre = (arr) => (arr || []).filter(v => v !== 'Autre');
+
     const record = {
       date_reponse: new Date().toISOString(),
       note: note,
@@ -68,19 +70,19 @@ export async function onRequestPost({ request, env }) {
       note_rythme: parseInt(grille.rythme, 10),
       note_profondeur: parseInt(grille.profondeur, 10),
       note_equilibre: parseInt(grille.equilibre, 10),
-      emotions: (body.emotions || []).join(','),
+      emotions: filterAutre(body.emotions).join(','),
       emotions_autre: (body.emotions_autre || '').trim(),
       moment_decrochage: (body.moment_decrochage || '').trim(),
       rythme: body.rythme,
       prix_percu: body.prix_percu,
       nps_recommander: npsRecommander,
       nps_revenir: npsRevenir,
-      decouverte: (body.decouverte || []).join(','),
+      decouverte: filterAutre(body.decouverte).join(','),
       decouverte_autre: (body.decouverte_autre || '').trim(),
-      motivation: motivation.join(','),
+      motivation: filterAutre(body.motivation).join(','),
       motivation_autre: (body.motivation_autre || '').trim(),
       description_ami: descriptionAmi,
-      interets: (body.interets || []).join(','),
+      interets: filterAutre(body.interets).join(','),
       interets_autre: (body.interets_autre || '').trim(),
       amelioration: (body.amelioration || '').trim(),
       nom_contact: (body.nom_contact || '').trim(),
@@ -90,7 +92,7 @@ export async function onRequestPost({ request, env }) {
       source_soumission: body.source_soumission || 'qr_site',
     };
 
-    const tableId = env.NOCODB_TABLE_FEEDBACK || 'm0ch7r2db09warp';
+    const tableId = env.NOCODB_TABLE_FEEDBACK || 'maqhxftt2wssimc';
     await nocodbPost(env, tableId, record);
 
     return jsonResponse({ success: true });
