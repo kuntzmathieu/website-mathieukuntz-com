@@ -16,7 +16,6 @@ const npsScales = [
   { key: 'nps_revenir', label: 'Reviendriez-vous voir un autre spectacle de ce format ?' },
 ];
 
-const req = '<span class="text-[#E8C76A]">*</span>';
 ---
 
 <PrinceLayout
@@ -52,7 +51,7 @@ const req = '<span class="text-[#E8C76A]">*</span>';
           <!-- Q1 -->
           <div class="req-block space-y-3">
             <label class="block text-base md:text-lg text-[#F2EFEA] font-medium">
-              Comment évalueriez-vous votre expérience ce soir ? {req}
+              Comment évalueriez-vous votre expérience ce soir ? <span class="text-[#E8C76A]">*</span>
             </label>
             <div id="q1-stars" class="flex gap-2 text-4xl">
               <button type="button" data-star="1" class="star-btn text-white/20 hover:text-[#E8C76A] transition-colors">★</button>
@@ -101,7 +100,7 @@ const req = '<span class="text-[#E8C76A]">*</span>';
           <!-- Q5 -->
           <div class="req-block space-y-3">
             <label class="block text-base md:text-lg text-[#F2EFEA] font-medium">
-              Avec quoi repartez-vous de ce voyage ? {req}
+              Avec quoi repartez-vous de ce voyage ? <span class="text-[#E8C76A]">*</span>
             </label>
             <p class="text-sm text-white/40 font-light">Une image, une émotion, un moment, une phrase, une pensée...</p>
             <textarea name="ce_qui_reste" rows="3" required class="w-full px-4 py-3 bg-white/[0.02] border border-white/10 rounded-lg text-[#F2EFEA] placeholder-white/30 font-light outline-none focus:border-[#E8C76A]/40 transition-colors resize-none" placeholder="..."></textarea>
@@ -118,7 +117,7 @@ const req = '<span class="text-[#E8C76A]">*</span>';
           <div class="req-block space-y-4" id="q6-grille">
             {grilleItems.map(item => (
               <div class="grille-row" data-key={item.key}>
-                <span class="text-sm md:text-base text-[#F2EFEA]/85">{item.label} {req}</span>
+                <span class="text-sm md:text-base text-[#F2EFEA]/85">{item.label} <span class="text-[#E8C76A]">*</span></span>
                 <div class="flex gap-1.5 md:gap-2">
                   {[1, 2, 3, 4, 5].map(v => (
                     <button type="button" class="grille-star" data-grille={item.key} data-val={v}>★</button>
@@ -165,7 +164,7 @@ const req = '<span class="text-[#E8C76A]">*</span>';
           <!-- Q9 -->
           <div class="req-block space-y-3">
             <label class="block text-base md:text-lg text-[#F2EFEA] font-medium">
-              La durée vous a paru : {req}
+              La durée vous a paru : <span class="text-[#E8C76A]">*</span>
             </label>
             <div class="space-y-2">
               <label class="radio-card"><input type="radio" name="rythme" value="Trop courte" class="sr-only" /><span class="radio-dot"></span><span class="text-sm md:text-base text-[#F2EFEA]/85">Trop courte</span></label>
@@ -178,7 +177,7 @@ const req = '<span class="text-[#E8C76A]">*</span>';
           <!-- Q10 -->
           <div class="req-block space-y-3">
             <label class="block text-base md:text-lg text-[#F2EFEA] font-medium">
-              Le prix du billet vous a semblé : {req}
+              Le prix du billet vous a semblé : <span class="text-[#E8C76A]">*</span>
             </label>
             <div class="space-y-2">
               <label class="radio-card"><input type="radio" name="prix_percu" value="Très cher" class="sr-only" /><span class="radio-dot"></span><span class="text-sm md:text-base text-[#F2EFEA]/85">Très cher</span></label>
@@ -193,7 +192,7 @@ const req = '<span class="text-[#E8C76A]">*</span>';
             {npsScales.map(nps => (
               <div class="space-y-3">
                 <label class="block text-base md:text-lg text-[#F2EFEA] font-medium">
-                  {nps.label} {req}
+                  {nps.label} <span class="text-[#E8C76A]">*</span>
                 </label>
                 <div class="flex gap-1 justify-center flex-wrap">
                   {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(v => (
@@ -228,7 +227,7 @@ const req = '<span class="text-[#E8C76A]">*</span>';
           <!-- Q13 -->
           <div class="req-block space-y-3">
             <label class="block text-base md:text-lg text-[#F2EFEA] font-medium">
-              Qu'est-ce qui vous a donné envie de venir ? {req} <span class="text-sm font-normal text-white/40">(plusieurs choix)</span>
+              Qu'est-ce qui vous a donné envie de venir ? <span class="text-[#E8C76A]">*</span> <span class="text-sm font-normal text-white/40">(plusieurs choix)</span>
             </label>
             <div class="space-y-2">
               <label class="check-card"><input type="checkbox" name="motivation" value="L univers du Petit Prince" class="sr-only" /><span class="check-box"></span><span class="text-sm text-[#F2EFEA]/85">L'univers du Petit Prince</span></label>
@@ -242,7 +241,7 @@ const req = '<span class="text-[#E8C76A]">*</span>';
           <!-- Q14 -->
           <div class="req-block space-y-3">
             <label class="block text-base md:text-lg text-[#F2EFEA] font-medium">
-              Si vous deviez raconter le spectacle à un(e) ami(e) en une phrase, pour le(la) convaincre de venir, vous diriez... {req}
+              Si vous deviez raconter le spectacle à un(e) ami(e) en une phrase, pour le(la) convaincre de venir, vous diriez... <span class="text-[#E8C76A]">*</span>
             </label>
             <textarea name="description_ami" rows="2" required class="w-full px-4 py-3 bg-white/[0.02] border border-white/10 rounded-lg text-[#F2EFEA] placeholder-white/30 font-light outline-none focus:border-[#E8C76A]/40 transition-colors resize-none" placeholder="..."></textarea>
           </div>
@@ -282,7 +281,7 @@ const req = '<span class="text-[#E8C76A]">*</span>';
           <!-- Q17 -->
           <div class="req-block space-y-4 p-6 rounded-2xl">
             <label class="block text-base md:text-lg text-[#F2EFEA] font-medium">
-              Restons en contact {req}
+              Restons en contact <span class="text-[#E8C76A]">*</span>
             </label>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
@@ -295,7 +294,7 @@ const req = '<span class="text-[#E8C76A]">*</span>';
               </div>
             </div>
             <div>
-              <label class="text-xs uppercase tracking-widest text-white/50 block mb-1">Email {req}</label>
+              <label class="text-xs uppercase tracking-widest text-white/50 block mb-1">Email <span class="text-[#E8C76A]">*</span></label>
               <input type="email" name="email_contact" required class="w-full px-4 py-3 bg-white/[0.02] border border-white/10 rounded-lg text-[#F2EFEA] font-light outline-none focus:border-[#E8C76A]/40 transition-colors" placeholder="vous@email.com" />
             </div>
             <label class="flex items-center gap-3 cursor-pointer">
