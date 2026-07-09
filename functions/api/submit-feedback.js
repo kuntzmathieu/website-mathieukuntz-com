@@ -90,7 +90,7 @@ export async function onRequestPost({ request, env }) {
       source_soumission: body.source_soumission || 'qr_site',
     };
 
-    const tableId = env.NOCODB_TABLE_FEEDBACK || 'mgs3a5ddw0z1zyi';
+    const tableId = env.NOCODB_TABLE_FEEDBACK || 'm0ch7r2db09warp';
     await nocodbPost(env, tableId, record);
 
     return jsonResponse({ success: true });
