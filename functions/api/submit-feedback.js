@@ -15,7 +15,7 @@ export async function onRequestPost({ request, env }) {
     }
 
     const grille = body.grille || {};
-    for (const key of ['immersion', 'emotions', 'musique', 'voix_recit', 'rythme', 'profondeur', 'equilibre']) {
+    for (const key of ['immersion', 'emotions', 'musique', 'voix_recit', 'rythme', 'profondeur']) {
       const v = parseInt(grille[key], 10);
       if (!v || v < 1 || v > 5) {
         return errorResponse(`Note manquante dans la grille (${key})`, 400);

@@ -8,7 +8,6 @@ const grilleItems = [
   { key: 'voix_recit', label: 'Voix & récit' },
   { key: 'rythme', label: 'Rythme & fluidité' },
   { key: 'profondeur', label: 'Profondeur / utilité du propos' },
-  { key: 'equilibre', label: 'Équilibre global' },
 ];
 
 const npsScales = [
@@ -35,7 +34,7 @@ const npsScales = [
         </h1>
         <p class="text-base md:text-lg text-[#F2EFEA]/85 font-light leading-relaxed max-w-xl mx-auto">
           Ce spectacle est nouveau et chaque retour compte pour l'améliorer. Soyez
-          honnête, soyez bref — tout est précieux.
+          honnête — tout est précieux.
         </p>
       </div>
 
@@ -137,7 +136,7 @@ const npsScales = [
           <!-- Q7 -->
           <div class="space-y-3">
             <label class="block text-base md:text-lg text-[#F2EFEA] font-medium">
-              En sortant, vous vous êtes senti(e) : <span class="text-sm font-normal text-white/40">(plusieurs choix possibles)</span>
+              Après ce spectacle, vous sentez : <span class="text-sm font-normal text-white/40">(plusieurs choix possibles)</span>
             </label>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
               <label class="check-card"><input type="checkbox" name="emotions" value="Plus connecté à soi-même" class="sr-only" /><span class="check-box"></span><span class="text-sm text-[#F2EFEA]/85">Plus connecté(e) à vous-même</span></label>
@@ -241,7 +240,7 @@ const npsScales = [
           <!-- Q14 -->
           <div class="req-block space-y-3">
             <label class="block text-base md:text-lg text-[#F2EFEA] font-medium">
-              Si vous deviez raconter le spectacle à un(e) ami(e) en une phrase, pour le(la) convaincre de venir, vous diriez... <span class="text-[#E8C76A]">*</span>
+              Si vous deviez raconter le spectacle brièvement à un(e) ami(e), pour le(la) convaincre de venir, vous diriez... <span class="text-[#E8C76A]">*</span>
             </label>
             <textarea name="description_ami" rows="2" required class="w-full px-4 py-3 bg-white/[0.02] border border-white/10 rounded-lg text-[#F2EFEA] placeholder-white/30 font-light outline-none focus:border-[#E8C76A]/40 transition-colors resize-none" placeholder="..."></textarea>
           </div>
@@ -259,7 +258,6 @@ const npsScales = [
               Seriez-vous intéressé(e) à l'avenir par : <span class="text-sm font-normal text-white/40">(cochez ce qui vous parle)</span>
             </label>
             <div class="space-y-2">
-              <label class="check-card"><input type="checkbox" name="interets" value="Autre spectacle même format autre univers" class="sr-only" /><span class="check-box"></span><span class="text-sm text-[#F2EFEA]/85">Un autre spectacle (même format, autre univers)</span></label>
               <label class="check-card"><input type="checkbox" name="interets" value="Spectacle / prestation privée" class="sr-only" /><span class="check-box"></span><span class="text-sm text-[#F2EFEA]/85">Un spectacle ou prestation privée (événement, anniversaire, école, entreprise...)</span></label>
               <label class="check-card"><input type="checkbox" name="interets" value="Accompagnement personnel (hypnothérapie/coaching)" class="sr-only" /><span class="check-box"></span><span class="text-sm text-[#F2EFEA]/85">De l'accompagnement personnel (hypnothérapie/coaching)</span></label>
               <label class="check-card"><input type="checkbox" name="interets" value="Ateliers / séances collectives d hypnose" class="sr-only" /><span class="check-box"></span><span class="text-sm text-[#F2EFEA]/85">Des ateliers / séances collectives d'hypnose (découverte, auto-hypnose...)</span></label>
@@ -272,9 +270,9 @@ const npsScales = [
           <!-- Q16 -->
           <div class="space-y-3">
             <label class="block text-base md:text-lg text-[#F2EFEA] font-medium">
-              Auriez-vous aimé quelque chose de différent ? Ou un dernier mot à partager ?
+              Auriez-vous aimé quelque chose de différent ? Ou un dernier mot ?
             </label>
-            <p class="text-sm text-white/40 font-light">Plus/moins de quelque chose, une idée, ce qui vous a gêné... Ou dernière suggestion ou remarque.</p>
+            <p class="text-sm text-white/40 font-light">Plus/moins de quelque chose, une idée, ce qui vous a gêné... Ou autre suggestion ou partage.</p>
             <textarea name="amelioration" rows="3" class="w-full px-4 py-3 bg-white/[0.02] border border-white/10 rounded-lg text-[#F2EFEA] placeholder-white/30 font-light outline-none focus:border-[#E8C76A]/40 transition-colors resize-none" placeholder="Libre..."></textarea>
           </div>
 
