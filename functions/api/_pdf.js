@@ -105,7 +105,7 @@ export async function generateTicketPDF(billet) {
   page.drawText('OUVERTURE DES PORTES', {
     x: 30, y: 144, size: 8, font: font, color: MUTED,
   });
-  page.drawText('20h', {
+  page.drawText('19h30', {
     x: 30, y: 129, size: 11, font: font, color: DARK,
   });
   page.drawText('FERMETURE DES PORTES', {

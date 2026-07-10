@@ -39,7 +39,8 @@ export async function sendTicketEmail(env, toEmail, billet, pdfBase64) {
 
       <div style="background:rgba(0,0,0,0.3);border-radius:12px;padding:20px;margin-bottom:24px;">
         <p style="color:#E8C76A;font-size:11px;letter-spacing:2px;margin:0 0 8px 0;">HORAIRES</p>
-        <p style="color:#F2EFEA;font-size:14px;margin:0 0 4px 0;">Ouverture des portes : 20h</p>
+        <p style="color:#F2EFEA;font-size:14px;margin:0 0 4px 0;">Ouverture des portes : 19h30</p>
+        <p style="color:#F2EFEA;font-size:14px;margin:0 0 4px 0;">Fermeture de la buvette : 20h15</p>
         <p style="color:#F2EFEA;font-size:14px;margin:0 0 4px 0;">Fermeture des portes : 20h25</p>
         <p style="color:#F2EFEA;font-size:14px;margin:0 0 12px 0;">Début du spectacle : 20h30</p>
         <p style="color:#F2EFEA;font-size:13px;opacity:0.85;line-height:1.6;margin:0;">
@@ -50,7 +51,7 @@ export async function sendTicketEmail(env, toEmail, billet, pdfBase64) {
       <div style="background:rgba(0,0,0,0.3);border-radius:12px;padding:20px;margin-bottom:24px;">
         <p style="color:#E8C76A;font-size:11px;letter-spacing:2px;margin:0 0 8px 0;">SUR PLACE</p>
         <p style="color:#F2EFEA;font-size:13px;opacity:0.85;line-height:1.6;margin:0 0 8px 0;">
-          Buvette et snack disponibles avant et après le spectacle, au profit de l'association Histoire 2 Gazelles.
+          Buvette (boissons et crêpes) disponibles dès 19h30 et jusqu'à 20h15, puis après le spectacle, au profit de l'association Histoire 2 Gazelles.
         </p>
         <p style="color:#F2EFEA;font-size:13px;opacity:0.85;line-height:1.6;margin:0;">
           Parking gratuit sur place.
