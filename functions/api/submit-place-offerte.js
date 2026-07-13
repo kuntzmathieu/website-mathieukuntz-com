@@ -24,6 +24,13 @@ export async function onRequestPost({ request, env }) {
       return errorResponse('Place dans la salle manquante', 400);
     }
 
+    const resteJusquaFin = (body.reste_jusqua_fin || '').trim();
+    if (!resteJusquaFin) {
+      return errorResponse('Indiquer si vous êtes resté jusqu\'à la fin', 400);
+    }
+
+    const pourquoiParti = (body.pourquoi_parti || '').trim();
+
     const conditionSatisfaction = (body.condition_satisfaction || '').trim();
     if (!conditionSatisfaction) {
       return errorResponse('Condition de satisfaction manquante', 400);
@@ -42,6 +49,8 @@ export async function onRequestPost({ request, env }) {
       nom_billet: nomBillet,
       prenom_billet: prenomBillet,
       place_salle: placeSalle,
+      reste_jusqua_fin: resteJusquaFin,
+      pourquoi_parti: pourquoiParti,
       condition_satisfaction: conditionSatisfaction,
       autre_important: autreImportant,
       email: email,

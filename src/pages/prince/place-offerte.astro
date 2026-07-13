@@ -67,6 +67,24 @@ import PrinceLayout from '../../layouts/PrinceLayout.astro';
             </label>
             <textarea name="place_salle" id="place_salle" rows="2" required class="w-full px-4 py-3 bg-white/[0.02] border border-white/10 rounded-lg text-[#F2EFEA] placeholder-white/30 font-light outline-none focus:border-[#E8C76A]/40 transition-colors resize-none" placeholder="Rang, côté, près de la scène, au fond..."></textarea>
           </div>
+
+          <div class="req-block space-y-4">
+            <div class="space-y-3">
+              <label class="block text-base md:text-lg text-[#F2EFEA] font-medium">
+                Êtes-vous resté jusqu'à la fin ? <span class="text-[#E8C76A]">*</span>
+              </label>
+              <div class="flex gap-3">
+                <label class="radio-card flex-1"><input type="radio" name="reste_jusqua_fin" value="Oui" class="sr-only" required /><span class="radio-dot"></span><span class="text-sm md:text-base text-[#F2EFEA]/85">Oui</span></label>
+                <label class="radio-card flex-1"><input type="radio" name="reste_jusqua_fin" value="Non" class="sr-only" /><span class="radio-dot"></span><span class="text-sm md:text-base text-[#F2EFEA]/85">Non</span></label>
+              </div>
+            </div>
+            <div class="space-y-3">
+              <label class="block text-base md:text-lg text-[#F2EFEA] font-medium" for="pourquoi_parti">
+                Pourquoi ?
+              </label>
+              <textarea name="pourquoi_parti" id="pourquoi_parti" rows="2" class="w-full px-4 py-3 bg-white/[0.02] border border-white/10 rounded-lg text-[#F2EFEA] placeholder-white/30 font-light outline-none focus:border-[#E8C76A]/40 transition-colors resize-none" placeholder="Libre..."></textarea>
+            </div>
+          </div>
         </div>
 
         <!-- BLOC B — Pour préparer la prochaine -->
@@ -143,6 +161,38 @@ import PrinceLayout from '../../layouts/PrinceLayout.astro';
     border: 1px solid rgba(232, 199, 106, 0.15);
     box-shadow: 0 0 24px rgba(232, 199, 106, 0.04);
   }
+  .radio-card {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-radius: 0.75rem;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.02);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .radio-card:hover {
+    border-color: rgba(232,199,106,0.3);
+    background: rgba(255,255,255,0.04);
+  }
+  .radio-card:has(input:checked) {
+    border-color: rgba(232,199,106,0.5);
+    background: rgba(232,199,106,0.08);
+  }
+  .radio-dot {
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.2);
+    flex-shrink: 0;
+    transition: all 0.2s;
+  }
+  .radio-card:has(input:checked) .radio-dot {
+    border-color: #E8C76A;
+    background: #E8C76A;
+    box-shadow: inset 0 0 0 3px #0A0A14;
+  }
 </style>
 
 <script is:inline>
@@ -162,6 +212,8 @@ import PrinceLayout from '../../layouts/PrinceLayout.astro';
       nom_billet: getText('nom_billet'),
       prenom_billet: getText('prenom_billet'),
       place_salle: getText('place_salle'),
+      reste_jusqua_fin: form.querySelector('input[name="reste_jusqua_fin"]:checked') ? form.querySelector('input[name="reste_jusqua_fin"]:checked').value : '',
+      pourquoi_parti: getText('pourquoi_parti'),
       condition_satisfaction: getText('condition_satisfaction'),
       autre_important: getText('autre_important'),
       email: getText('email'),
