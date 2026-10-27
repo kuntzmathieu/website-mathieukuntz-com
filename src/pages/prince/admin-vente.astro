@@ -12,7 +12,7 @@ import PrinceLayout from '../../layouts/PrinceLayout.astro';
         <div class="space-y-3">
           <span class="text-sm uppercase tracking-widest text-[#E8C76A] font-bold">Admin</span>
           <h1 class="text-4xl md:text-6xl font-serif tracking-tight text-[#F2EFEA]">Vente manuelle</h1>
-          <p class="text-[#F2EFEA]/70 font-light max-w-2xl">Créez des billets pour les ventes sur place, par téléphone, invitations ou paiements hors Stripe.</p>
+          <p class="text-[#F2EFEA]/70 font-light max-w-2xl">Créez des billets pour les ventes sur place, les invitations ou les paiements hors Stripe.</p>
         </div>
         <div class="flex gap-3">
           <a href="/prince/admin-checkin" class="px-5 py-3 rounded-full border border-white/10 text-xs uppercase tracking-widest text-[#F2EFEA] hover:border-[#E8C76A]/40 hover:bg-white/5 transition-all">Check-in</a>
@@ -40,7 +40,7 @@ import PrinceLayout from '../../layouts/PrinceLayout.astro';
             <label class="text-xs uppercase tracking-widest text-white/50 block mb-2">Canal</label>
             <select name="canal_vente" class="w-full px-4 py-3 bg-[#0A0A14] border border-white/10 rounded-lg text-[#F2EFEA] outline-none focus:border-[#E8C76A]/40 transition-colors">
               <option value="sur place">Sur place</option>
-              <option value="admin/tel">Admin/Téléphone</option>
+              <option value="admin">Admin</option>
             </select>
           </div>
         </div>
@@ -61,7 +61,7 @@ import PrinceLayout from '../../layouts/PrinceLayout.astro';
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-5 border-t border-white/10 pt-6">
           <div>
             <p class="text-xs uppercase tracking-widest text-white/40">Total</p>
-            <p id="sale-total" class="text-3xl font-serif text-[#E8C76A]">0€</p>
+            <p id="sale-total" class="text-3xl font-serif text-[#E8C76A]">0 CHF</p>
           </div>
           <button id="submit-sale" type="submit" class="px-10 py-5 bg-[#E8C76A] text-[#0A0A14] font-bold text-sm tracking-widest uppercase rounded-full hover:bg-white hover:scale-[1.02] transition-all duration-300 shadow-xl shadow-[#E8C76A]/20">
             Créer les billets
@@ -85,7 +85,7 @@ import PrinceLayout from '../../layouts/PrinceLayout.astro';
           <p class="text-sm text-white/50 font-light mt-1">Corrige d'abord l'email dans NocoDB, puis entre l'ID ou le numéro du billet ci-dessous pour renvoyer le PDF.</p>
         </div>
         <div class="flex flex-col md:flex-row gap-3">
-          <input id="resend-input" type="text" placeholder="ID (ex: 64) ou numéro (ex: PRINCE110726VIF-0064)" class="flex-1 px-4 py-3 bg-white/[0.02] border border-white/10 rounded-lg text-[#F2EFEA] outline-none focus:border-[#E8C76A]/40 transition-colors" />
+          <input id="resend-input" type="text" placeholder="ID (ex: 64) ou numéro (ex: PRINCE101226GE-0064)" class="flex-1 px-4 py-3 bg-white/[0.02] border border-white/10 rounded-lg text-[#F2EFEA] outline-none focus:border-[#E8C76A]/40 transition-colors" />
           <button id="resend-btn" type="button" class="px-8 py-3 rounded-full text-xs uppercase tracking-widest font-bold bg-[#E8C76A]/10 border border-[#E8C76A]/30 text-[#E8C76A] hover:bg-[#E8C76A]/20 transition-all disabled:opacity-30 disabled:cursor-not-allowed whitespace-nowrap">
             Renvoyer
           </button>
@@ -104,14 +104,14 @@ import PrinceLayout from '../../layouts/PrinceLayout.astro';
     if (!token) window.location.href = '/prince/admin-login';
 
     function defaultPrice(type) {
-      if (type === 'plein tarif') return 20;
-      if (type === 'tarif réduit') return 15;
+      if (type === 'plein tarif') return 29;
+      if (type === 'tarif réduit') return 20;
       return 0;
     }
 
     function updateTotal() {
       const total = [...tickets.querySelectorAll('[data-price]')].reduce((sum, input) => sum + (parseFloat(input.value) || 0), 0);
-      document.getElementById('sale-total').textContent = `${total}€`;
+      document.getElementById('sale-total').textContent = `${total} CHF`;
     }
 
     function addTicket() {
@@ -136,7 +136,7 @@ import PrinceLayout from '../../layouts/PrinceLayout.astro';
           </div>
           <div>
             <label class="text-xs uppercase tracking-widest text-white/50 block mb-2">Prix payé</label>
-            <input data-price type="number" min="0" step="0.01" value="20" class="w-full px-4 py-3 bg-white/[0.02] border border-white/10 rounded-lg text-[#F2EFEA] outline-none focus:border-[#E8C76A]/40 transition-colors" />
+            <input data-price type="number" min="0" step="0.01" value="29" class="w-full px-4 py-3 bg-white/[0.02] border border-white/10 rounded-lg text-[#F2EFEA] outline-none focus:border-[#E8C76A]/40 transition-colors" />
           </div>
           <div>
             <label class="text-xs uppercase tracking-widest text-white/50 block mb-2">Année naissance *</label>
@@ -244,12 +244,12 @@ import PrinceLayout from '../../layouts/PrinceLayout.astro';
         unpaidList.innerHTML = Object.entries(byCommande).map(([cmdId, info]) => {
           const total = info.billets.reduce((s, b) => s + (b.prix_paye || 0), 0);
           const note = (info.billets[0] || {}).note_commande || '';
-          const billetsRecap = info.billets.map(b => `<div class="flex justify-between text-xs text-white/60 py-0.5"><span class="font-mono">${b.numero_billet}</span><span>${b.prenom || ''} ${b.nom || ''}</span><span class="text-[#E8C76A]">${b.prix_paye || 0}€</span></div>`).join('');
+          const billetsRecap = info.billets.map(b => `<div class="flex justify-between text-xs text-white/60 py-0.5"><span class="font-mono">${b.numero_billet}</span><span>${b.prenom || ''} ${b.nom || ''}</span><span class="text-[#E8C76A]">${b.prix_paye || 0} CHF</span></div>`).join('');
           return `
           <div class="p-5 rounded-xl border border-red-500/20 bg-red-500/[0.03] space-y-4" data-cmd-block="${cmdId}">
             <div class="flex items-center justify-between">
               <p class="font-mono text-sm text-red-400">Commande #${cmdId}</p>
-              <p class="text-lg font-serif text-[#E8C76A]">${total}€ à encaisser</p>
+              <p class="text-lg font-serif text-[#E8C76A]">${total} CHF à encaisser</p>
             </div>
             <div class="rounded-lg bg-black/20 p-3 space-y-1">${billetsRecap}</div>
             <div>

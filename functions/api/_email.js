@@ -1,6 +1,8 @@
 const RESEND_API = 'https://api.resend.com/emails';
 
 export async function sendTicketEmail(env, toEmail, billet, pdfBase64) {
+  const prixPaye = Number(billet.prix_paye);
+  const prixFormate = Number.isFinite(prixPaye) ? prixPaye.toFixed(2).replace('.', ',') : '0,00';
   const html = `
 <!DOCTYPE html>
 <html>
@@ -12,7 +14,7 @@ export async function sendTicketEmail(env, toEmail, billet, pdfBase64) {
   <div style="max-width:560px;margin:0 auto;padding:40px 24px;">
     <div style="text-align:center;margin-bottom:32px;">
       <h1 style="color:#E8C76A;font-size:28px;letter-spacing:4px;margin:0;font-weight:700;">PRINCE</h1>
-      <p style="color:#F2EFEA;font-size:14px;opacity:0.6;margin:4px 0 0 0;">11 juillet 2026 · 20h30 · Salle polyvalente Louis Maisonnat, Vif</p>
+      <p style="color:#F2EFEA;font-size:14px;opacity:0.6;margin:4px 0 0 0;">10 décembre 2026 · 20h00 · Théâtre de la Madeleine, Genève</p>
     </div>
 
     <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(232,199,106,0.2);border-radius:16px;padding:32px;margin-bottom:24px;">
@@ -27,34 +29,46 @@ export async function sendTicketEmail(env, toEmail, billet, pdfBase64) {
         <p style="color:#E8C76A;font-size:11px;letter-spacing:2px;margin:0 0 8px 0;">NUMÉRO DE BILLET</p>
         <p style="color:#F2EFEA;font-size:18px;font-weight:700;margin:0 0 16px 0;font-family:monospace;">${billet.numero_billet}</p>
         <p style="color:#F2EFEA;font-size:14px;margin:0 0 4px 0;">${billet.prenom} ${billet.nom}</p>
-        <p style="color:#F2EFEA;font-size:13px;opacity:0.6;margin:0;">${billet.type} · ${billet.prix_paye}€</p>
+        <p style="color:#F2EFEA;font-size:13px;opacity:0.6;margin:0;">${billet.type} · ${prixFormate} CHF</p>
       </div>
 
       <div style="background:rgba(0,0,0,0.3);border-radius:12px;padding:20px;margin-bottom:24px;">
         <p style="color:#E8C76A;font-size:11px;letter-spacing:2px;margin:0 0 8px 0;">LIEU</p>
-        <p style="color:#F2EFEA;font-size:14px;margin:0 0 4px 0;">Salle polyvalente Louis Maisonnat</p>
-        <p style="color:#F2EFEA;font-size:13px;opacity:0.6;margin:0 0 4px 0;">43 Rue du 19 Mars 1962</p>
-        <p style="color:#F2EFEA;font-size:13px;opacity:0.6;margin:0;">38450 Vif</p>
+        <p style="color:#F2EFEA;font-size:14px;margin:0 0 4px 0;">Salle Centrale de la Madeleine</p>
+        <p style="color:#F2EFEA;font-size:14px;margin:0 0 4px 0;">Théâtre de la Madeleine</p>
+        <p style="color:#F2EFEA;font-size:13px;opacity:0.6;margin:0 0 4px 0;">10 rue de la Madeleine</p>
+        <p style="color:#F2EFEA;font-size:13px;opacity:0.6;margin:0;">1204 Genève</p>
       </div>
 
       <div style="background:rgba(0,0,0,0.3);border-radius:12px;padding:20px;margin-bottom:24px;">
         <p style="color:#E8C76A;font-size:11px;letter-spacing:2px;margin:0 0 8px 0;">HORAIRES</p>
         <p style="color:#F2EFEA;font-size:14px;margin:0 0 4px 0;">Ouverture des portes : 19h30</p>
-        <p style="color:#F2EFEA;font-size:14px;margin:0 0 4px 0;">Fermeture de la buvette : 20h15</p>
-        <p style="color:#F2EFEA;font-size:14px;margin:0 0 4px 0;">Fermeture des portes : 20h25</p>
-        <p style="color:#F2EFEA;font-size:14px;margin:0 0 12px 0;">Début du spectacle : 20h30</p>
-        <p style="color:#F2EFEA;font-size:13px;opacity:0.85;line-height:1.6;margin:0;">
-          Afin de garantir un bon spectacle à tous, aucune entrée ne sera possible après la fermeture des portes. On vous conseille donc de bien vous organiser !
-        </p>
+        <p style="color:#F2EFEA;font-size:14px;margin:0 0 4px 0;">Début du spectacle : 20h00</p>
+        <p style="color:#F2EFEA;font-size:14px;margin:0;">Durée : environ 1h30</p>
       </div>
 
       <div style="background:rgba(0,0,0,0.3);border-radius:12px;padding:20px;margin-bottom:24px;">
         <p style="color:#E8C76A;font-size:11px;letter-spacing:2px;margin:0 0 8px 0;">SUR PLACE</p>
+        <p style="color:#F2EFEA;font-size:13px;opacity:0.85;line-height:1.6;margin:0;">
+          400 places assises, placement libre non numéroté.
+        </p>
+      </div>
+
+      <div style="background:rgba(0,0,0,0.3);border-radius:12px;padding:20px;margin-bottom:24px;">
+        <p style="color:#E8C76A;font-size:11px;letter-spacing:2px;margin:0 0 8px 0;">ACCÈS</p>
         <p style="color:#F2EFEA;font-size:13px;opacity:0.85;line-height:1.6;margin:0 0 8px 0;">
-          Buvette (boissons et crêpes) disponibles dès 19h30 et jusqu'à 20h15, puis après le spectacle, au profit de l'association Histoire 2 Gazelles.
+          Arrêt Môlard à 2 minutes : lignes 12, 10, 7, 2 et 36.<br>
+          Parkings Saint-Antoine, Mont-Blanc et Villereuse à proximité.
         </p>
         <p style="color:#F2EFEA;font-size:13px;opacity:0.85;line-height:1.6;margin:0;">
-          Parking gratuit sur place.
+          Accès PMR de plain-pied. Rampe disponible sur demande auprès de la salle.
+        </p>
+      </div>
+
+      <div style="background:rgba(0,0,0,0.3);border-radius:12px;padding:20px;margin-bottom:24px;">
+        <p style="color:#E8C76A;font-size:11px;letter-spacing:2px;margin:0 0 8px 0;">BAR ET RESTAURATION</p>
+        <p style="color:#F2EFEA;font-size:13px;opacity:0.85;line-height:1.6;margin:0;">
+          Le Barmad, bar et restauration indépendants, vous accueille une heure avant et une heure après l'événement. Boissons et snacks autorisés dans le théâtre. Paiement en espèces ou par TWINT. Verre consigné : 2 CHF.
         </p>
       </div>
 
@@ -64,7 +78,7 @@ export async function sendTicketEmail(env, toEmail, billet, pdfBase64) {
     </div>
 
     <p style="color:#F2EFEA;font-size:12px;opacity:0.4;text-align:center;line-height:1.6;margin:0;">
-      Questions ? Répondez à cet email, écrivez à mk@mathieukuntz.org ou appelez le 06 43 67 15 11.
+      Questions ? Répondez à cet email ou écrivez à mk@mathieukuntz.org.
     </p>
   </div>
 </body>

@@ -60,7 +60,7 @@ export async function onRequestPost({ request, env }) {
         email_envoye: false,
         commande: commandeId,
       });
-      const numero = `PRINCE110726VIF-${String(billet.Id).padStart(4, '0')}`;
+      const numero = `PRINCE101226GE-${String(billet.Id).padStart(4, '0')}`;
       await nocodbPatch(env, env.NOCODB_TABLE_BILLETS, billet.Id, { numero_billet: numero });
 
       const billetComplet = {

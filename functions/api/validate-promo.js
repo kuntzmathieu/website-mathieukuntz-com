@@ -20,11 +20,14 @@ export async function onRequestPost({ request, env }) {
     if (promo.max_utilisations && promo.utilisations >= promo.max_utilisations) {
       return errorResponse('Code épuisé', 400);
     }
+    if (promo.type_reduction === 'prix_fixe' && Number(promo.valeur) === 0) {
+      return errorResponse(`Cette invitation doit être utilisée via /prince/invitation?code=${encodeURIComponent(code)}`, 400);
+    }
 
     const tarifsData = await nocodbGet(env, env.NOCODB_TABLE_TARIFS);
     const list = tarifsData.list || [];
-    const prixPlein = (list.find(r => r.nom === 'plein tarif') || {}).prix_en_ligne || 19;
-    const prixReduit = (list.find(r => r.nom === 'tarif réduit') || {}).prix_en_ligne || 14;
+    const prixPlein = (list.find(r => r.nom === 'plein tarif') || {}).prix_en_ligne || 29;
+    const prixReduit = (list.find(r => r.nom === 'tarif réduit') || {}).prix_en_ligne || 20;
 
     const details = [];
     let montantAvant = 0;

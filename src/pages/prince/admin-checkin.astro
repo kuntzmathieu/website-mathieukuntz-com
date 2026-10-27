@@ -95,7 +95,7 @@ import PrinceLayout from '../../layouts/PrinceLayout.astro';
           <div>
             <p class="font-mono text-sm ${b.checkin ? 'text-[#E8C76A]' : 'text-[#F2EFEA]'}">${b.numero_billet}${unpaidMark}</p>
             <p class="text-lg font-serif text-[#F2EFEA]">${b.prenom || ''} ${b.nom || ''}</p>
-            <p class="text-sm text-white/50">${b.type || ''} · ${b.prix_paye || 0}€ · ${b.email_personne || 'sans email'}</p>
+            <p class="text-sm text-white/50">${b.type || ''} · ${b.prix_paye || 0} CHF · ${b.email_personne || 'sans email'}</p>
           </div>
           ${actionBtn}
         </div>`;
@@ -125,7 +125,7 @@ import PrinceLayout from '../../layouts/PrinceLayout.astro';
     async function checkin(numero) {
       let query = numero;
       if (/^\d{1,4}$/.test(query.trim())) {
-        query = `PRINCE110726VIF-${String(parseInt(query.trim())).padStart(4, '0')}`;
+        query = `PRINCE101226GE-${String(parseInt(query.trim())).padStart(4, '0')}`;
       }
       message.classList.remove('hidden');
       message.className = 'text-sm text-white/50';
@@ -150,7 +150,7 @@ import PrinceLayout from '../../layouts/PrinceLayout.astro';
     async function undoCheckin(numero) {
       let query = numero;
       if (/^\d{1,4}$/.test(query.trim())) {
-        query = `PRINCE110726VIF-${String(parseInt(query.trim())).padStart(4, '0')}`;
+        query = `PRINCE101226GE-${String(parseInt(query.trim())).padStart(4, '0')}`;
       }
       message.classList.remove('hidden');
       message.className = 'text-sm text-white/50';

@@ -14,8 +14,8 @@ export async function onRequestPost({ request, env }) {
 
     const tarifsData = await nocodbGet(env, env.NOCODB_TABLE_TARIFS);
     const list = tarifsData.list || [];
-    const prixPlein = (list.find(r => r.nom === 'plein tarif') || {}).prix_en_ligne || 19;
-    const prixReduit = (list.find(r => r.nom === 'tarif réduit') || {}).prix_en_ligne || 14;
+    const prixPlein = (list.find(r => r.nom === 'plein tarif') || {}).prix_en_ligne || 29;
+    const prixReduit = (list.find(r => r.nom === 'tarif réduit') || {}).prix_en_ligne || 20;
 
     let promo = null;
     if (promoCode) {
@@ -32,6 +32,9 @@ export async function onRequestPost({ request, env }) {
         return errorResponse('Code promo épuisé', 400);
       }
       promo = p;
+      if (p.type_reduction === 'prix_fixe' && Number(p.valeur) === 0) {
+        return errorResponse(`Cette invitation doit être utilisée via /prince/invitation?code=${encodeURIComponent(promoCode)}`, 400);
+      }
     }
 
     const lineItems = [];
@@ -45,10 +48,10 @@ export async function onRequestPost({ request, env }) {
       montantTotal += li.prix;
       billetsPreview.push(li);
       if (li.prix > 0) {
-        if (li.prix < prixPlein) {
+        if (li.prix !== prixPlein) {
           lineItems.push({
             price_data: {
-              currency: 'eur',
+              currency: 'chf',
               product_data: { name: 'Plein tarif' },
               unit_amount: Math.round(li.prix * 100),
             },
@@ -65,10 +68,10 @@ export async function onRequestPost({ request, env }) {
       montantTotal += li.prix;
       billetsPreview.push(li);
       if (li.prix > 0) {
-        if (li.prix < prixReduit) {
+        if (li.prix !== prixReduit) {
           lineItems.push({
             price_data: {
-              currency: 'eur',
+              currency: 'chf',
               product_data: { name: 'Tarif réduit' },
               unit_amount: Math.round(li.prix * 100),
             },
@@ -81,7 +84,8 @@ export async function onRequestPost({ request, env }) {
     }
 
     if (montantTotal === 0) {
-      return errorResponse('Montant total nul — utilisez l\'admin pour les invitations', 400);
+      const invitationUrl = `/prince/invitation${promoCode ? `?code=${encodeURIComponent(promoCode)}` : ''}`;
+      return errorResponse(`Un checkout gratuit n'est pas possible. Utilisez le formulaire d'invitation : ${invitationUrl}`, 400);
     }
 
     const counts = billetsPreview.reduce((acc, b) => {
@@ -113,7 +117,7 @@ export async function onRequestPost({ request, env }) {
       action_source: 'website',
       user_data: userData,
       custom_data: {
-        currency: 'EUR',
+        currency: 'CHF',
         value: montantTotal,
         content_name: 'PRINCE',
         num_items: pleinQt + reduitQt,
@@ -139,8 +143,8 @@ function computeLineItem(typeBase, prixBase, promo) {
     return { type: typeBase, prix: prixBase, prix_avant: prixBase };
   }
   if (promo.type_reduction === 'prix_fixe') {
-    if (promo.valeur === 0) return { type: 'invitation', prix: 0, prix_avant: prixBase };
-    return { type: 'custom', prix: promo.valeur, prix_avant: prixBase };
+    if (Number(promo.valeur) === 0) return { type: 'invitation', prix: 0, prix_avant: prixBase };
+    return { type: 'custom', prix: Number(promo.valeur), prix_avant: prixBase };
   }
   let prix = prixBase;
   if (promo.type_reduction === 'pourcentage') prix = prixBase * (1 - promo.valeur / 100);

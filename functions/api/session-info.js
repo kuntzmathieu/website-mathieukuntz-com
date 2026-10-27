@@ -12,6 +12,7 @@ export async function onRequestGet({ request, env }) {
       session_id: session.id,
       email: session.customer_email || session.customer_details?.email || '',
       montant_total: session.amount_total / 100,
+      devise: 'CHF',
       metadata: session.metadata || {},
       payment_status: session.payment_status,
     });

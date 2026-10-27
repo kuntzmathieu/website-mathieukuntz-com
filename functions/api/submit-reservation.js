@@ -32,11 +32,73 @@ export async function onRequestPost({ request, env }) {
 
     const meta = session.metadata || {};
     const emailCommande = session.customer_email || session.customer_details?.email || '';
-    const montantTotal = parseFloat(meta.montant_total) || session.amount_total / 100;
-    const montantAvant = parseFloat(meta.montant_avant) || montantTotal;
     const codePromo = meta.code_promo || '';
-    const counts = JSON.parse(meta.billet_types || '{}');
-    const billetsDetail = JSON.parse(meta.billets_detail || '[]');
+    let billetsDetail;
+    try {
+      billetsDetail = JSON.parse(meta.billets_detail || '[]');
+    } catch (e) {
+      return errorResponse('Métadonnées de billets invalides', 400);
+    }
+    if (!Array.isArray(billetsDetail) || billetsDetail.length !== billetsData.length) {
+      return errorResponse('Le nombre de billets ne correspond pas à la session Stripe', 400);
+    }
+
+    const sessionAmountCents = Number(session.amount_total);
+    const metadataTotalCents = toCents(meta.montant_total);
+    if (!Number.isFinite(sessionAmountCents) || metadataTotalCents !== sessionAmountCents) {
+      return errorResponse('Le montant de la session Stripe ne correspond pas aux métadonnées', 400);
+    }
+
+    const participants = [];
+    let detailTotalCents = 0;
+    let submittedTotalCents = 0;
+    for (const [idx, b] of billetsData.entries()) {
+      const detail = billetsDetail[idx] || {};
+      const nom = String(b.nom || '').trim();
+      const prenom = String(b.prenom || '').trim();
+      const anneeNaissance = Number(b.annee_naissance);
+      const emailPersonne = String(b.email_personne || '').trim().toLowerCase();
+      if (!nom || !prenom || !b.annee_naissance) {
+        return errorResponse('Champs obligatoires manquants pour un billet', 400);
+      }
+      if (!Number.isInteger(anneeNaissance) || anneeNaissance < 1900 || anneeNaissance > new Date().getFullYear()) {
+        return errorResponse('Année de naissance invalide pour un billet', 400);
+      }
+      if (emailPersonne && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailPersonne)) {
+        return errorResponse('Email invalide pour un billet', 400);
+      }
+
+      const detailPrixCents = toCents(detail.prix);
+      const submittedPrixCents = toCents(b.prix_paye);
+      if (!Number.isFinite(detailPrixCents) || !Number.isFinite(submittedPrixCents)) {
+        return errorResponse('Prix de billet invalide', 400);
+      }
+      if (b.type !== detail.type || submittedPrixCents !== detailPrixCents) {
+        return errorResponse('Les types ou prix des billets ne correspondent pas à la session Stripe', 400);
+      }
+      detailTotalCents += detailPrixCents;
+      submittedTotalCents += submittedPrixCents;
+      participants.push({
+        type: detail.type,
+        prix_paye: detailPrixCents / 100,
+        nom,
+        prenom,
+        annee_naissance: anneeNaissance,
+        code_postal: String(b.code_postal || '').trim(),
+        email_personne: emailPersonne,
+      });
+    }
+    if (detailTotalCents !== sessionAmountCents || submittedTotalCents !== sessionAmountCents) {
+      return errorResponse('Le total des billets ne correspond pas au montant payé', 400);
+    }
+
+    const montantTotal = sessionAmountCents / 100;
+    const montantAvantCents = toCents(meta.montant_avant);
+    const montantAvant = Number.isFinite(montantAvantCents) ? montantAvantCents / 100 : montantTotal;
+    const counts = billetsDetail.reduce((acc, b) => {
+      acc[b.type] = (acc[b.type] || 0) + 1;
+      return acc;
+    }, {});
 
     const commande = await nocodbPost(env, env.NOCODB_TABLE_COMMANDES, {
       stripe_session_id: session_id,
@@ -69,10 +131,7 @@ export async function onRequestPost({ request, env }) {
     }
 
     const billetsCrees = [];
-    for (const b of billetsData) {
-      if (!b.nom || !b.prenom || !b.annee_naissance) {
-        return errorResponse('Champs obligatoires manquants pour un billet', 400);
-      }
+    for (const b of participants) {
       const billet = await nocodbPost(env, env.NOCODB_TABLE_BILLETS, {
         numero_billet: 'temp',
         type: b.type,
@@ -87,7 +146,7 @@ export async function onRequestPost({ request, env }) {
         email_envoye: false,
         commande: commandeId,
       });
-      const numero = `PRINCE110726VIF-${String(billet.Id).padStart(4, '0')}`;
+      const numero = `PRINCE101226GE-${String(billet.Id).padStart(4, '0')}`;
       await nocodbPatch(env, env.NOCODB_TABLE_BILLETS, billet.Id, { numero_billet: numero });
       billetsCrees.push({
         Id: billet.Id,
@@ -146,7 +205,7 @@ export async function onRequestPost({ request, env }) {
       action_source: 'website',
       user_data: userData,
       custom_data: {
-        currency: 'EUR',
+        currency: 'CHF',
         value: montantTotal,
         content_name: 'PRINCE',
         num_items: (counts['plein tarif'] || 0) + (counts['tarif réduit'] || 0) + (counts['invitation'] || 0) + (counts['custom'] || 0),
@@ -157,4 +216,9 @@ export async function onRequestPost({ request, env }) {
   } catch (err) {
     return errorResponse(err.message, 500);
   }
+}
+
+function toCents(value) {
+  const amount = Number(value);
+  return Number.isFinite(amount) ? Math.round(amount * 100) : NaN;
 }

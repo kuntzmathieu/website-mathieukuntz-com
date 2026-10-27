@@ -13,8 +13,7 @@
         Réservez votre place.
       </h2>
       <p class="text-base md:text-lg text-[#F2EFEA]/85 font-light leading-relaxed max-w-2xl mx-auto">
-        Sélectionnez vos places, payez en ligne sécurisé. Vous remplirez les
-        informations de chaque participant après le paiement.
+        Sélectionnez vos places et payez en ligne de manière sécurisée. Les tarifs sont identiques en ligne et sur place. Vous remplirez les informations de chaque participant après le paiement.
       </p>
     </div>
 
@@ -24,7 +23,7 @@
         <div class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 p-6 rounded-xl bg-white/[0.05] border border-white/10">
             <div>
               <h3 class="text-lg md:text-xl font-semibold text-[#F2EFEA]">Plein tarif</h3>
-              <p class="text-sm md:text-base text-white/50 font-light">19€ en ligne</p>
+              <p class="text-sm md:text-base text-white/50 font-light">29 CHF</p>
             </div>
             <div class="flex items-center gap-4">
               <button type="button" data-qty-btn="plein" data-action="dec" class="w-10 h-10 rounded-full border border-white/10 text-[#E8C76A] hover:bg-white/5 transition-colors text-xl flex items-center justify-center">-</button>
@@ -36,7 +35,7 @@
           <div class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 p-6 rounded-xl bg-white/[0.05] border border-white/10">
             <div>
               <h3 class="text-lg md:text-xl font-semibold text-[#F2EFEA]">Tarif réduit</h3>
-              <p class="text-sm md:text-base text-white/50 font-light">14€ en ligne · -25 ans</p>
+              <p class="text-sm md:text-base text-white/50 font-light">20 CHF · -25 ans</p>
             </div>
           <div class="flex items-center gap-4">
             <button type="button" data-qty-btn="reduit" data-action="dec" class="w-10 h-10 rounded-full border border-white/10 text-[#E8C76A] hover:bg-white/5 transition-colors text-xl flex items-center justify-center">-</button>
@@ -59,7 +58,7 @@
       <div class="flex items-center justify-between border-t border-white/10 pt-6">
         <div>
           <p class="text-sm md:text-base text-white/50 uppercase tracking-widest">Total</p>
-          <p id="total-amount" class="text-3xl font-serif text-[#E8C76A]">0€</p>
+          <p id="total-amount" class="text-3xl font-serif text-[#E8C76A]">0,00 CHF</p>
           <p id="total-detail" class="text-xs text-white/40 font-light"></p>
         </div>
         <button type="button" id="checkout-btn" disabled class="px-10 py-5 bg-[#E8C76A] text-[#0A0A14] font-bold text-sm tracking-widest uppercase rounded-full hover:bg-white hover:scale-105 transition-all duration-300 shadow-xl shadow-[#E8C76A]/20 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:scale-100">
@@ -73,15 +72,6 @@
       <div id="checkout" class="min-h-[600px]"></div>
     </div>
 
-    <!-- Réservation par téléphone -->
-    <div class="mt-8 text-center">
-      <p class="text-base md:text-lg text-[#F2EFEA]/70 font-light">
-        Ou réservez directement par téléphone au :
-      </p>
-      <p class="text-2xl md:text-3xl font-serif text-[#E8C76A] tracking-wider mt-2">
-        06 43 67 15 11
-      </p>
-    </div>
   </div>
 </section>
 
@@ -102,17 +92,33 @@
     });
   }
 
+  const PRICES = { plein: 29, reduit: 20 };
+
+  function priceWithPromo(type, basePrice) {
+    if (!promoResult || !promoResult.valide) return basePrice;
+    const target = type === 'plein' ? 'plein_tarif' : 'tarif_reduit';
+    if (promoResult.cible !== 'tous' && promoResult.cible !== target) return basePrice;
+
+    const value = Number(promoResult.valeur) || 0;
+    if (promoResult.type_reduction === 'prix_fixe') return value;
+
+    let price = basePrice;
+    if (promoResult.type_reduction === 'pourcentage') price = basePrice * (1 - value / 100);
+    else if (promoResult.type_reduction === 'montant_fixe') price = basePrice - value;
+    return Math.max(0, Math.round(price * 100) / 100);
+  }
+
   function updateDisplay() {
     document.querySelector('[data-qty-display="plein"]').textContent = qty.plein;
     document.querySelector('[data-qty-display="reduit"]').textContent = qty.reduit;
-    const total = qty.plein * 19 + qty.reduit * 14;
+    const total = qty.plein * PRICES.plein + qty.reduit * PRICES.reduit;
     let displayTotal = total;
     let detail = '';
     if (promoResult && promoResult.valide) {
-      displayTotal = promoResult.montant_apres;
-      detail = `Remise: -${(total - displayTotal).toFixed(2)}€ (code ${promoResult.code})`;
+      displayTotal = qty.plein * priceWithPromo('plein', PRICES.plein) + qty.reduit * priceWithPromo('reduit', PRICES.reduit);
+      detail = `Remise : -${(total - displayTotal).toFixed(2)} CHF (code ${promoResult.code})`;
     }
-    document.getElementById('total-amount').textContent = displayTotal.toFixed(2).replace('.', ',') + '€';
+    document.getElementById('total-amount').textContent = displayTotal.toFixed(2).replace('.', ',') + ' CHF';
     document.getElementById('total-detail').textContent = detail;
     document.getElementById('checkout-btn').disabled = (qty.plein + qty.reduit) === 0;
   }
@@ -176,7 +182,7 @@
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Erreur');
       if (window.fbq) {
-        window.fbq('track', 'InitiateCheckout', { currency: 'EUR', value: data.montant_total || 0 }, { eventID: checkoutEventId });
+        window.fbq('track', 'InitiateCheckout', { currency: 'CHF', value: data.montant_total || 0 }, { eventID: checkoutEventId });
       }
       const s = await loadStripeScript();
       const checkout = await s.initEmbeddedCheckout({

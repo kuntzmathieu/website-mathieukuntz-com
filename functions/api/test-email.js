@@ -1,8 +1,14 @@
 import { generateTicketPDF } from './_pdf.js';
 import { sendTicketEmail } from './_email.js';
-import { nocodbPatch, jsonResponse, errorResponse } from './_lib.js';
+import { jsonResponse, errorResponse } from './_lib.js';
 
 export async function onRequestPost({ request, env }) {
+  const url = new URL(request.url);
+  const token = url.searchParams.get('token') || request.headers.get('x-admin-token');
+  if (token !== env.PRINCE_ADMIN_TOKEN) {
+    return errorResponse('Non autorisé', 401);
+  }
+
   try {
     const body = await request.json();
     const { billet_id, email } = body;
@@ -12,9 +18,9 @@ export async function onRequestPost({ request, env }) {
 
     const testBillet = {
       Id: billet_id,
-      numero_billet: 'PRINCE110726VIF-TEST',
+      numero_billet: 'PRINCE101226GE-TEST',
       type: 'plein tarif',
-      prix_paye: 19,
+      prix_paye: 29,
       nom: 'Test',
       prenom: 'Debug',
       email_personne: email || 'mk@mathieukuntz.org',

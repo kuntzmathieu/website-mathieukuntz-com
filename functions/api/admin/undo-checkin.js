@@ -18,7 +18,7 @@ export async function onRequestPost({ request, env }) {
     if (!billet) {
       let formatted = search;
       if (/^\d{1,4}$/.test(search.trim())) {
-        formatted = `PRINCE110726VIF-${String(parseInt(search.trim())).padStart(4, '0')}`;
+        formatted = `PRINCE101226GE-${String(parseInt(search.trim())).padStart(4, '0')}`;
       }
       const data = await nocodbGet(env, env.NOCODB_TABLE_BILLETS, { where: `(numero_billet,eq,${formatted})`, limit: 1 });
       billet = (data.list || [])[0];

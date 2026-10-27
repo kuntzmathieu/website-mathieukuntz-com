@@ -55,7 +55,7 @@ import PrinceLayout from '../../layouts/PrinceLayout.astro';
   <script is:inline>
     const SESSION_ID = new URLSearchParams(window.location.search).get('session_id');
 
-    function formatPrix(p) { return p.toFixed(2).replace('.', ',') + '€'; }
+    function formatPrix(p) { return p.toFixed(2).replace('.', ',') + ' CHF'; }
 
     function billetField(index, type, prix) {
       const typeLabel = { 'plein tarif': 'Plein tarif', 'tarif réduit': 'Tarif réduit', 'invitation': 'Invitation', 'custom': 'Prix custom' }[type] || type;
@@ -122,7 +122,7 @@ import PrinceLayout from '../../layouts/PrinceLayout.astro';
         if (billets.length === 0) {
           const counts = JSON.parse(meta.billet_types || '{}');
           for (const [type, n] of Object.entries(counts)) {
-            const prix = { 'plein tarif': 19, 'tarif réduit': 14, 'invitation': 0, 'custom': 0 }[type] || 0;
+            const prix = { 'plein tarif': 29, 'tarif réduit': 20, 'invitation': 0, 'custom': 0 }[type] || 0;
             for (let i = 0; i < n; i++) billets.push({ type, prix, prix_avant: prix });
           }
         }
@@ -165,7 +165,7 @@ import PrinceLayout from '../../layouts/PrinceLayout.astro';
                 alert('Billets enregistrés mais erreur envoi email: ' + sdata.email_errors.map(e => e.error).join(', '));
               }
               if (window.fbq) {
-                window.fbq('track', 'Purchase', { currency: 'EUR', value: sdata.montant_total || 0 }, { eventID: purchaseEventId });
+                window.fbq('track', 'Purchase', { currency: 'CHF', value: sdata.montant_total || 0 }, { eventID: purchaseEventId });
               }
             window.location.href = '/prince/merci';
           } catch (err) {

@@ -55,14 +55,14 @@ export async function onRequestPost({ request, env }) {
   <div style="max-width:560px;margin:0 auto;padding:40px 24px;">
     <div style="text-align:center;margin-bottom:32px;">
       <h1 style="color:#E8C76A;font-size:28px;letter-spacing:4px;margin:0;font-weight:700;">PRINCE</h1>
-      <p style="color:#F2EFEA;font-size:14px;opacity:0.6;margin:4px 0 0 0;">11 juillet 2026 · 20h30 · Vif</p>
+      <p style="color:#F2EFEA;font-size:14px;opacity:0.6;margin:4px 0 0 0;">10 décembre 2026 · 20h00 · Théâtre de la Madeleine, Genève</p>
     </div>
     <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(232,199,106,0.2);border-radius:16px;padding:32px;margin-bottom:24px;">
       <p style="color:#F2EFEA;font-size:16px;line-height:1.6;margin:0 0 16px 0;">
         Bonjour,
       </p>
       <p style="color:#F2EFEA;font-size:15px;line-height:1.6;opacity:0.85;margin:0 0 24px 0;">
-        Nous avons bien reçu votre paiement de <strong>${montant}€</strong> pour le spectacle PRINCE.
+        Nous avons bien reçu votre paiement de <strong>${montant} CHF</strong> pour le spectacle PRINCE.
       </p>
       <p style="color:#F2EFEA;font-size:15px;line-height:1.6;opacity:0.85;margin:0 0 24px 0;">
         Pour recevoir vos billets, il ne vous reste plus qu'à compléter les informations des participants :
@@ -77,13 +77,13 @@ export async function onRequestPost({ request, env }) {
       </p>
     </div>
     <p style="color:#F2EFEA;font-size:12px;opacity:0.4;text-align:center;line-height:1.6;margin:0;">
-      Questions ? Répondez à cet email, écrivez à mk@mathieukuntz.org ou appelez le 06 43 67 15 11.
+      Questions ? Répondez à cet email ou écrivez à mk@mathieukuntz.org.
     </p>
   </div>
 </body>
 </html>`;
 
-        await fetch('https://api.resend.com/emails', {
+        const resendResponse = await fetch('https://api.resend.com/emails', {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${env.RESEND_API_KEY}`,
@@ -97,10 +97,16 @@ export async function onRequestPost({ request, env }) {
             html,
           }),
         });
+        if (!resendResponse.ok) {
+          const resendError = await resendResponse.text();
+          results.push({ session_id: session.stripe_session_id, status: 'email_failed', error: `Resend ${resendResponse.status}: ${resendError}` });
+          continue;
+        }
+        await nocodbPatch(env, env.NOCODB_TABLE_PENDING, session.Id, { email_secours_envoye: true });
+        results.push({ session_id: session.stripe_session_id, status: 'email_sent' });
+      } else {
+        results.push({ session_id: session.stripe_session_id, status: 'email_not_sent' });
       }
-
-      await nocodbPatch(env, env.NOCODB_TABLE_PENDING, session.Id, { email_secours_envoye: true });
-      results.push({ session_id: session.stripe_session_id, status: 'email_sent' });
     }
 
     return jsonResponse({ processed: results.length, results });

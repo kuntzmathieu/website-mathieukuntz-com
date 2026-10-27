@@ -55,6 +55,7 @@ export async function onRequestPost({ request, env }) {
     }
 
     const filterAutre = (arr) => (arr || []).filter(v => v !== 'Autre');
+    const noteEquilibre = parseInt(grille.equilibre, 10);
 
     const record = {
       date_reponse: new Date().toISOString(),
@@ -69,7 +70,7 @@ export async function onRequestPost({ request, env }) {
       note_voix_recit: parseInt(grille.voix_recit, 10),
       note_rythme: parseInt(grille.rythme, 10),
       note_profondeur: parseInt(grille.profondeur, 10),
-      note_equilibre: parseInt(grille.equilibre, 10),
+      note_equilibre: Number.isNaN(noteEquilibre) ? null : noteEquilibre,
       emotions: filterAutre(body.emotions).join(','),
       emotions_autre: (body.emotions_autre || '').trim(),
       moment_decrochage: (body.moment_decrochage || '').trim(),

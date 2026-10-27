@@ -1,0 +1,133 @@
+---
+import PrinceLayout from '../../layouts/PrinceLayout.astro';
+---
+
+<PrinceLayout
+  title="Votre invitation | PRINCE à Genève, 10 décembre 2026"
+  description="Enregistrez votre place gratuite unique pour PRINCE à la Salle Centrale de la Madeleine à Genève le 10 décembre 2026."
+>
+  <section class="py-16 px-6 md:px-12 min-h-[80vh] relative overflow-hidden">
+    <div class="absolute inset-0 glow-gold opacity-50 -z-10"></div>
+    <div class="max-w-2xl mx-auto w-full space-y-10 z-10 relative">
+      <div class="text-center space-y-4">
+        <a href="/prince" class="inline-block text-2xl md:text-3xl font-serif tracking-widest text-[#E8C76A] uppercase">
+          PRINCE
+        </a>
+        <span class="block text-sm uppercase tracking-widest text-[#E8C76A] font-bold">
+          Invitation pour Genève
+        </span>
+        <h1 class="text-3xl md:text-5xl font-serif tracking-tight text-[#F2EFEA]">
+          Votre place gratuite vous attend.
+        </h1>
+        <p class="text-base md:text-lg text-[#F2EFEA]/85 font-light leading-relaxed max-w-xl mx-auto">
+          Votre code donne droit à une place gratuite unique pour le jeudi 10 décembre 2026 à 20h00, à la Salle Centrale de la Madeleine à Genève. Ouverture des portes à 19h30.
+        </p>
+        <p class="text-sm text-white/50 font-light">
+          Une place par code. Aucun paiement n'est demandé.
+        </p>
+      </div>
+
+      <form id="invitation-form" class="rounded-2xl bg-white/[0.03] border border-[#E8C76A]/30 p-6 md:p-8 space-y-6 shadow-2xl shadow-[#E8C76A]/5">
+        <div class="space-y-2">
+          <label for="code" class="text-xs uppercase tracking-widest text-white/50 block">Code unique <span class="text-[#E8C76A]">*</span></label>
+          <input id="code" name="code" type="text" required autocomplete="off" autocapitalize="characters" placeholder="Votre code invitation" class="w-full px-4 py-3 bg-white/[0.02] border border-white/10 rounded-lg text-[#F2EFEA] placeholder-white/30 font-light outline-none focus:border-[#E8C76A]/40 transition-colors uppercase tracking-wider" />
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="space-y-2">
+            <label for="prenom" class="text-xs uppercase tracking-widest text-white/50 block">Prénom <span class="text-[#E8C76A]">*</span></label>
+            <input id="prenom" name="prenom" type="text" required autocomplete="given-name" class="w-full px-4 py-3 bg-white/[0.02] border border-white/10 rounded-lg text-[#F2EFEA] font-light outline-none focus:border-[#E8C76A]/40 transition-colors" />
+          </div>
+          <div class="space-y-2">
+            <label for="nom" class="text-xs uppercase tracking-widest text-white/50 block">Nom <span class="text-[#E8C76A]">*</span></label>
+            <input id="nom" name="nom" type="text" required autocomplete="family-name" class="w-full px-4 py-3 bg-white/[0.02] border border-white/10 rounded-lg text-[#F2EFEA] font-light outline-none focus:border-[#E8C76A]/40 transition-colors" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="space-y-2">
+            <label for="annee_naissance" class="text-xs uppercase tracking-widest text-white/50 block">Année de naissance <span class="text-[#E8C76A]">*</span></label>
+            <input id="annee_naissance" name="annee_naissance" type="text" required inputmode="numeric" maxlength="4" pattern="[0-9]{4}" placeholder="1990" class="w-full px-4 py-3 bg-white/[0.02] border border-white/10 rounded-lg text-[#F2EFEA] placeholder-white/30 font-light outline-none focus:border-[#E8C76A]/40 transition-colors" />
+          </div>
+          <div class="space-y-2">
+            <label for="code_postal" class="text-xs uppercase tracking-widest text-white/50 block">Code postal <span class="text-white/30">(facultatif)</span></label>
+            <input id="code_postal" name="code_postal" type="text" inputmode="numeric" maxlength="10" autocomplete="postal-code" class="w-full px-4 py-3 bg-white/[0.02] border border-white/10 rounded-lg text-[#F2EFEA] font-light outline-none focus:border-[#E8C76A]/40 transition-colors" />
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <label for="email" class="text-xs uppercase tracking-widest text-white/50 block">Email <span class="text-[#E8C76A]">*</span></label>
+          <input id="email" name="email" type="email" required autocomplete="email" placeholder="vous@email.com" class="w-full px-4 py-3 bg-white/[0.02] border border-white/10 rounded-lg text-[#F2EFEA] placeholder-white/30 font-light outline-none focus:border-[#E8C76A]/40 transition-colors" />
+        </div>
+
+        <p id="invitation-error" class="hidden text-sm text-red-400 font-light" role="alert"></p>
+
+        <button type="submit" id="invitation-submit" class="w-full px-10 py-5 bg-[#E8C76A] text-[#0A0A14] font-bold text-sm tracking-widest uppercase rounded-full hover:bg-white hover:scale-[1.02] transition-all duration-300 shadow-xl shadow-[#E8C76A]/20 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100">
+          Utiliser mon invitation
+        </button>
+      </form>
+
+      <div id="invitation-success" class="hidden text-center space-y-6 py-12" role="status">
+        <iconify-icon icon="solar:check-circle-bold" class="text-6xl text-[#E8C76A]"></iconify-icon>
+        <h2 class="text-3xl md:text-4xl font-serif text-[#F2EFEA]">Votre place est enregistrée.</h2>
+        <p class="text-base md:text-lg text-[#F2EFEA]/85 font-light leading-relaxed max-w-md mx-auto">
+          Merci ! Votre invitation pour le 10 décembre 2026 est confirmée. Redirection en cours...
+        </p>
+      </div>
+
+      <p class="text-center text-sm text-white/40 font-light">
+        Une question ? Écrivez à <a href="mailto:mk@mathieukuntz.org" class="text-[#E8C76A] hover:underline">mk@mathieukuntz.org</a>.
+      </p>
+    </div>
+  </section>
+</PrinceLayout>
+
+<script is:inline>
+  const invitationForm = document.getElementById('invitation-form');
+  const invitationCode = document.getElementById('code');
+  const invitationError = document.getElementById('invitation-error');
+  const invitationSubmit = document.getElementById('invitation-submit');
+
+  const codeFromUrl = new URLSearchParams(window.location.search).get('code');
+  if (codeFromUrl) invitationCode.value = codeFromUrl;
+
+  invitationForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    invitationError.classList.add('hidden');
+    invitationSubmit.disabled = true;
+    invitationSubmit.textContent = 'Enregistrement...';
+
+    const payload = {
+      code: invitationCode.value.trim().toUpperCase(),
+      prenom: document.getElementById('prenom').value.trim(),
+      nom: document.getElementById('nom').value.trim(),
+      annee_naissance: document.getElementById('annee_naissance').value.trim(),
+      email: document.getElementById('email').value.trim(),
+      code_postal: document.getElementById('code_postal').value.trim(),
+    };
+
+    try {
+      const res = await fetch('/api/submit-invitation', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        throw new Error(data.error || 'Ce code ne peut pas être validé. Vérifiez-le puis réessayez.');
+      }
+
+      invitationForm.classList.add('hidden');
+      document.getElementById('invitation-success').classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setTimeout(() => {
+        window.location.href = '/prince/merci';
+      }, 1600);
+    } catch (err) {
+      invitationError.textContent = err.message || 'Une erreur est survenue. Réessayez dans un instant.';
+      invitationError.classList.remove('hidden');
+      invitationSubmit.disabled = false;
+      invitationSubmit.textContent = 'Utiliser mon invitation';
+    }
+  });
+</script>
