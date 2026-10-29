@@ -81,6 +81,12 @@ export async function generateTicketPDF(billet) {
     });
   }
 
+  if (billet.type === 'invitation') {
+    page.drawText('Billet nominatif · non transférable', {
+      x: 30, y: 505, size: 7, font: font, color: MUTED,
+    });
+  }
+
   // Divider
   page.drawRectangle({
     x: 30, y: 482, width: 220, height: 0.5,

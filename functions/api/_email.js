@@ -30,6 +30,7 @@ export async function sendTicketEmail(env, toEmail, billet, pdfBase64) {
         <p style="color:#F2EFEA;font-size:18px;font-weight:700;margin:0 0 16px 0;font-family:monospace;">${billet.numero_billet}</p>
         <p style="color:#F2EFEA;font-size:14px;margin:0 0 4px 0;">${billet.prenom} ${billet.nom}</p>
         <p style="color:#F2EFEA;font-size:13px;opacity:0.6;margin:0;">${billet.type} · ${prixFormate} CHF</p>
+        ${billet.type === 'invitation' ? '<p style="color:#E8C76A;font-size:12px;margin:8px 0 0 0;">Billet nominatif, non transférable.</p>' : ''}
       </div>
 
       <div style="background:rgba(0,0,0,0.3);border-radius:12px;padding:20px;margin-bottom:24px;">
