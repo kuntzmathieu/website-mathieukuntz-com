@@ -146,7 +146,7 @@ import PrinceLayout from '../../layouts/PrinceLayout.astro';
             email_personne: e.target[`billet_${i}_email`].value,
           }));
 
-            const purchaseEventId = 'pur_' + crypto.randomUUID();
+            const purchaseEventId = 'purchase_' + SESSION_ID;
             try {
               const sres = await fetch('/api/submit-reservation', {
                 method: 'POST',

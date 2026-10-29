@@ -1,4 +1,5 @@
 import { nocodbGet, nocodbPost, jsonResponse, errorResponse } from './_lib.js';
+import { sendMetaEvent, sha256 } from './_meta.js';
 
 async function verifyStripeSignature(payload, signatureHeader, secret) {
   if (!signatureHeader || !secret) return false;
@@ -43,6 +44,42 @@ export async function onRequestPost({ request, env }) {
       const sessionId = session.id;
       const email = session.customer_email || session.customer_details?.email || '';
       const montant = session.amount_total ? (session.amount_total / 100) : 0;
+
+      // Envoie Purchase dès le paiement confirmé, même si le formulaire
+      // de confirmation n'est jamais rempli. Le même event_id est utilisé
+      // côté navigateur et dans submit-reservation : Meta déduplique.
+      if (session.payment_status === 'paid') {
+        try {
+          const meta = session.metadata || {};
+          const userData = {};
+          if (email) userData.em = [await sha256(String(email).trim().toLowerCase())];
+          if (meta.fbp) userData.fbp = meta.fbp;
+          if (meta.fbc) userData.fbc = meta.fbc;
+          if (meta.client_ip) userData.client_ip_address = meta.client_ip;
+          if (meta.client_ua) userData.client_user_agent = meta.client_ua;
+
+          let numItems = 0;
+          try {
+            const counts = JSON.parse(meta.billet_types || '{}');
+            numItems = Object.values(counts).reduce((sum, n) => sum + (Number(n) || 0), 0);
+          } catch (e) { /* ignore */ }
+
+          await sendMetaEvent(env, {
+            event_name: 'Purchase',
+            event_time: Math.floor(Date.now() / 1000),
+            event_id: `purchase_${sessionId}`,
+            action_source: 'website',
+            event_source_url: 'https://mathieukuntz.com/prince',
+            user_data: userData,
+            custom_data: {
+              currency: String(session.currency || 'chf').toUpperCase(),
+              value: montant,
+              content_name: 'PRINCE',
+              num_items: numItems,
+            },
+          });
+        } catch (e) { /* ne bloque pas le webhook */ }
+      }
 
       // Vérifie si une commande existe déjà (formulaire déjà rempli)
       const existing = await nocodbGet(env, env.NOCODB_TABLE_COMMANDES, {

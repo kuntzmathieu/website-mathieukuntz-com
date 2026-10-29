@@ -196,7 +196,7 @@ export async function onRequestPost({ request, env }) {
       }
     }
 
-    const eventId = body.event_id || crypto.randomUUID();
+    const eventId = `purchase_${session_id}`;
     const userData = await buildUserData(request, { email: emailCommande });
     await sendMetaEvent(env, {
       event_name: 'Purchase',

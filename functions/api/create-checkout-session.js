@@ -94,6 +94,7 @@ export async function onRequestPost({ request, env }) {
     }, {});
 
     const origin = new URL(request.url).origin;
+    const userData = await buildUserData(request, {});
     const session = await stripeRequest('POST', '/checkout/sessions', {
       mode: 'payment',
       'ui_mode': 'embedded',
@@ -106,10 +107,13 @@ export async function onRequestPost({ request, env }) {
       'metadata[code_promo]': promoCode || '',
       'metadata[billet_types]': JSON.stringify(counts),
       'metadata[billets_detail]': JSON.stringify(billetsPreview.map(b => ({ type: b.type, prix: b.prix, prix_avant: b.prix_avant }))),
+      'metadata[fbp]': (userData.fbp || '').slice(0, 500),
+      'metadata[fbc]': (userData.fbc || '').slice(0, 500),
+      'metadata[client_ip]': userData.client_ip_address || '',
+      'metadata[client_ua]': (userData.client_user_agent || '').slice(0, 500),
     }, env.STRIPE_SECRET_KEY);
 
     const eventId = body.event_id || crypto.randomUUID();
-    const userData = await buildUserData(request, {});
     await sendMetaEvent(env, {
       event_name: 'InitiateCheckout',
       event_time: Math.floor(Date.now() / 1000),
