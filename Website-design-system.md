@@ -29,7 +29,7 @@ L'ancien design system est archivé dans [[Website-design-system ARCHIVE]].
 | Polices | Google Fonts (chargées dans les layouts) |
 | CSS global | `src/styles/global.css` → `@import "tailwindcss";` |
 | Analytics | GA4 (`G-2M6V79H761`) dans `MainLayout.astro` |
-| Meta Pixel | Dans `PrinceLayout.astro` uniquement (via `PUBLIC_META_PIXEL_ID`) |
+| Meta Pixel + CAPI | Pixel dans `PrinceLayout.astro` (via `PUBLIC_META_PIXEL_ID`), CAPI dans `functions/api/_meta.js`. Événements : PageView, ViewContent, AddToCart, InitiateCheckout, Purchase, Lead. Pages `/prince/admin-*` exclues du tracking. |
 
 **Règle :** ne jamais réinjecter `<script src="https://cdn.tailwindcss.com">`. Les classes Tailwind sont compilées à la build.
 
