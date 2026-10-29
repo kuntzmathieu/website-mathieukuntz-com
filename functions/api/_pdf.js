@@ -120,7 +120,7 @@ export async function generateTicketPDF(billet) {
   page.drawText('Durée : environ 1h30', {
     x: 30, y: 341, size: 9, font: font, color: DARK,
   });
-  page.drawText('400 places assises · placement libre non numéroté', {
+  page.drawText('Placement libre · pensez à venir en avance', {
     x: 30, y: 323, size: 7, font: font, color: MUTED,
   });
 

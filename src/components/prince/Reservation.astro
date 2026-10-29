@@ -109,6 +109,27 @@
     return Math.max(0, Math.round(price * 100) / 100);
   }
 
+  function sendCapi(eventName, eventId, customData) {
+    try {
+      const payload = JSON.stringify({
+        event_name: eventName,
+        event_id: eventId,
+        url: window.location.href,
+        custom_data: customData || {}
+      });
+      if (navigator.sendBeacon) {
+        const sent = navigator.sendBeacon('/api/track-event', new Blob([payload], { type: 'application/json' }));
+        if (sent) return;
+      }
+      fetch('/api/track-event', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: payload,
+        keepalive: true,
+      }).catch(function () {});
+    } catch (e) {}
+  }
+
   function trackAddToCart() {
     if (cartTracked) return;
     const totalQty = qty.plein + qty.reduit;
@@ -118,16 +139,17 @@
     if (promoResult && promoResult.valide) {
       value = qty.plein * priceWithPromo('plein', PRICES.plein) + qty.reduit * priceWithPromo('reduit', PRICES.reduit);
     }
-    if (window.fbq) {
-      window.fbq('track', 'AddToCart', {
-        content_name: 'PRINCE',
-        content_type: 'product',
-        content_ids: ['PRINCE-GE2026'],
-        value,
-        currency: 'CHF',
-        num_items: totalQty,
-      }, { eventID: 'atc_' + crypto.randomUUID() });
-    }
+    const eventId = 'atc_' + crypto.randomUUID();
+    const data = {
+      content_name: 'PRINCE',
+      content_type: 'product',
+      content_ids: ['PRINCE-GE2026'],
+      value,
+      currency: 'CHF',
+      num_items: totalQty,
+    };
+    if (window.fbq) window.fbq('track', 'AddToCart', data, { eventID: eventId });
+    sendCapi('AddToCart', eventId, data);
   }
 
   function updateDisplay() {

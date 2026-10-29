@@ -51,7 +51,7 @@ export async function sendTicketEmail(env, toEmail, billet, pdfBase64) {
       <div style="background:rgba(0,0,0,0.3);border-radius:12px;padding:20px;margin-bottom:24px;">
         <p style="color:#E8C76A;font-size:11px;letter-spacing:2px;margin:0 0 8px 0;">SUR PLACE</p>
         <p style="color:#F2EFEA;font-size:13px;opacity:0.85;line-height:1.6;margin:0;">
-          400 places assises, placement libre non numéroté.
+          Placement libre. Pensez à venir en avance.
         </p>
       </div>
 

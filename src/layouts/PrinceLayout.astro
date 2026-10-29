@@ -40,30 +40,41 @@ const isPrinceLanding = pathname === '/prince' || pathname === '/prince/';
         n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
         t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
         document,'script','https://connect.facebook.net/fr_FR/fbevents.js');
-        const pvEventId = 'pv_' + crypto.randomUUID();
-        window.fbq('init', metaPixelId);
-        window.fbq('track', 'PageView', {}, { eventID: pvEventId });
-        try {
-          const payload = JSON.stringify({ event_id: pvEventId, url: window.location.href });
-          if (navigator.sendBeacon) {
-            navigator.sendBeacon('/api/track-pageview', new Blob([payload], { type: 'application/json' }));
-          } else {
-            fetch('/api/track-pageview', {
+        function sendCapi(eventName, eventId, customData) {
+          try {
+            const payload = JSON.stringify({
+              event_name: eventName,
+              event_id: eventId,
+              url: window.location.href,
+              custom_data: customData || {}
+            });
+            if (navigator.sendBeacon) {
+              const sent = navigator.sendBeacon('/api/track-event', new Blob([payload], { type: 'application/json' }));
+              if (sent) return;
+            }
+            fetch('/api/track-event', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: payload,
               keepalive: true,
             }).catch(function () {});
-          }
-        } catch (e) {}
+          } catch (e) {}
+        }
+        const pvEventId = 'pv_' + crypto.randomUUID();
+        window.fbq('init', metaPixelId);
+        window.fbq('track', 'PageView', {}, { eventID: pvEventId });
+        sendCapi('PageView', pvEventId);
         if (isPrinceLanding) {
-          window.fbq('track', 'ViewContent', {
+          const vcEventId = 'vc_' + crypto.randomUUID();
+          const vcData = {
             content_name: 'PRINCE',
             content_type: 'product',
             content_ids: ['PRINCE-GE2026'],
             value: 29,
             currency: 'CHF'
-          }, { eventID: 'vc_' + crypto.randomUUID() });
+          };
+          window.fbq('track', 'ViewContent', vcData, { eventID: vcEventId });
+          sendCapi('ViewContent', vcEventId, vcData);
         }
       </script>
     )}
