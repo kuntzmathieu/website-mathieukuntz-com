@@ -114,13 +114,13 @@ export async function generateTicketPDF(billet) {
   page.drawText('HORAIRES ET PLACEMENT', {
     x: 30, y: 370, size: 8, font: font, color: MUTED,
   });
-  page.drawText('Portes : 19h30 · Spectacle : 20h00', {
+  page.drawText('Portes : 19h00 · Spectacle : 20h00', {
     x: 30, y: 355, size: 9, font: font, color: DARK,
   });
   page.drawText('Durée : environ 1h30', {
     x: 30, y: 341, size: 9, font: font, color: DARK,
   });
-  page.drawText('Placement libre · pensez à venir en avance', {
+  page.drawText('Placement libre · portes closes à 20h00', {
     x: 30, y: 323, size: 7, font: font, color: MUTED,
   });
 

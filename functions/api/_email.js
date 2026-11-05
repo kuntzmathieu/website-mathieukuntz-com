@@ -21,8 +21,11 @@ export async function sendTicketEmail(env, toEmail, billet, pdfBase64) {
       <p style="color:#F2EFEA;font-size:16px;line-height:1.6;margin:0 0 16px 0;">
         Bonjour <strong>${billet.prenom}</strong>,
       </p>
-      <p style="color:#F2EFEA;font-size:15px;line-height:1.6;opacity:0.85;margin:0 0 24px 0;">
+      <p style="color:#F2EFEA;font-size:15px;line-height:1.6;opacity:0.85;margin:0 0 16px 0;">
         Voici votre billet pour le spectacle PRINCE. Présentez-le à l'entrée le soir de la représentation.
+      </p>
+      <p style="color:#F2EFEA;font-size:15px;line-height:1.6;opacity:0.85;margin:0 0 24px 0;">
+        <strong>Un guide du spectateur est joint à cet email.</strong> Lisez-le attentivement avant le spectacle : il contient tout ce qu'il faut savoir pour profiter au mieux de l'expérience.
       </p>
 
       <div style="background:rgba(0,0,0,0.3);border-radius:12px;padding:20px;margin-bottom:24px;">
@@ -43,9 +46,10 @@ export async function sendTicketEmail(env, toEmail, billet, pdfBase64) {
 
       <div style="background:rgba(0,0,0,0.3);border-radius:12px;padding:20px;margin-bottom:24px;">
         <p style="color:#E8C76A;font-size:11px;letter-spacing:2px;margin:0 0 8px 0;">HORAIRES</p>
-        <p style="color:#F2EFEA;font-size:14px;margin:0 0 4px 0;">Ouverture des portes : 19h30</p>
+        <p style="color:#F2EFEA;font-size:14px;margin:0 0 4px 0;">Ouverture des portes : 19h00</p>
         <p style="color:#F2EFEA;font-size:14px;margin:0 0 4px 0;">Début du spectacle : 20h00</p>
-        <p style="color:#F2EFEA;font-size:14px;margin:0;">Durée : environ 1h30</p>
+        <p style="color:#F2EFEA;font-size:14px;margin:0 0 4px 0;">Durée : environ 1h30, sans entracte</p>
+        <p style="color:#F2EFEA;font-size:14px;margin:0;">Fermeture des portes : 20h00 (aucune entrée tardive)</p>
       </div>
 
       <div style="background:rgba(0,0,0,0.3);border-radius:12px;padding:20px;margin-bottom:24px;">
@@ -94,21 +98,36 @@ export async function sendTicketEmail(env, toEmail, billet, pdfBase64) {
     attachments: [{
       filename: `billet-${billet.numero_billet}.pdf`,
       content: pdfBase64,
+    }, {
+      filename: 'guide-du-spectateur-prince.pdf',
+      path: 'https://mathieukuntz.com/guide-prince.pdf',
+      content_type: 'application/pdf',
     }],
   };
 
-  const res = await fetch(RESEND_API, {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${env.RESEND_API_KEY}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(body),
-  });
+  const send = async (payload) => {
+    const res = await fetch(RESEND_API, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${env.RESEND_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
+    if (!res.ok) {
+      const err = await res.text();
+      throw new Error(`Resend ${res.status}: ${err}`);
+    }
+    return res.json();
+  };
 
-  if (!res.ok) {
-    const err = await res.text();
-    throw new Error(`Resend ${res.status}: ${err}`);
+  try {
+    return await send(body);
+  } catch (err) {
+    // Le billet doit partir même si le guide est momentanément inaccessible.
+    if (body.attachments.length > 1) {
+      return send({ ...body, attachments: [body.attachments[0]] });
+    }
+    throw err;
   }
-  return res.json();
 }
