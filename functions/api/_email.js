@@ -1,3 +1,5 @@
+import { GUIDE_PDF_BASE64 } from './_guide.js';
+
 const RESEND_API = 'https://api.resend.com/emails';
 
 export async function sendTicketEmail(env, toEmail, billet, pdfBase64) {
@@ -100,7 +102,7 @@ export async function sendTicketEmail(env, toEmail, billet, pdfBase64) {
       content: pdfBase64,
     }, {
       filename: 'guide-du-spectateur-prince.pdf',
-      path: 'https://mathieukuntz.com/guide-prince.pdf',
+      content: GUIDE_PDF_BASE64,
       content_type: 'application/pdf',
     }],
   };
