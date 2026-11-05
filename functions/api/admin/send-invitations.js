@@ -112,7 +112,7 @@ function invitationEmailHtml(row) {
         Vous étiez présent·e à la première représentation du spectacle PRINCE à Vif en juillet et je vous en remercie encore.
       </p>
       <p style="color:#F2EFEA;font-size:15px;line-height:1.6;opacity:0.85;margin:0 0 16px 0;">
-        La prochaine date est sortie ! Le 10 décembre prochain, à Genève (Suisse), au Théâtre de la Salle Centrale La Madeleine !
+        La prochaine date est sortie ! Le 10 décembre prochain, à Genève (Suisse), à la Salle Centrale de la Madeleine ! Le spectacle commence à 20h00, avec ouverture des portes à 19h00.
       </p>
       <p style="color:#F2EFEA;font-size:15px;line-height:1.6;opacity:0.85;margin:0 0 16px 0;">
         Comme promis, j'ai le plaisir de vous offrir une place à votre nom pour cette prochaine représentation.
