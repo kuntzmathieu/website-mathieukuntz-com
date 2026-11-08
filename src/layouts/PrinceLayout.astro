@@ -60,6 +60,16 @@ const isPrinceLanding = pathname === '/prince' || pathname === '/prince/';
             }).catch(function () {});
           } catch (e) {}
         }
+        window.__META_PIXEL_ID__ = metaPixelId;
+        (function captureFbc() {
+          try {
+            const fbclid = new URL(window.location.href).searchParams.get('fbclid');
+            if (!fbclid || !/^[^\s;]{1,500}$/.test(fbclid)) return;
+            const fbc = 'fb.1.' + Date.now() + '.' + fbclid;
+            document.cookie = '_fbc=' + fbc + '; path=/; max-age=' + (90 * 24 * 60 * 60) + '; SameSite=Lax';
+            try { localStorage.setItem('_fbc', fbc); } catch (e) {}
+          } catch (e) {}
+        })();
         const pvEventId = 'pv_' + crypto.randomUUID();
         window.fbq('init', metaPixelId);
         window.fbq('track', 'PageView', {}, { eventID: pvEventId });

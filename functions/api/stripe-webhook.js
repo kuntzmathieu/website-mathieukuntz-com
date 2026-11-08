@@ -1,5 +1,5 @@
 import { nocodbGet, nocodbPost, jsonResponse, errorResponse } from './_lib.js';
-import { sendMetaEvent, sha256 } from './_meta.js';
+import { sendMetaEvent, buildUserData } from './_meta.js';
 
 async function verifyStripeSignature(payload, signatureHeader, secret) {
   if (!signatureHeader || !secret) return false;
@@ -45,42 +45,6 @@ export async function onRequestPost({ request, env }) {
       const email = session.customer_email || session.customer_details?.email || '';
       const montant = session.amount_total ? (session.amount_total / 100) : 0;
 
-      // Envoie Purchase dès le paiement confirmé, même si le formulaire
-      // de confirmation n'est jamais rempli. Le même event_id est utilisé
-      // côté navigateur et dans submit-reservation : Meta déduplique.
-      if (session.payment_status === 'paid') {
-        try {
-          const meta = session.metadata || {};
-          const userData = {};
-          if (email) userData.em = [await sha256(String(email).trim().toLowerCase())];
-          if (meta.fbp) userData.fbp = meta.fbp;
-          if (meta.fbc) userData.fbc = meta.fbc;
-          if (meta.client_ip) userData.client_ip_address = meta.client_ip;
-          if (meta.client_ua) userData.client_user_agent = meta.client_ua;
-
-          let numItems = 0;
-          try {
-            const counts = JSON.parse(meta.billet_types || '{}');
-            numItems = Object.values(counts).reduce((sum, n) => sum + (Number(n) || 0), 0);
-          } catch (e) { /* ignore */ }
-
-          await sendMetaEvent(env, {
-            event_name: 'Purchase',
-            event_time: Math.floor(Date.now() / 1000),
-            event_id: `purchase_${sessionId}`,
-            action_source: 'website',
-            event_source_url: 'https://mathieukuntz.com/prince',
-            user_data: userData,
-            custom_data: {
-              currency: String(session.currency || 'chf').toUpperCase(),
-              value: montant,
-              content_name: 'PRINCE',
-              num_items: numItems,
-            },
-          });
-        } catch (e) { /* ne bloque pas le webhook */ }
-      }
-
       // Vérifie si une commande existe déjà (formulaire déjà rempli)
       const existing = await nocodbGet(env, env.NOCODB_TABLE_COMMANDES, {
         where: `(stripe_session_id,eq,${sessionId})`,
@@ -97,7 +61,9 @@ export async function onRequestPost({ request, env }) {
         return jsonResponse({ received: true, skipped: 'already_pending' });
       }
 
-      // Stocke la session en attente — le cron traitera dans 5 min
+      // Stocke la session en attente — le cron traitera dans 5 min.
+      // Cette écriture sert aussi de garde anti-doublon pour le Purchase :
+      // un retry Stripe trouvera la ligne pending et s'arrêtera ici.
       await nocodbPost(env, env.NOCODB_TABLE_PENDING, {
         stripe_session_id: sessionId,
         email,
@@ -105,6 +71,59 @@ export async function onRequestPost({ request, env }) {
         created_at: new Date().toISOString(),
         email_secours_envoye: false,
       });
+
+      // Envoie le Purchase une seule fois, après les contrôles anti-doublon.
+      // Le navigateur envoie aussi un Purchase avec le même event_id :
+      // Meta déduplique Pixel <-> CAPI, pas CAPI <-> CAPI.
+      if (session.payment_status === 'paid') {
+        try {
+          const meta = session.metadata || {};
+          const details = session.customer_details || {};
+          const address = details.address || {};
+          const fullName = String(details.name || '').trim();
+          const nameParts = fullName.split(/\s+/).filter(Boolean);
+          const firstName = nameParts.shift() || '';
+          const lastName = nameParts.join(' ');
+
+          let numItems = 0;
+          try {
+            const counts = JSON.parse(meta.billet_types || '{}');
+            numItems = Object.values(counts).reduce((sum, n) => sum + (Number(n) || 0), 0);
+          } catch (e) { /* ignore */ }
+
+          const userData = await buildUserData(request, {
+            email,
+            phone: details.phone || '',
+            firstName,
+            lastName,
+            zip: address.postal_code || '',
+            city: address.city || '',
+            country: address.country || '',
+            externalId: email || sessionId,
+            fbp: meta.fbp || '',
+            fbc: meta.fbc || '',
+            clientIp: meta.client_ip || '',
+            clientUa: meta.client_ua || '',
+          });
+
+          await sendMetaEvent(env, {
+            event_name: 'Purchase',
+            event_time: Math.floor(Date.now() / 1000),
+            event_id: `purchase_${sessionId}`,
+            action_source: 'website',
+            event_source_url: meta.event_source_url || 'https://mathieukuntz.com/prince',
+            user_data: userData,
+            custom_data: {
+              currency: String(session.currency || 'chf').toUpperCase(),
+              value: montant,
+              content_name: 'PRINCE',
+              content_type: 'product',
+              content_ids: ['PRINCE-GE2026'],
+              num_items: numItems,
+            },
+          });
+        } catch (e) { /* ne bloque pas le webhook */ }
+      }
     }
 
     return jsonResponse({ received: true });

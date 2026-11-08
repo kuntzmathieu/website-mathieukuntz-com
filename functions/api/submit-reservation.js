@@ -1,7 +1,6 @@
 import { stripeRequest, nocodbPost, nocodbGet, nocodbPatch, nocodbDelete, jsonResponse, errorResponse } from './_lib.js';
 import { generateTicketPDF } from './_pdf.js';
 import { sendTicketEmail } from './_email.js';
-import { sendMetaEvent, buildUserData } from './_meta.js';
 
 export async function onRequestPost({ request, env }) {
   try {
@@ -196,21 +195,9 @@ export async function onRequestPost({ request, env }) {
       }
     }
 
+    // Le Purchase CAPI est envoyé uniquement par stripe-webhook.js.
+    // Le navigateur envoie le même event_id pour la déduplication Pixel <-> CAPI.
     const eventId = `purchase_${session_id}`;
-    const userData = await buildUserData(request, { email: emailCommande });
-    await sendMetaEvent(env, {
-      event_name: 'Purchase',
-      event_time: Math.floor(Date.now() / 1000),
-      event_id: eventId,
-      action_source: 'website',
-      user_data: userData,
-      custom_data: {
-        currency: 'CHF',
-        value: montantTotal,
-        content_name: 'PRINCE',
-        num_items: (counts['plein tarif'] || 0) + (counts['tarif réduit'] || 0) + (counts['invitation'] || 0) + (counts['custom'] || 0),
-      },
-    });
 
     return jsonResponse({ success: true, commande_id: commandeId, montant_total: montantTotal, billets: billetsCrees, email_errors: emailErrors, event_id: eventId });
   } catch (err) {

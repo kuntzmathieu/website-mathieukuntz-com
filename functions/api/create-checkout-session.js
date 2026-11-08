@@ -94,7 +94,9 @@ export async function onRequestPost({ request, env }) {
     }, {});
 
     const origin = new URL(request.url).origin;
-    const userData = await buildUserData(request, {});
+    const eventSourceUrl = (request.headers.get('referer') || `${origin}/prince`).slice(0, 500);
+    const clientFbc = sanitizeFbc(body.fbc, body.fbclid);
+    const userData = await buildUserData(request, clientFbc ? { fbc: clientFbc } : {});
     const session = await stripeRequest('POST', '/checkout/sessions', {
       mode: 'payment',
       'ui_mode': 'embedded',
@@ -108,9 +110,10 @@ export async function onRequestPost({ request, env }) {
       'metadata[billet_types]': JSON.stringify(counts),
       'metadata[billets_detail]': JSON.stringify(billetsPreview.map(b => ({ type: b.type, prix: b.prix, prix_avant: b.prix_avant }))),
       'metadata[fbp]': (userData.fbp || '').slice(0, 500),
-      'metadata[fbc]': (userData.fbc || '').slice(0, 500),
+      'metadata[fbc]': (clientFbc || userData.fbc || '').slice(0, 500),
       'metadata[client_ip]': userData.client_ip_address || '',
       'metadata[client_ua]': (userData.client_user_agent || '').slice(0, 500),
+      'metadata[event_source_url]': eventSourceUrl,
     }, env.STRIPE_SECRET_KEY);
 
     const eventId = body.event_id || crypto.randomUUID();
@@ -119,11 +122,14 @@ export async function onRequestPost({ request, env }) {
       event_time: Math.floor(Date.now() / 1000),
       event_id: eventId,
       action_source: 'website',
+      event_source_url: eventSourceUrl,
       user_data: userData,
       custom_data: {
         currency: 'CHF',
         value: montantTotal,
         content_name: 'PRINCE',
+        content_type: 'product',
+        content_ids: ['PRINCE-GE2026'],
         num_items: pleinQt + reduitQt,
       },
     });
@@ -155,4 +161,17 @@ function computeLineItem(typeBase, prixBase, promo) {
   else if (promo.type_reduction === 'montant_fixe') prix = prixBase - promo.valeur;
   prix = Math.max(0, Math.round(prix * 100) / 100);
   return { type: typeBase, prix, prix_avant: prixBase };
+}
+
+function sanitizeFbc(fbc, fbclid) {
+  const value = typeof fbc === 'string' ? fbc.trim() : '';
+  const validFbc = /^fb\.\d+\.\d+\.[^\s;]{1,450}$/.test(value) ? value : '';
+
+  const clickId = typeof fbclid === 'string' ? fbclid.trim() : '';
+  if (clickId && /^[^\s;]{1,500}$/.test(clickId)) {
+    if (validFbc && validFbc.endsWith('.' + clickId)) return validFbc;
+    return `fb.1.${Date.now()}.${clickId}`;
+  }
+
+  return validFbc;
 }

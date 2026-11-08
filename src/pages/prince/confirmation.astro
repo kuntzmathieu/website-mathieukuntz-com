@@ -57,6 +57,10 @@ import PrinceLayout from '../../layouts/PrinceLayout.astro';
 
     function formatPrix(p) { return p.toFixed(2).replace('.', ',') + ' CHF'; }
 
+    function normalizeName(value) {
+      return String(value || '').trim().toLowerCase().normalize('NFC').replace(/[^\p{L}\p{N}\s]/gu, '').replace(/\s+/g, ' ');
+    }
+
     function billetField(index, type, prix) {
       const typeLabel = { 'plein tarif': 'Plein tarif', 'tarif réduit': 'Tarif réduit', 'invitation': 'Invitation', 'custom': 'Prix custom' }[type] || type;
       return `
@@ -165,9 +169,33 @@ import PrinceLayout from '../../layouts/PrinceLayout.astro';
                 alert('Billets enregistrés mais erreur envoi email: ' + sdata.email_errors.map(e => e.error).join(', '));
               }
               if (window.fbq) {
-                window.fbq('track', 'Purchase', { currency: 'CHF', value: sdata.montant_total || 0 }, { eventID: purchaseEventId });
+                const pixelId = window.__META_PIXEL_ID__;
+                const first = billetsData[0] || {};
+                const orderEmail = String(data.email || '').trim().toLowerCase();
+                const advancedMatching = {};
+                if (orderEmail) advancedMatching.em = orderEmail;
+                advancedMatching.external_id = orderEmail || SESSION_ID;
+                if (first.prenom) advancedMatching.fn = normalizeName(first.prenom);
+                if (first.nom) advancedMatching.ln = normalizeName(first.nom);
+                if (first.code_postal) {
+                  const zp = String(first.code_postal).trim().replace(/[\s-]+/g, '');
+                  if (zp) {
+                    advancedMatching.zp = zp;
+                    if (/^\d{4}$/.test(zp)) advancedMatching.country = 'ch';
+                    else if (/^\d{5}$/.test(zp)) advancedMatching.country = 'fr';
+                  }
+                }
+                if (pixelId) window.fbq('init', pixelId, advancedMatching);
+                window.fbq('track', 'Purchase', {
+                  currency: 'CHF',
+                  value: sdata.montant_total || 0,
+                  content_name: 'PRINCE',
+                  content_type: 'product',
+                  content_ids: ['PRINCE-GE2026'],
+                  num_items: billetsData.length,
+                }, { eventID: purchaseEventId });
               }
-            window.location.href = '/prince/merci';
+            setTimeout(() => { window.location.href = '/prince/merci'; }, 400);
           } catch (err) {
             alert(err.message);
             btn.disabled = false;
