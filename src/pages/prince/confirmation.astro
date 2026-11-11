@@ -168,7 +168,7 @@ import PrinceLayout from '../../layouts/PrinceLayout.astro';
               if (sdata.email_errors && sdata.email_errors.length > 0) {
                 alert('Billets enregistrés mais erreur envoi email: ' + sdata.email_errors.map(e => e.error).join(', '));
               }
-              if (window.fbq) {
+              if (sdata.source !== 'affiche' && window.fbq) {
                 const pixelId = window.__META_PIXEL_ID__;
                 const first = billetsData[0] || {};
                 const orderEmail = String(data.email || '').trim().toLowerCase();

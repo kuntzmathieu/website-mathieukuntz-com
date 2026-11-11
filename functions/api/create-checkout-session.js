@@ -7,6 +7,8 @@ export async function onRequestPost({ request, env }) {
     const pleinQt = Math.max(0, parseInt(body.plein_tarif) || 0);
     const reduitQt = Math.max(0, parseInt(body.tarif_reduit) || 0);
     const promoCode = (body.code_promo || '').trim().toUpperCase();
+    const sourceRaw = String(body.source || '').toLowerCase();
+    const source = ['affiche', 'meta', 'email', 'partenaire', 'direct', 'invitation', 'admin'].includes(sourceRaw) ? sourceRaw : 'direct';
 
     if (pleinQt === 0 && reduitQt === 0) {
       return errorResponse('Sélectionnez au moins une place', 400);
@@ -107,6 +109,7 @@ export async function onRequestPost({ request, env }) {
       'metadata[montant_avant]': String(montantAvantRemise),
       'metadata[montant_total]': String(montantTotal),
       'metadata[code_promo]': promoCode || '',
+      'metadata[source]': source,
       'metadata[billet_types]': JSON.stringify(counts),
       'metadata[billets_detail]': JSON.stringify(billetsPreview.map(b => ({ type: b.type, prix: b.prix, prix_avant: b.prix_avant }))),
       'metadata[fbp]': (userData.fbp || '').slice(0, 500),

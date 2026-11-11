@@ -30,6 +30,7 @@ export async function onRequestPost({ request, env }) {
     }
 
     const meta = session.metadata || {};
+    const source = normalizeSource(meta.source);
     const emailCommande = session.customer_email || session.customer_details?.email || '';
     const codePromo = meta.code_promo || '';
     let billetsDetail;
@@ -111,6 +112,7 @@ export async function onRequestPost({ request, env }) {
       nb_custom: counts['custom'] || 0,
       paiement: 'stripe',
       canal_vente: 'en ligne',
+      source_vente: source,
       code_promo_utilise: codePromo,
     });
     const commandeId = commande.Id;
@@ -199,7 +201,7 @@ export async function onRequestPost({ request, env }) {
     // Le navigateur envoie le même event_id pour la déduplication Pixel <-> CAPI.
     const eventId = `purchase_${session_id}`;
 
-    return jsonResponse({ success: true, commande_id: commandeId, montant_total: montantTotal, billets: billetsCrees, email_errors: emailErrors, event_id: eventId });
+    return jsonResponse({ success: true, commande_id: commandeId, montant_total: montantTotal, source, billets: billetsCrees, email_errors: emailErrors, event_id: eventId });
   } catch (err) {
     return errorResponse(err.message, 500);
   }
@@ -208,4 +210,9 @@ export async function onRequestPost({ request, env }) {
 function toCents(value) {
   const amount = Number(value);
   return Number.isFinite(amount) ? Math.round(amount * 100) : NaN;
+}
+
+function normalizeSource(value) {
+  const source = String(value || '').toLowerCase();
+  return ['affiche', 'meta', 'email', 'partenaire', 'direct', 'invitation', 'admin'].includes(source) ? source : 'direct';
 }

@@ -73,6 +73,7 @@ export async function onRequestPost({ request, env }) {
         nb_custom: 0,
         paiement: 'invitation',
         canal_vente: 'en ligne',
+        source_vente: 'invitation',
         code_promo_utilise: code,
       });
       commandeId = commande.Id;

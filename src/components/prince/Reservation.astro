@@ -95,6 +95,14 @@
     }
   }
 
+  function getSource() {
+    try {
+      const stored = localStorage.getItem('prince_src');
+      if (stored) return stored;
+    } catch (e) {}
+    return readCookie('prince_src') || 'direct';
+  }
+
   function loadStripeScript() {
     return new Promise((resolve, reject) => {
       if (window.Stripe) return resolve(window.Stripe(PUBLISHABLE_KEY));
@@ -239,6 +247,7 @@
           event_id: checkoutEventId,
           fbc,
           fbclid,
+          source: getSource(),
         }),
       });
       const data = await res.json();

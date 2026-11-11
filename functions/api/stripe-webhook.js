@@ -76,53 +76,55 @@ export async function onRequestPost({ request, env }) {
       // Le navigateur envoie aussi un Purchase avec le même event_id :
       // Meta déduplique Pixel <-> CAPI, pas CAPI <-> CAPI.
       if (session.payment_status === 'paid') {
-        try {
-          const meta = session.metadata || {};
-          const details = session.customer_details || {};
-          const address = details.address || {};
-          const fullName = String(details.name || '').trim();
-          const nameParts = fullName.split(/\s+/).filter(Boolean);
-          const firstName = nameParts.shift() || '';
-          const lastName = nameParts.join(' ');
-
-          let numItems = 0;
+        const meta = session.metadata || {};
+        if (meta.source !== 'affiche') {
           try {
-            const counts = JSON.parse(meta.billet_types || '{}');
-            numItems = Object.values(counts).reduce((sum, n) => sum + (Number(n) || 0), 0);
-          } catch (e) { /* ignore */ }
+            const details = session.customer_details || {};
+            const address = details.address || {};
+            const fullName = String(details.name || '').trim();
+            const nameParts = fullName.split(/\s+/).filter(Boolean);
+            const firstName = nameParts.shift() || '';
+            const lastName = nameParts.join(' ');
 
-          const userData = await buildUserData(request, {
-            email,
-            phone: details.phone || '',
-            firstName,
-            lastName,
-            zip: address.postal_code || '',
-            city: address.city || '',
-            country: address.country || '',
-            externalId: email || sessionId,
-            fbp: meta.fbp || '',
-            fbc: meta.fbc || '',
-            clientIp: meta.client_ip || '',
-            clientUa: meta.client_ua || '',
-          });
+            let numItems = 0;
+            try {
+              const counts = JSON.parse(meta.billet_types || '{}');
+              numItems = Object.values(counts).reduce((sum, n) => sum + (Number(n) || 0), 0);
+            } catch (e) { /* ignore */ }
 
-          await sendMetaEvent(env, {
-            event_name: 'Purchase',
-            event_time: Math.floor(Date.now() / 1000),
-            event_id: `purchase_${sessionId}`,
-            action_source: 'website',
-            event_source_url: meta.event_source_url || 'https://mathieukuntz.com/prince',
-            user_data: userData,
-            custom_data: {
-              currency: String(session.currency || 'chf').toUpperCase(),
-              value: montant,
-              content_name: 'PRINCE',
-              content_type: 'product',
-              content_ids: ['PRINCE-GE2026'],
-              num_items: numItems,
-            },
-          });
-        } catch (e) { /* ne bloque pas le webhook */ }
+            const userData = await buildUserData(request, {
+              email,
+              phone: details.phone || '',
+              firstName,
+              lastName,
+              zip: address.postal_code || '',
+              city: address.city || '',
+              country: address.country || '',
+              externalId: email || sessionId,
+              fbp: meta.fbp || '',
+              fbc: meta.fbc || '',
+              clientIp: meta.client_ip || '',
+              clientUa: meta.client_ua || '',
+            });
+
+            await sendMetaEvent(env, {
+              event_name: 'Purchase',
+              event_time: Math.floor(Date.now() / 1000),
+              event_id: `purchase_${sessionId}`,
+              action_source: 'website',
+              event_source_url: meta.event_source_url || 'https://mathieukuntz.com/prince',
+              user_data: userData,
+              custom_data: {
+                currency: String(session.currency || 'chf').toUpperCase(),
+                value: montant,
+                content_name: 'PRINCE',
+                content_type: 'product',
+                content_ids: ['PRINCE-GE2026'],
+                num_items: numItems,
+              },
+            });
+          } catch (e) { /* ne bloque pas le webhook */ }
+        }
       }
     }
 
