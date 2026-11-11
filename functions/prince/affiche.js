@@ -1,7 +1,7 @@
 import { nocodbPost } from '../api/_lib.js';
 
 const SOURCE = 'affiche';
-const TARGET_PATH = '/prince?src=affiche';
+const TARGET_PATH = '/prince/?src=affiche';
 const CAMPAIGN = 'prince_ge2026';
 const SCANS_TABLE = 'mbltmjjvru1zx0b';
 const COOKIE_SRC = 'prince_src';
