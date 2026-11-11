@@ -32,7 +32,6 @@ const isPrinceLanding = pathname === '/prince' || pathname === '/prince/';
     <meta property="og:image" content={ogImage} />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
-    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
     <script is:inline>
       (function () {
         try {
@@ -55,6 +54,7 @@ const isPrinceLanding = pathname === '/prince' || pathname === '/prince/';
         } catch (e) {}
       })();
     </script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
     {metaPixelId && trackMeta && (
       <script is:inline define:vars={{ metaPixelId, isPrinceLanding }}>
         !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
