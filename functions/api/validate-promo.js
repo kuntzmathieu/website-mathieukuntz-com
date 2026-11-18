@@ -17,8 +17,11 @@ export async function onRequestPost({ request, env }) {
     if (promo.date_expiration && new Date(promo.date_expiration) < new Date()) {
       return errorResponse('Code expiré', 400);
     }
-    if (promo.max_utilisations && promo.utilisations >= promo.max_utilisations) {
-      return errorResponse('Code épuisé', 400);
+    const nbBillets = pleinQt + reduitQt;
+    const billetsRestants = promo.max_utilisations - (promo.utilisations || 0);
+    if (promo.max_utilisations && nbBillets > billetsRestants) {
+      if (billetsRestants <= 0) return errorResponse('Code épuisé', 400);
+      return errorResponse(`Il ne reste que ${billetsRestants} place${billetsRestants > 1 ? 's' : ''} avec ce code`, 400);
     }
     if (promo.type_reduction === 'prix_fixe' && Number(promo.valeur) === 0) {
       return errorResponse(`Cette invitation doit être utilisée via /prince/invitation?code=${encodeURIComponent(code)}`, 400);

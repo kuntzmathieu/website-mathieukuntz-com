@@ -30,8 +30,11 @@ export async function onRequestPost({ request, env }) {
       if (p.date_expiration && new Date(p.date_expiration) < new Date()) {
         return errorResponse('Code promo expiré', 400);
       }
-      if (p.max_utilisations && p.utilisations >= p.max_utilisations) {
-        return errorResponse('Code promo épuisé', 400);
+      const nbBillets = pleinQt + reduitQt;
+      const billetsRestants = p.max_utilisations - (p.utilisations || 0);
+      if (p.max_utilisations && nbBillets > billetsRestants) {
+        if (billetsRestants <= 0) return errorResponse('Code promo épuisé', 400);
+        return errorResponse(`Il ne reste que ${billetsRestants} place${billetsRestants > 1 ? 's' : ''} avec ce code promo`, 400);
       }
       promo = p;
       if (p.type_reduction === 'prix_fixe' && Number(p.valeur) === 0) {

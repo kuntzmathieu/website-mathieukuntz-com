@@ -167,7 +167,9 @@ export async function onRequestPost({ request, env }) {
         const promoData = await nocodbGet(env, env.NOCODB_TABLE_PROMO, { where: `(code,eq,${codePromo})` });
         const promo = (promoData.list || [])[0];
         if (promo) {
-          await nocodbPatch(env, env.NOCODB_TABLE_PROMO, promo.Id, { utilisations: (promo.utilisations || 0) + 1 });
+          await nocodbPatch(env, env.NOCODB_TABLE_PROMO, promo.Id, {
+            utilisations: (promo.utilisations || 0) + billetsCrees.length,
+          });
         }
       } catch (e) { }
     }
