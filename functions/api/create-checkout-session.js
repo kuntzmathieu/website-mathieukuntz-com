@@ -8,7 +8,7 @@ export async function onRequestPost({ request, env }) {
     const reduitQt = Math.max(0, parseInt(body.tarif_reduit) || 0);
     const promoCode = (body.code_promo || '').trim().toUpperCase();
     const sourceRaw = String(body.source || '').toLowerCase();
-    const source = ['affiche', 'meta', 'email', 'partenaire', 'direct', 'invitation', 'admin'].includes(sourceRaw) ? sourceRaw : 'direct';
+    const source = ['affiche', 'affiche_concorde', 'affiche_uni', 'meta', 'email', 'partenaire', 'direct', 'invitation', 'admin'].includes(sourceRaw) ? sourceRaw : 'direct';
 
     if (pleinQt === 0 && reduitQt === 0) {
       return errorResponse('Sélectionnez au moins une place', 400);

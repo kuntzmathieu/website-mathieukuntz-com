@@ -36,7 +36,7 @@ const isPrinceLanding = pathname === '/prince' || pathname === '/prince/';
       (function () {
         try {
           var params = new URLSearchParams(window.location.search);
-          var allowed = ['affiche', 'meta', 'email', 'partenaire', 'direct', 'invitation', 'admin'];
+          var allowed = ['affiche', 'affiche_concorde', 'affiche_uni', 'meta', 'email', 'partenaire', 'direct', 'invitation', 'admin'];
           var src = (params.get('src') || '').toLowerCase();
           var chosen = allowed.indexOf(src) !== -1 ? src : '';
           if (!chosen && params.get('fbclid')) chosen = 'meta';

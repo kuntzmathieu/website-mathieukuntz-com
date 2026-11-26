@@ -216,5 +216,5 @@ function toCents(value) {
 
 function normalizeSource(value) {
   const source = String(value || '').toLowerCase();
-  return ['affiche', 'meta', 'email', 'partenaire', 'direct', 'invitation', 'admin'].includes(source) ? source : 'direct';
+  return ['affiche', 'affiche_concorde', 'affiche_uni', 'meta', 'email', 'partenaire', 'direct', 'invitation', 'admin'].includes(source) ? source : 'direct';
 }

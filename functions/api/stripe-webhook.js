@@ -77,7 +77,7 @@ export async function onRequestPost({ request, env }) {
       // Meta déduplique Pixel <-> CAPI, pas CAPI <-> CAPI.
       if (session.payment_status === 'paid') {
         const meta = session.metadata || {};
-        if (meta.source !== 'affiche') {
+        if (!String(meta.source || '').startsWith('affiche')) {
           try {
             const details = session.customer_details || {};
             const address = details.address || {};
